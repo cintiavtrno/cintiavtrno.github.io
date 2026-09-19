@@ -541,7 +541,7 @@ animation:scan 8s linear infinite;
 
   <!-- Releitura Warja Lavater — sequência de formas, não diagrama -->
   <div id="warja-ensaios" style="margin-bottom:3rem;overflow:hidden;">
-    <svg viewBox="0 0 1340 160" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos cinco ensaios ao estilo Warja Lavater">
+    <svg viewBox="0 0 1470 160" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos cinco ensaios ao estilo Warja Lavater">
       <defs>
         <filter id="glow-verde"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="glow-roxo"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -550,7 +550,7 @@ animation:scan 8s linear infinite;
       </defs>
 
       <!-- fio de tempo — linha da narrativa -->
-      <line x1="60" y1="80" x2="1290" y2="80" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
+      <line x1="60" y1="80" x2="1420" y2="80" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
 
       <!-- conectores sutis entre nós -->
       <line x1="116" y1="80" x2="204" y2="80" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
@@ -698,6 +698,27 @@ animation:scan 8s linear infinite;
         <polyline points="30,10 38,10 38,0 46,0 46,-11 54,-11" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".55"/>
       </g>
       <text x="1210" y="132" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,181,71,0.5)" text-anchor="middle" letter-spacing="1.5">09</text>
+
+      <!-- conector 09 → 10 -->
+      <line x1="1268" y1="80" x2="1326" y2="80" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
+
+      <!-- ── 10 a recusa que virou vitrine — o objeto recusado reaparece exposto (ciano) ── -->
+      <g transform="translate(1372,80)">
+        <!-- o objeto empurrado para fora, tombando -->
+        <rect x="-44" y="-18" width="15" height="26" rx="2" fill="none" stroke="#6fd3e0" stroke-width=".9"
+              transform="rotate(-18,-36,-5)" opacity=".5"/>
+        <!-- o gesto da recusa: arco que sai e volta -->
+        <path d="M-24,-10 q16,-20 34,-4" fill="none" stroke="#6fd3e0" stroke-width=".6" stroke-dasharray="2 3" opacity=".45"/>
+        <!-- a vitrine -->
+        <rect x="8" y="-26" width="40" height="46" fill="none" stroke="#6fd3e0" stroke-width="1.1"/>
+        <line x1="8" y1="-16" x2="48" y2="-16" stroke="#6fd3e0" stroke-width=".5" opacity=".4"/>
+        <!-- o mesmo objeto, agora exposto e à venda -->
+        <rect x="21" y="-8" width="14" height="22" rx="2" fill="#6fd3e0" opacity=".32"/>
+        <!-- etiqueta de preço pendurada na moldura -->
+        <line x1="42" y1="20" x2="42" y2="27" stroke="#6fd3e0" stroke-width=".5" opacity=".5"/>
+        <polygon points="37,27 47,27 47,34 42,38 37,34" fill="none" stroke="#6fd3e0" stroke-width=".6" opacity=".55"/>
+      </g>
+      <text x="1372" y="132" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(111,211,224,0.5)" text-anchor="middle" letter-spacing="1.5">10</text>
 
       <!-- linha de fecho — o fio que conecta tudo, como Warja -->
       <path d="M 96,80 C 180,80 220,80 288,80 C 360,80 400,80 468,80 C 550,80 590,80 648,80 C 730,80 770,80 840,80"
@@ -872,6 +893,27 @@ animation:scan 8s linear infinite;
           <circle cx="22" cy="50" r="4.5" fill="#e8b547" opacity=".6"/>
           <line x1="28" y1="50" x2="56" y2="50" stroke="#e8b547" stroke-width=".4" stroke-dasharray="2 2" opacity=".4"/>
           <polyline points="56,50 62,50 62,42 68,42 68,32 74,32" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".55"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- card 10 -->
+    <article class="ecard" style="--c:#6fd3e0;" data-cat="memoria" data-url="/retrotech/">
+      <div class="ecard-num">10</div>
+      <div class="ecard-cat">nostalgia · consumo · desconexão</div>
+      <h3 class="ecard-titulo">a recusa que<br><em>virou vitrine</em></h3>
+      <p class="ecard-desc">
+        uma geração hiperconectada trocou o smartphone por câmera analógica, disco de vinil e camisa de time extinto. atlas isométrico onde cada baía é uma etapa do argumento — e o mercado que causou o cansaço já aprendeu a vendê-lo de volta.
+      </p>
+      <span class="ecard-badge">manual do usuário · rodrigo ghedin</span>
+      <div class="ecard-geo">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <rect x="4" y="26" width="15" height="26" rx="2" fill="none" stroke="#6fd3e0" stroke-width=".9"
+                transform="rotate(-18,11,39)" opacity=".55"/>
+          <path d="M24,32 q16,-18 32,-4" fill="none" stroke="#6fd3e0" stroke-width=".6" stroke-dasharray="2 3" opacity=".45"/>
+          <rect x="38" y="20" width="36" height="42" fill="none" stroke="#6fd3e0" stroke-width="1"/>
+          <line x1="38" y1="30" x2="74" y2="30" stroke="#6fd3e0" stroke-width=".5" opacity=".4"/>
+          <rect x="50" y="38" width="13" height="20" rx="2" fill="#6fd3e0" opacity=".3"/>
         </svg>
       </div>
     </article>
@@ -1087,6 +1129,7 @@ const btnFechar  = document.getElementById('modal-fechar');
   '/paredaoefisica/': { num:'07', titulo:'paredão e física', cor:'#f97316' },
   '/acaradocrime/':   { num:'08', titulo:'cara de bandido',  cor:'#c8a850' },
   '/doprazeraodever/':{ num:'09', titulo:'do prazer ao dever', cor:'#e8b547' },
+  '/retrotech/':      { num:'10', titulo:'a recusa que virou vitrine', cor:'#6fd3e0' },
 };
 
 function abrirEnsaio(url){

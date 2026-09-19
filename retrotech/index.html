@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A recusa que virou vitrine · Atlas da Desconexão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Piazzolla:ital,opsz,wght@0,8..30,300..700;1,8..30,300..700&family=Spline+Sans+Mono:wght@400;500;600&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#0a141d; --sea2:#0e1c29; --sea3:#122534;
+  --ink:#dce8ee; --cy:#6fd3e0; --rota:#ff7f41; --sol:#e9c46a;
+  --paper:#e6edef; --paper2:#f3f7f8; --pink:#16232e; --acc:#c2410c;
+  --disp:"Bricolage Grotesque",sans-serif;
+  --body:"Piazzolla",Georgia,serif;
+  --mono:"Spline Sans Mono",monospace;
+  --px:"Silkscreen",monospace;
+  --mapBg: hsl(202 24% 87%);
+  --mapBg2: hsl(202 24% 82%);
+  --isoInk:hsl(230 35% 18%); --isoPaper:hsl(38 40% 96%);
+  --isoPeach:hsl(18 78% 72%); --isoPeachDeep:hsl(14 65% 58%);
+  --isoMustard:hsl(42 85% 62%); --isoMustardDeep:hsl(36 75% 48%);
+  --isoTeal:hsl(188 55% 62%); --isoTealDeep:hsl(196 55% 40%);
+  --isoRose:hsl(348 60% 74%); --isoRoseDeep:hsl(348 45% 52%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--sea);color:var(--ink);font-family:var(--body);line-height:1.65}
+em{font-style:italic}
+b,strong{font-weight:600}
+a{color:inherit}
+
+#landing{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9vh 7vw 6vh;position:relative;
+  background:linear-gradient(180deg,var(--sea) 0%,var(--sea2) 100%)}
+#landing .eyebrow{font-family:var(--px);font-size:.68rem;letter-spacing:.2em;color:var(--cy);text-transform:uppercase;margin-bottom:1rem}
+#landing h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.3rem,6.8vw,4.6rem);line-height:.98;letter-spacing:-.02em;margin-bottom:1.3rem;max-width:20ch}
+#landing h1 em{font-style:normal;color:var(--rota)}
+#landing .thesis{font-size:clamp(1rem,1.6vw,1.18rem);max-width:42em;color:#b9ccd6;margin-bottom:1.1rem}
+#landing .thesis b{color:var(--sol);font-weight:600}
+#landing .meta{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:#7f97a4;text-transform:uppercase;margin-bottom:2.4rem}
+.enterbtn{align-self:flex-start;background:var(--sol);color:var(--pink);font-family:var(--px);font-weight:700;font-size:.85rem;
+  letter-spacing:.04em;text-transform:uppercase;padding:1rem 1.8rem;border:none;cursor:pointer}
+.enterbtn:hover{background:#f0d68a}
+.howbox{border-left:2px solid var(--rota);padding-left:1.1rem;max-width:40em;margin-bottom:1.6rem}
+.howbox-h{font-family:var(--px);font-size:.68rem;letter-spacing:.14em;color:var(--sol);text-transform:uppercase;margin-bottom:.6rem}
+.howbox p{color:#a9bcc7;font-size:.88rem;margin-bottom:.6rem}
+.howbox b{color:var(--ink)}
+.methodbox{border-left:2px solid #3a5468;padding-left:1.1rem;max-width:40em;margin-bottom:1.6rem}
+.methodbox p{color:#7f97a4;font-size:.78rem;line-height:1.6;margin-bottom:.6rem}
+.methodbox em{color:#a9bcc7;font-style:italic}
+
+.baylegend{position:fixed;top:0;left:0;bottom:0;z-index:55;width:min(320px,86vw);background:var(--paper);color:var(--pink);
+  padding:1.4rem 1.2rem;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+.baylegend.on{transform:translateX(0)}
+.baylegend h4{font-family:var(--disp);font-weight:700;font-size:1rem;margin-bottom:.6rem}
+.baylegend .legintro{font-size:.84rem;color:#41586b;margin-bottom:1.1rem;line-height:1.5}
+.baylegend .legclose{position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--pink);
+  color:var(--pink);font-family:var(--mono);font-size:.66rem;padding:.3rem .5rem;cursor:pointer}
+.baylegend .legitem{border-top:1px solid #c3d2d8;padding:.7rem 0}
+.baylegend .legitem:first-of-type{border-top:none}
+.baylegend .legitem .n{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--acc);
+  text-transform:uppercase;font-weight:700}
+.baylegend .legitem .t{font-family:var(--disp);font-weight:700;font-size:.92rem;margin:.15rem 0 .3rem}
+.baylegend .legitem .d{font-size:.82rem;color:#33475a;line-height:1.45}
+.legbtn{pointer-events:all;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
+  color:var(--isoPaper);background:var(--isoInk);padding:.55rem .8rem;text-transform:uppercase;cursor:pointer;border:none;margin-right:.6rem}
+
+.helppanel{position:fixed;top:60px;right:14px;z-index:50;width:min(320px,86vw);background:var(--paper);color:var(--pink);
+  padding:1rem 1.1rem;box-shadow:0 20px 50px rgba(0,0,0,.4);display:none;font-size:.86rem;line-height:1.5}
+.helppanel.on{display:block}
+.helppanel h4{font-family:var(--disp);font-weight:700;font-size:.92rem;margin-bottom:.5rem}
+.helppanel p{margin-bottom:.5rem}
+.helppanel b{color:var(--acc)}
+
+.convo{cursor:pointer}
+.convo .cicon{transition:transform .15s ease}
+.convo:hover .cicon{transform:scale(1.15)}
+.convo .cbadge{fill:var(--paper);stroke:var(--pink);stroke-width:1.6}
+.convo .cpulse{fill:none;stroke:var(--cy);stroke-width:1.6;animation:convopulse 2.2s ease-in-out infinite}
+@keyframes convopulse{0%,100%{opacity:.5;r:20}50%{opacity:.08;r:27}}
+
+#conversation{display:none;background:var(--sea);min-height:100vh}
+.conv-top{position:sticky;top:0;z-index:20;background:var(--sea);border-bottom:1px solid #24404f;
+  padding:.9rem 5vw;display:flex;align-items:center;gap:1rem}
+.conv-hero{max-width:760px;margin:0 auto;padding:4.5vh 6vw 2vh}
+.conv-hero .kicker{font-family:var(--px);font-size:.64rem;letter-spacing:.18em;color:var(--cy);text-transform:uppercase;margin-bottom:.9rem}
+.conv-hero h2{font-family:var(--disp);font-weight:700;font-size:clamp(1.5rem,3.6vw,2.2rem);margin-bottom:.8rem;line-height:1.2}
+.conv-hero .intro{color:#a9bcc7;font-size:1rem;line-height:1.55}
+.conv-thread{max-width:760px;margin:0 auto;padding:1rem 6vw 8vh}
+.conv-msg{display:flex;gap:.9rem;margin-bottom:1.6rem;align-items:flex-start}
+.conv-msg.right{flex-direction:row-reverse}
+.conv-msg .avatar{flex:none;width:52px;height:64px}
+.conv-msg .avatar svg{width:100%;height:100%}
+.conv-msg .bubble{background:var(--paper);color:var(--pink);padding:.85rem 1rem;border-radius:3px;max-width:78%;
+  position:relative;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.conv-msg .bubble .who{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--acc);font-weight:700;margin-bottom:.35rem;display:block}
+.conv-msg .bubble p{font-size:.94rem;line-height:1.5}
+.conv-end{max-width:760px;margin:0 auto;padding:0 6vw 8vh;text-align:center}
+.conv-end button{font-family:var(--px);font-size:.72rem;letter-spacing:.08em;color:var(--sea);background:var(--cy);
+  border:none;padding:.85rem 1.5rem;cursor:pointer;text-transform:uppercase}
+.conv-end button:hover{background:#8fe0ea}
+.conv-source{max-width:760px;margin:0 auto;padding:0 6vw 3vh;font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.05em;color:#5d7684;text-transform:uppercase}
+
+@media (max-width:640px){
+  .conv-msg{gap:.6rem}
+  .conv-msg .avatar{width:40px;height:50px}
+  .conv-msg .bubble{max-width:86%}
+}
+
+#overview{display:none;height:100vh;position:relative;overflow:hidden;background:var(--mapBg)}
+#mapSvg{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.mapsvg-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-family:var(--mono);
+  font-size:.66rem;letter-spacing:.1em;color:var(--isoInk);opacity:.55;text-transform:uppercase;pointer-events:none}
+.onboardTip{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:58;
+  background:var(--pink);color:var(--paper);font-family:var(--mono);font-size:.82rem;
+  line-height:1.5;padding:.9rem 1.1rem;border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);
+  max-width:min(360px,90vw);text-align:center;opacity:0;pointer-events:none;
+  transition:opacity .3s ease}
+.onboardTip.on{opacity:1;pointer-events:auto}
+.onboardTip b{color:var(--sol)}
+.onboardTip .otbtns{display:flex;gap:.5rem;justify-content:center;margin-top:.7rem}
+.onboardTip button{font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
+  border:none;padding:.45rem .7rem;cursor:pointer;border-radius:4px}
+.onboardTip .otgo{background:var(--sol);color:var(--pink)}
+.onboardTip .otskip{background:none;border:1px solid rgba(255,255,255,.4);color:var(--paper)}
+.tourbar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:56;display:none;
+  align-items:center;gap:.6rem;background:var(--isoInk);color:var(--isoPaper);padding:.6rem .8rem;
+  border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.35);max-width:94vw}
+.tourbar.on{display:flex}
+.tourbar-btn{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--isoPaper);color:var(--isoInk);border:none;padding:.5rem .8rem;cursor:pointer;border-radius:4px}
+.tourbar-info{display:flex;flex-direction:column;align-items:center;padding:0 .4rem;min-width:120px}
+.tourbar-n{font-family:var(--px);font-size:.62rem;letter-spacing:.1em;opacity:.7;text-transform:uppercase}
+.tourbar-title{font-family:var(--disp);font-weight:700;font-size:.92rem;text-align:center;line-height:1.2}
+.tourbar-exit{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;
+  background:none;border:1px solid rgba(255,255,255,.4);color:var(--isoPaper);padding:.45rem .6rem;
+  cursor:pointer;border-radius:4px;opacity:.75}
+@media (max-width:640px){
+  .tourbar{bottom:10px;padding:.5rem .6rem;gap:.4rem;flex-wrap:wrap;justify-content:center}
+  .tourbar-info{min-width:90px}
+  .tourbar-title{font-size:.82rem}
+}
+.map-topbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 1.4rem;pointer-events:none}
+.map-topbar .brand{font-family:var(--px);font-size:.7rem;letter-spacing:.14em;color:var(--isoInk);opacity:.55;text-transform:uppercase}
+.map-topbar .toarticle{pointer-events:all;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
+  color:var(--isoPaper);background:var(--isoInk);padding:.55rem 1rem;text-decoration:none;text-transform:uppercase;cursor:pointer;border:none}
+.map-topbar .toarticle:hover{background:#2a3a55}
+.map-topbar .cluechip{pointer-events:none;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;
+  color:var(--isoInk);background:rgba(255,255,255,.55);border:1px solid rgba(0,0,0,.12);padding:.4rem .7rem;
+  text-transform:uppercase}
+
+.pista{cursor:pointer}
+.pista .pmark{fill:none;stroke:var(--acc);stroke-width:2.2;stroke-dasharray:4 3;opacity:.85;animation:pistapulse 2.6s ease-in-out infinite}
+.pista:hover .pmark{opacity:1;stroke-width:2.8}
+.pista.found .pmark{stroke:var(--isoTealDeep);stroke-dasharray:none;opacity:1;animation:none}
+@keyframes pistapulse{0%,100%{r:13}50%{r:16}}
+.pista text{font-family:var(--mono);font-weight:700;font-size:13px;fill:var(--acc);pointer-events:none}
+.pista.found text{fill:var(--isoTealDeep)}
+.clue-tooltip{position:fixed;z-index:70;background:var(--pink);color:var(--paper);font-family:var(--mono);
+  font-size:.92rem;line-height:1.6;padding:.95rem 1.1rem;max-width:340px;box-shadow:0 10px 30px rgba(0,0,0,.4);
+  pointer-events:none;cursor:pointer;opacity:0;transition:opacity .2s ease;transform:translate(-50%,-110%)}
+.clue-tooltip.on{opacity:1;pointer-events:auto}
+.clue-tooltip .ctclose{display:block;margin-top:.65rem;font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--cy);opacity:.75;text-align:right}
+.vnav{position:fixed;top:60px;right:14px;z-index:52;width:min(348px,92vw);max-height:calc(100vh - 84px);
+  overflow-y:auto;background:var(--paper);color:var(--pink);padding:1.15rem 1.15rem 1.4rem;
+  box-shadow:0 20px 50px rgba(0,0,0,.3);transform:translateX(118%);transition:transform .3s ease}
+.vnav.on{transform:none}
+.vnav h4{font-family:var(--disp);font-size:1.08rem;margin-bottom:.1rem}
+.vnav .vnav-sub{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;opacity:.6;margin-bottom:.6rem}
+.vnav .vnav-prog{font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;margin-bottom:.95rem;
+  padding:.5rem .65rem;background:rgba(0,0,0,.05);border-left:3px solid var(--acc)}
+.vnav-close{position:absolute;top:.7rem;right:.85rem;background:none;border:none;color:var(--pink);font-size:1rem;cursor:pointer;opacity:.6}
+.vrow{display:flex;gap:.6rem;align-items:flex-start;padding:.6rem .5rem;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.08)}
+.vrow:hover{background:rgba(0,0,0,.05)}
+.vrow .vswatch{flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:700;font-size:.78rem;color:#fff;border:1.5px solid rgba(0,0,0,.28)}
+.vrow .vmeta{flex:1;min-width:0}
+.vrow .vtit{font-family:var(--disp);font-size:.92rem;line-height:1.2;display:block}
+.vrow .vloc{font-family:var(--mono);font-size:.64rem;letter-spacing:.01em;opacity:.72;margin-top:.18rem;display:block}
+.vrow .vcheck{flex:0 0 auto;font-family:var(--mono);font-size:.9rem;opacity:.45}
+.vrow.seen{opacity:.6}
+.vrow.seen .vcheck{color:var(--isoTealDeep);opacity:1}
+.dot.seen circle.ring{animation:none;opacity:.85;stroke-dasharray:3 3}
+
+.vp-tabs{display:flex;gap:.4rem;margin-bottom:.9rem}
+.vp-tab{font-family:var(--mono);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;
+  background:none;border:1.4px solid var(--pink);color:var(--pink);padding:.4rem .7rem;cursor:pointer;opacity:.55}
+.vp-tab.on{opacity:1;background:var(--pink);color:var(--paper)}
+.vp-pane{display:none}
+.vp-pane.on{display:block}
+.vp-mech{font-size:.92rem;line-height:1.55}
+.vp-mech b{color:var(--acc)}
+
+.w-xray{position:relative;width:150px;height:150px}
+.w-xray svg{width:100%;height:100%;position:absolute;inset:0;transition:opacity .35s ease}
+.w-xray .inside{opacity:0}
+.w-xray.on .outside{opacity:0}
+.w-xray.on .inside{opacity:1}
+
+.dot{cursor:pointer}
+.dot circle.core{transition:r .15s ease}
+.dot:hover circle.core{r:14}
+.dot circle.ring{animation:dotpulse 2.4s ease-in-out infinite}
+@keyframes dotpulse{0%,100%{opacity:.35;r:14}50%{opacity:.05;r:20}}
+.dot text{font-family:var(--mono);font-weight:700;pointer-events:none}
+.bayhit{cursor:pointer}
+.bayhit polygon{transition:opacity .15s ease}
+.bayhit:hover polygon{opacity:.8}
+
+.vpanel{position:fixed;left:50%;bottom:0;transform:translate(-50%,110%);width:min(640px,94vw);
+  max-height:78vh;background:var(--paper);color:var(--pink);z-index:40;
+  box-shadow:0 -18px 50px rgba(0,0,0,.5);transition:transform .38s cubic-bezier(.2,.9,.3,1.1);
+  display:flex;flex-direction:column}
+.vpanel.on{transform:translate(-50%,0)}
+.vpanel .vp-cab{display:flex;align-items:center;gap:.8rem;padding:1rem 1.2rem .8rem;border-bottom:1.5px solid var(--pink)}
+.vpanel .vp-n{width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:700;font-size:.9rem;color:#fff;border:1.6px solid var(--pink)}
+.vpanel .vp-title{font-family:var(--disp);font-weight:700;font-size:1.06rem;flex:1}
+.vpanel .vp-close{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;background:none;border:1px solid var(--pink);
+  color:var(--pink);padding:.35rem .6rem;cursor:pointer;text-transform:uppercase}
+.vpanel .vp-close:hover{background:var(--pink);color:var(--paper)}
+.vpanel .vp-body{padding:1.1rem 1.2rem;overflow:hidden}
+.vpanel .vp-excerpt{font-size:.96rem;line-height:1.5;margin-bottom:1rem}
+.vpanel .vp-fonte{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;
+  color:#7d5a3a;margin-top:.7rem}
+.vpanel .vp-widget{background:var(--isoPaper);border:1px solid #d8dfe2;padding:1rem;display:flex;flex-direction:column;
+  align-items:center;gap:.7rem;min-height:120px;justify-content:center}
+
+.wbtn{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;background:var(--isoInk);
+  color:var(--isoPaper);border:none;padding:.55rem 1rem;cursor:pointer}
+.wbtn:hover{background:#2a3a55}
+.wbtn:disabled{opacity:.35;cursor:not-allowed}
+.wlabel{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--isoInk);text-align:center}
+
+.w-jersey{width:120px;height:150px;position:relative;transition:filter .3s ease}
+.w-jersey.rua{filter:saturate(1.3)}
+.w-jersey svg{width:100%;height:100%}
+
+.w-vinyl-disc{animation:spin 3s linear infinite;animation-play-state:paused;transform-origin:center}
+.w-vinyl-disc.playing{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.w-compare{position:relative;width:220px;height:140px;overflow:hidden;border:1.4px solid var(--isoInk)}
+.w-compare .layer{position:absolute;inset:0}
+.w-compare .grain{background:repeating-linear-gradient(0deg,#c9a96a,#c9a96a 2px,#b89860 2px,#b89860 3px);filter:contrast(1.3) brightness(.95)}
+.w-compare .smooth{background:linear-gradient(135deg,#7cb9e8,#f1d97a);clip-path:inset(0 0 0 var(--split,50%))}
+.w-compare input[type=range]{position:absolute;bottom:6px;left:6px;right:6px;width:calc(100% - 12px)}
+
+.w-feed{width:180px;height:220px;overflow-y:auto;border:1.6px solid var(--isoInk);background:#fffaf0;
+  scrollbar-width:thin}
+.w-feed .card{padding:.5rem;border-bottom:1px solid #e2d9c4;font-family:var(--mono);font-size:.64rem;color:#6b5a3a}
+.w-feed .card .bar{height:36px;background:linear-gradient(90deg,var(--isoTeal),var(--isoRose));margin-bottom:.3rem;border-radius:2px}
+.w-timer{font-family:var(--mono);font-size:.78rem;color:var(--isoInk)}
+
+.w-filmcount{font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--isoInk)}
+.w-filmcount.zero{color:#c2410c}
+
+.w-loop-svg{width:90px;height:90px}
+.w-loop-svg circle{transform-origin:center;transform:rotate(-90deg)}
+
+@media (max-width:640px){
+  .vpanel{width:100vw;max-height:86vh}
+}
+
+#article{display:none;background:var(--sea)}
+.art-top{position:sticky;top:0;z-index:20;background:var(--sea);border-bottom:1px solid #24404f;
+  padding:.9rem 5vw;display:flex;align-items:center;gap:1rem}
+.art-top .backlink{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;color:var(--cy);
+  background:none;border:1px solid #24404f;padding:.5rem .9rem;cursor:pointer;text-transform:uppercase}
+.art-top .backlink:hover{color:var(--ink);border-color:var(--cy)}
+.art-hero{padding:5vh 6vw 3vh;max-width:920px;margin:0 auto;text-align:left}
+.art-hero .kicker{font-family:var(--px);font-size:.66rem;letter-spacing:.2em;color:var(--rota);text-transform:uppercase;margin-bottom:1rem}
+.art-hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.2rem,5.4vw,3.6rem);line-height:1.02;margin-bottom:1.1rem}
+.art-hero .dek{font-family:var(--mono);font-size:.8rem;letter-spacing:.05em;color:#9db0bc;text-transform:uppercase}
+
+.jerseys-wrap{width:100%;background:var(--isoPaper);margin:0 0 4vh}
+.jerseys-wrap svg{width:100%;height:auto;display:block;max-height:42vh}
+
+article.copy{max-width:640px;margin:0 auto;padding:0 6vw 8vh}
+article.copy h2{font-family:var(--disp);font-weight:700;font-size:1.5rem;color:var(--sol);margin:3.2rem 0 1.2rem;line-height:1.25}
+article.copy p{font-size:1.08rem;margin-bottom:1.15em;color:#dbe6ec}
+article.copy p+p{margin-top:0}
+article.copy a[href]{color:var(--cy);text-decoration:underline;text-decoration-color:rgba(111,211,224,.45);text-underline-offset:3px}
+article.copy a[href]:hover{text-decoration-color:var(--cy)}
+
+.inline-fig{margin:2.2rem 0;background:var(--isoPaper);border:1px solid #24404f}
+.inline-fig svg{width:100%;height:auto;display:block}
+.inline-fig .cap{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--isoInk);
+  padding:.6rem .8rem;text-transform:uppercase;border-top:1px solid #d8dfe2}
+.fig-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#24404f;margin:2.2rem 0}
+.fig-row .cell{background:var(--isoPaper);padding:.6rem}
+.fig-row .cell svg{width:100%;height:auto;display:block}
+.fig-row .cell .cap{font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;color:var(--isoInk);
+  text-transform:uppercase;margin-top:.4rem;opacity:.75}
+
+.pullquote{font-family:var(--disp);font-weight:600;font-size:1.5rem;line-height:1.35;color:var(--cy);
+  margin:2.6rem 0;padding-left:1.2rem;border-left:3px solid var(--rota)}
+
+.art-end{max-width:640px;margin:0 auto;padding:0 6vw 10vh;text-align:center}
+.art-end button{font-family:var(--px);font-size:.72rem;letter-spacing:.08em;color:var(--sea);background:var(--cy);
+  border:none;padding:.9rem 1.6rem;cursor:pointer;text-transform:uppercase}
+.art-end button:hover{background:#8fe0ea}
+
+footer{background:var(--sea);border-top:1px solid #24404f;padding:4rem 0 6rem;font-size:.9rem}
+footer .fcol{width:min(58rem,92vw);margin:0 auto}
+footer h3{font-family:var(--px);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cy);margin:1.8rem 0 .7rem}
+footer h3:first-child{margin-top:0}
+footer p{color:#9db0bc;max-width:72em;font-size:.86rem}
+
+@media (max-width:640px){
+  .fig-row{grid-template-columns:1fr}
+  article.copy p{font-size:1rem}
+  article.copy h2{font-size:1.28rem}
+}
+@media (max-width:900px){
+  .map-topbar{flex-wrap:wrap;gap:.5rem;padding:.7rem 1rem}
+  .map-topbar .brand{display:none}
+  .map-topbar .toarticle,.legbtn,.cluechip{font-size:.66rem;padding:.45rem .65rem}
+  .vnav,.helppanel{top:96px}
+  .dot circle.core{r:12}
+  .dot text{font-size:12px}
+  .pista circle:first-child{r:18}
+  .pista text{font-size:14px}
+}
+@media (max-width:640px){
+  .map-topbar{padding:.6rem .8rem;gap:.4rem}
+  #legendBtn{order:1}
+  .map-topbar .brand{display:none}
+  #clueChip{order:3;flex:1 1 100%;text-align:center;margin-top:.3rem}
+  #vnavBtn{order:2}
+  #helpBtn{order:4}
+  #toArticleBtn{order:5;flex:1 1 100%;margin-top:.4rem;text-align:center}
+  .map-topbar .toarticle{padding:.5rem .7rem;font-size:.64rem}
+
+  .mapsvg-hint{display:none}
+
+  .vnav{
+    top:auto;bottom:0;left:0;right:0;width:100%;max-height:75vh;
+    transform:translateY(110%);border-radius:12px 12px 0 0;
+  }
+  .vnav.on{transform:translateY(0)}
+
+  .helppanel{
+    top:auto;bottom:0;left:0;right:0;width:100%;max-height:60vh;
+    overflow-y:auto;border-radius:12px 12px 0 0;
+  }
+
+  .clue-tooltip{
+    left:50% !important;top:auto !important;bottom:12px !important;
+    transform:translate(-50%,0) !important;
+    width:min(340px,92vw);max-width:none;
+  }
+  .clue-tooltip.on{transform:translate(-50%,0) !important}
+
+  .dot circle.core{r:14}
+  .dot:hover circle.core{r:16}
+  .dot text{font-size:13px}
+  .pista circle:first-child{r:20}
+  .pista text{font-size:15px}
+
+  .baylegend{width:100vw}
+
+  #landing{padding:6vh 6vw 5vh}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+
+<symbol id="sym-mp3" viewBox="0 0 200 200" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="65" y="25" width="70" height="150" rx="6" fill="#f1d97a"/>
+  <rect x="75" y="40" width="50" height="35" rx="3" fill="#fffaf0"/>
+  <line x1="82" y1="52" x2="115" y2="52"/><line x1="82" y1="62" x2="108" y2="62"/>
+  <circle cx="100" cy="125" r="28" fill="#e89a1c"/><circle cx="100" cy="125" r="9" fill="#1a1a1a"/>
+</symbol>
+
+<symbol id="sym-instax" viewBox="0 0 200 200" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="35" y="45" width="130" height="120" rx="10" fill="#f1ead0"/>
+  <rect x="45" y="55" width="110" height="70" rx="4" fill="#1a1a1a"/>
+  <circle cx="100" cy="90" r="28" fill="#4a8fd1"/><circle cx="100" cy="90" r="20" fill="#1a1a1a"/><circle cx="100" cy="90" r="10" fill="#9aa0a6"/>
+  <circle cx="60" cy="70" r="4" fill="#d94a32"/><circle cx="140" cy="70" r="4" fill="#e89a1c"/>
+  <rect x="55" y="135" width="90" height="20" rx="3" fill="#fffaf0"/>
+  <text x="70" y="149" font-family="monospace" font-size="10" fill="#1a1a1a" stroke="none">MINI LINK</text>
+</symbol>
+
+<symbol id="sym-gameboy" viewBox="0 0 200 200" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M55 25 H145 Q150 25 150 30 V160 Q150 175 135 175 H65 Q50 175 50 160 V30 Q50 25 55 25 Z" fill="#f1ead0"/>
+  <rect x="65" y="40" width="70" height="55" rx="3" fill="#9bbf5a"/>
+  <path d="M70 125 h18 M79 116 v18" stroke-width="6"/>
+  <circle cx="120" cy="120" r="5" fill="#d94a32"/><circle cx="132" cy="130" r="5" fill="#d94a32"/>
+  <line x1="80" y1="155" x2="115" y2="155"/><line x1="85" y1="162" x2="110" y2="162"/>
+</symbol>
+
+<symbol id="sym-freewrite" viewBox="0 0 220 180" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="20" y="60" width="180" height="100" rx="8" fill="#f1ead0"/>
+  <rect x="35" y="35" width="150" height="55" rx="3" fill="#fffaf0"/>
+  <line x1="45" y1="52" x2="170" y2="52" stroke-width="1.2"/><line x1="45" y1="62" x2="160" y2="62" stroke-width="1.2"/>
+  <line x1="45" y1="72" x2="165" y2="72" stroke-width="1.2"/><line x1="45" y1="82" x2="120" y2="82" stroke-width="1.2"/>
+  <g fill="#fffaf0">
+    <rect x="35" y="100" width="14" height="14" rx="1"/><rect x="52" y="100" width="14" height="14" rx="1"/><rect x="69" y="100" width="14" height="14" rx="1"/><rect x="86" y="100" width="14" height="14" rx="1"/><rect x="103" y="100" width="14" height="14" rx="1"/><rect x="120" y="100" width="14" height="14" rx="1"/><rect x="137" y="100" width="14" height="14" rx="1"/><rect x="154" y="100" width="14" height="14" rx="1"/><rect x="171" y="100" width="14" height="14" rx="1"/>
+    <rect x="40" y="118" width="14" height="14" rx="1"/><rect x="57" y="118" width="14" height="14" rx="1"/><rect x="74" y="118" width="14" height="14" rx="1"/><rect x="91" y="118" width="14" height="14" rx="1"/><rect x="108" y="118" width="14" height="14" rx="1"/><rect x="125" y="118" width="14" height="14" rx="1"/><rect x="142" y="118" width="14" height="14" rx="1"/><rect x="159" y="118" width="14" height="14" rx="1"/>
+    <rect x="45" y="136" width="14" height="14" rx="1"/><rect x="62" y="136" width="14" height="14" rx="1"/><rect x="79" y="136" width="80" height="14" rx="1"/><rect x="162" y="136" width="14" height="14" rx="1"/>
+  </g>
+  <circle cx="185" cy="45" r="3" fill="#d94a32"/>
+</symbol>
+
+<symbol id="sym-ep133" viewBox="0 0 240 200" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="15" y="30" width="210" height="140" rx="6" fill="#f1ead0"/>
+  <rect x="25" y="40" width="90" height="30" rx="2" fill="#9bbf5a"/>
+  <text x="32" y="60" font-family="monospace" font-weight="bold" font-size="14" fill="#1a1a1a" stroke="none">88:88</text>
+  <g fill="#1a1a1a" stroke="none">
+    <circle cx="135" cy="48" r="1.5"/><circle cx="145" cy="48" r="1.5"/><circle cx="155" cy="48" r="1.5"/><circle cx="165" cy="48" r="1.5"/><circle cx="175" cy="48" r="1.5"/><circle cx="185" cy="48" r="1.5"/><circle cx="195" cy="48" r="1.5"/><circle cx="205" cy="48" r="1.5"/><circle cx="215" cy="48" r="1.5"/>
+    <circle cx="135" cy="58" r="1.5"/><circle cx="145" cy="58" r="1.5"/><circle cx="155" cy="58" r="1.5"/><circle cx="165" cy="58" r="1.5"/><circle cx="175" cy="58" r="1.5"/><circle cx="185" cy="58" r="1.5"/><circle cx="195" cy="58" r="1.5"/><circle cx="205" cy="58" r="1.5"/><circle cx="215" cy="58" r="1.5"/>
+  </g>
+  <g fill="#fffaf0">
+    <rect x="25" y="85" width="22" height="18" rx="2"/><rect x="52" y="85" width="22" height="18" rx="2"/><rect x="79" y="85" width="22" height="18" rx="2"/><rect x="106" y="85" width="22" height="18" rx="2"/>
+    <rect x="25" y="108" width="22" height="18" rx="2"/><rect x="52" y="108" width="22" height="18" rx="2"/><rect x="79" y="108" width="22" height="18" rx="2"/><rect x="106" y="108" width="22" height="18" rx="2"/>
+  </g>
+  <g fill="#d94a32"><rect x="140" y="85" width="30" height="18" rx="2"/><rect x="175" y="85" width="30" height="18" rx="2"/></g>
+  <text x="25" y="165" font-family="monospace" font-size="7" fill="#1a1a1a" stroke="none">EP-133 K.O. II</text>
+</symbol>
+
+<symbol id="sym-camp-snap" viewBox="0 0 200 180" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="25" y="45" width="150" height="95" rx="6" fill="#e89a1c"/>
+  <rect x="65" y="30" width="30" height="20" rx="2" fill="#e89a1c"/>
+  <rect x="140" y="60" width="20" height="14" rx="1" fill="#1a1a1a"/><circle cx="150" cy="67" r="4" fill="#f1ead0"/>
+  <circle cx="70" cy="95" r="28" fill="#1a1a1a"/><circle cx="70" cy="95" r="20" fill="#4a4a4a"/><circle cx="70" cy="95" r="12" fill="#4a8fd1"/><circle cx="70" cy="95" r="5" fill="#1a1a1a"/>
+  <rect x="120" y="55" width="14" height="10" rx="1" fill="#fffaf0"/>
+  <circle cx="150" cy="105" r="8" fill="#d94a32"/><circle cx="150" cy="130" r="5" fill="#1a1a1a"/>
+  <text x="115" y="128" font-family="monospace" font-size="6" fill="#1a1a1a" stroke="none">NO SCREEN</text>
+</symbol>
+
+<symbol id="sym-nothing-phone" viewBox="0 0 140 220" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="15" y="15" width="110" height="195" rx="18" fill="#fffaf0"/>
+  <rect x="25" y="30" width="90" height="60" rx="6" fill="#f1ead0" stroke-width="1.5"/>
+  <circle cx="45" cy="50" r="9" fill="#1a1a1a"/><circle cx="45" cy="50" r="4" fill="#4a8fd1"/>
+  <circle cx="70" cy="50" r="9" fill="#1a1a1a"/><circle cx="70" cy="50" r="4" fill="#4a8fd1"/>
+  <rect x="85" y="42" width="20" height="16" rx="2" fill="#1a1a1a"/>
+  <circle cx="70" cy="75" r="10" fill="none" stroke-width="1"/><circle cx="70" cy="75" r="6" fill="none" stroke-width="1"/>
+  <g fill="#d94a32" stroke="none">
+    <circle cx="35" cy="105" r="2"/><circle cx="42" cy="102" r="2"/><circle cx="49" cy="100" r="2"/><circle cx="56" cy="100" r="2"/><circle cx="63" cy="100" r="2"/><circle cx="70" cy="100" r="2"/><circle cx="77" cy="100" r="2"/><circle cx="84" cy="100" r="2"/><circle cx="91" cy="100" r="2"/><circle cx="98" cy="102" r="2"/><circle cx="105" cy="105" r="2"/>
+    <circle cx="30" cy="115" r="2"/><circle cx="30" cy="125" r="2"/><circle cx="30" cy="135" r="2"/><circle cx="30" cy="145" r="2"/><circle cx="30" cy="155" r="2"/><circle cx="30" cy="165" r="2"/><circle cx="30" cy="175" r="2"/><circle cx="30" cy="185" r="2"/>
+    <circle cx="70" cy="140" r="2"/><circle cx="80" cy="140" r="2"/><circle cx="90" cy="140" r="2"/><circle cx="100" cy="145" r="2"/><circle cx="105" cy="155" r="2"/><circle cx="105" cy="165" r="2"/><circle cx="100" cy="175" r="2"/><circle cx="90" cy="180" r="2"/><circle cx="80" cy="180" r="2"/><circle cx="70" cy="180" r="2"/>
+  </g>
+  <g fill="#9aa0a6"><circle cx="25" cy="200" r="2.5"/><circle cx="115" cy="200" r="2.5"/><circle cx="25" cy="25" r="2.5"/><circle cx="115" cy="25" r="2.5"/></g>
+</symbol>
+
+<symbol id="sym-cameras-compact" viewBox="0 0 400 200" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <g>
+    <rect x="15" y="65" width="110" height="70" rx="5" fill="#f1ead0"/>
+    <rect x="55" y="55" width="22" height="14" rx="2" fill="#f1ead0"/>
+    <circle cx="60" cy="61" r="2" fill="#d94a32"/>
+    <rect x="22" y="76" width="16" height="45" rx="2" fill="#d94a32"/>
+    <circle cx="80" cy="100" r="24" fill="#9aa0a6"/><circle cx="80" cy="100" r="17" fill="#d94a32"/><circle cx="80" cy="100" r="7" fill="#1a1a1a"/>
+    <text x="70" y="132" font-family="monospace" font-size="7" fill="#1a1a1a" stroke="none">CYBERSHOT</text>
+  </g>
+  <g>
+    <rect x="145" y="68" width="105" height="68" rx="5" fill="#1a1a1a"/>
+    <circle cx="200" cy="100" r="26" fill="#4a4a4a" stroke="#f1ead0"/><circle cx="200" cy="100" r="18" fill="#1a1a1a" stroke="#f1ead0"/><circle cx="200" cy="100" r="8" fill="#4a8fd1"/>
+    <rect x="152" y="75" width="16" height="10" rx="1" fill="#d94a32"/><circle cx="240" cy="78" r="3" fill="#e89a1c"/>
+    <text x="185" y="132" font-family="monospace" font-size="7" fill="#f1ead0" stroke="none">POWERSHOT</text>
+  </g>
+  <g>
+    <rect x="270" y="65" width="115" height="72" rx="5" fill="#e89a1c"/>
+    <rect x="278" y="72" width="60" height="30" rx="2" fill="#fffaf0"/>
+    <circle cx="360" cy="100" r="22" fill="#1a1a1a"/><circle cx="360" cy="100" r="15" fill="#4a8fd1"/><circle cx="360" cy="100" r="6" fill="#1a1a1a"/>
+    <circle cx="285" cy="120" r="3" fill="#d94a32"/><circle cx="295" cy="120" r="3" fill="#1a1a1a"/>
+    <text x="290" y="132" font-family="monospace" font-size="7" fill="#1a1a1a" stroke="none">COOLPIX</text>
+  </g>
+</symbol>
+
+<symbol id="sym-xhalf" viewBox="0 0 200 180" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="55" y="20" width="90" height="140" rx="8" fill="#9aa0a6"/>
+  <rect x="55" y="20" width="90" height="30" fill="#1a1a1a"/>
+  <rect x="105" y="60" width="34" height="90" rx="2" fill="#1a1a1a"/>
+  <rect x="109" y="64" width="26" height="82" rx="1" fill="#4a8fd1"/>
+  <text x="112" y="100" font-family="monospace" font-weight="bold" font-size="9" fill="#fffaf0" stroke="none">12/36</text>
+  <circle cx="80" cy="90" r="20" fill="#1a1a1a"/><circle cx="80" cy="90" r="14" fill="#4a8fd1"/><circle cx="80" cy="90" r="6" fill="#1a1a1a"/>
+  <path d="M128 33 L156 24 L159 30 L131 39 Z" fill="#1a1a1a"/><circle cx="128" cy="35" r="4" fill="#f1ead0"/>
+</symbol>
+
+<symbol id="sym-tp7" viewBox="0 0 200 200" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="20" y="55" width="160" height="90" rx="10" fill="#f1ead0"/>
+  <circle cx="100" cy="100" r="38" fill="#1a1a1a"/>
+  <circle cx="100" cy="100" r="30" fill="#fffaf0" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="20" fill="#1a1a1a"/>
+  <circle cx="100" cy="100" r="6" fill="#e89a1c"/>
+  <circle cx="40" cy="80" r="5" fill="#d94a32"/><circle cx="40" cy="120" r="5" fill="#1a1a1a"/>
+  <circle cx="160" cy="80" r="5" fill="#1a1a1a"/><circle cx="160" cy="120" r="5" fill="#1a1a1a"/>
+  <text x="65" y="170" font-family="monospace" font-size="8" fill="#1a1a1a" stroke="none">TE • TP-7</text>
+</symbol>
+
+<symbol id="sym-playdate" viewBox="0 0 200 200" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="30" y="40" width="140" height="120" rx="14" fill="#f1d97a"/>
+  <rect x="45" y="55" width="90" height="70" rx="3" fill="#fffaf0"/>
+  <path d="M55 138 h8 M59 134 v8" stroke-width="5"/>
+  <circle cx="115" cy="140" r="5" fill="#1a1a1a"/><circle cx="128" cy="135" r="5" fill="#1a1a1a"/>
+  <circle cx="180" cy="95" r="6" fill="#1a1a1a"/>
+  <path d="M180 95 L192 82 L188 78 L176 91 Z" fill="#9aa0a6"/>
+  <circle cx="192" cy="82" r="4" fill="#1a1a1a"/>
+</symbol>
+
+</defs>
+</svg>
+
+<div id="landing">
+  <div class="eyebrow">Ensaio visual interativo</div>
+  <h1>A recusa que virou <em>vitrine</em></h1>
+  <p class="thesis">Uma geração inteira trocou o smartphone por câmera analógica, disco de vinil e camisa de time extinto. <b>O motivo é</b> cansaço de um sistema desenhado para nunca soltar a atenção. E o mesmo mercado que causou esse cansaço já aprendeu a vendê-lo de volta.</p>
+  <div class="howbox">
+    <div class="howbox-h">Como este atlas funciona</div>
+    <p>O mapa a seguir é uma cena única, um território, onde cada baía representa uma etapa do argumento: da estética de superfície (camisas, mesa tátil) até o diagnóstico final (fossa), passando pela engrenagem que explica tudo, pelos objetos-âncora, pelos simulacros que fingem mecânica e pelo mercado que captura a recusa.</p>
+    <p><b>Pontos numerados coloridos</b> são vinhetas: cada uma tem um argumento curto, uma explicação de como o objeto funciona por dentro, e uma pequena interação. <b>Círculos tracejados laranja pulsando</b> são pistas (fatos extras escondidos pelo mapa, sem número, para quem quiser vasculhar). <b>Bonecos com balão de fala</b> são cenas reconstruídas de conversas reais sobre desconexão digital.</p>
+  </div>
+  <div class="methodbox">
+    <div class="howbox-h">Nota metodológica</div>
+    <p>Os diálogos apresentados nas conversas deste atlas foram editados e adaptados a partir de discussões reais publicadas no Reddit (r/digitalminimalism, r/ipod, r/Astrohaus, r/dumbphones, r/futebol e outros). No entanto, as falas são paráfrases que preservam o argumento original de cada comentário, não citações literais, e os interlocutores foram anonimizados e descritos por sua posição no debate, não por nome de usuário.</p>
+    <p>O formato visual e a lógica de organização deste ensaio foram inspirados no projeto <em>Anatomy of an AI System</em>, de Kate Crawford e Vladan Joler, e na <em>Cartografia da IA generativa</em>, do coletivo Estampa. Ambos usam a cartografia como método para tornar visíveis cadeias de causa e efeito normalmente invisíveis. O sentido de "atlas" aqui segue a definição que a própria Crawford recupera em <em>Atlas of AI</em>: uma coleção de leituras possíveis que liga pedaços díspares sem pretender resumir nem esgotar o território.</p>
+  </div>
+  <p class="meta">Julho de 2026 · atlas navegável · leitura completa</p>
+  <button class="enterbtn" id="enterBtn">▸ ABRIR O MAPA</button>
+</div>
+
+<div id="overview">
+  <div class="map-topbar">
+    <button class="legbtn" id="legendBtn">☰ o que é isto</button>
+    <span class="brand">atlas da desconexão</span>
+    <span class="cluechip" id="clueChip">pistas encontradas: 0/12</span>
+    <button class="toarticle" id="vnavBtn" style="margin-right:.6rem">◎ vinhetas <span id="vnavCount">0/10</span></button>
+    <button class="toarticle" id="helpBtn" style="margin-right:.6rem">?</button>
+
+    <button class="legbtn" id="tourBtn" style="margin-right:.6rem">▸ tour guiado</button>
+    <button class="legbtn" id="resetViewBtn" style="margin-right:.6rem">⤢ ver tudo</button>
+    <button class="toarticle" id="toArticleBtn">Ler ensaio completo →</button>
+  </div>
+  <svg id="mapSvg" viewBox="0 0 1800 1050" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="baylegend" id="baylegend">
+    <button class="legclose" id="legendClose">✕</button>
+    <h4>O que é este cenário</h4>
+    <p class="legintro">O mapa é dividido em baías. A ordem segue o argumento: começa na estética que aparece primeiro nas redes, desce até o mecanismo que explica por que ela existe, passa pelos objetos que respondem a esse mecanismo, pelos simulacros que fingem mecânica, pelo mercado que aprende a vender a recusa de volta, e fecha no diagnóstico (que aponta de volta pro início).</p>
+    <div class="legitem"><span class="n">1 · entrada</span><div class="t">Mesa Tátil</div><div class="d">A camada visível do fenômeno — camisas retrô, crochê, zine. Aparece primeiro porque é o que primeiro se vê nas redes, antes de qualquer tecnologia entrar em cena.</div></div>
+    <div class="legitem"><span class="n">2 · mecanismo</span><div class="t">Baía do Feed</div><div class="d">A economia da atenção explicada: rolagem infinita, recompensa variável, notificação push. É o "inimigo" que todo objeto seguinte responde de algum jeito.</div></div>
+    <div class="legitem"><span class="n">3 · resposta</span><div class="t">Galpão dos Objetos-Âncora</div><div class="d">Vinil, câmera digital, walkman, dumbphone... Cada um recusa um mecanismo específico nomeado na baía anterior.</div></div>
+    <div class="legitem"><span class="n">4 · virada</span><div class="t">Oficina da Captura</div><div class="d">Aqui o argumento inverte: X half, TP-7 e Playdate não recusam mecanismo nenhum, apenas fingem a recusa, escondendo firmware dentro de uma carcaça analógica.</div></div>
+    <div class="legitem"><span class="n">5 · mercado</span><div class="t">Patrocinado</div><div class="d">O momento em que a fricção vira anúncio — a insatisfação com o digital já é vendida de volta como produto.</div></div>
+    <div class="legitem"><span class="n">6 · escoamento</span><div class="t">Convés do Varejo</div><div class="d">O mercado organiza a recusa em prateleira: relançamentos oficiais e variantes de vinil em série.</div></div>
+    <div class="legitem"><span class="n">7 · escassez</span><div class="t">Prensa</div><div class="d">Quando uma marca compra a própria fábrica pra controlar a própria escassez, a distância entre recusa e mercado desaparece de vez.</div></div>
+    <div class="legitem"><span class="n">8 · fecho</span><div class="t">Fossa do Diagnóstico</div><div class="d">Nomeia o fenômeno (anemoia, agência) e fecha o círculo — o parágrafo final aponta de volta pra Baía do Feed, de onde tudo começou.</div></div>
+  </div>
+  <div class="helppanel" id="helpPanel">
+    <h4>Como navegar o atlas</h4>
+    <p>Este mapa é um território único, dividido em baías. Cada uma uma etapa do argumento sobre por que uma geração hiperconectada está comprando de volta o mundo analógico.</p>
+    <p><b>Números coloridos:</b> vinhetas com argumento, mecanismo e uma interação.</p>
+    <p><b>Círculos laranja tracejados pulsando:</b> pistas escondidas, fatos extras. Clique pra revelar; o contador no topo soma.</p>
+    <p><b>Bonecos com balão de fala:</b> diálogos reconstruídos de fóruns reais sobre desconexão digital.</p>
+  </div>
+  <div class="vnav" id="vnav">
+    <button class="vnav-close" id="vnavClose">✕</button>
+    <h4>Vinhetas do atlas</h4>
+    <div class="vnav-sub">as 10 paradas do argumento</div>
+    <div class="vnav-prog" id="vnavProg">0 de 10 visitadas · faltam 10</div>
+    <div id="vnavList"></div>
+  </div>
+  <div class="onboardTip" id="onboardTip">
+    Pra aproveitar melhor, comece pelo <b>tour guiado</b> ou toque em <b>“ver tudo”</b> sempre que quiser voltar à visão geral.
+    <div class="otbtns">
+      <button class="otgo" id="onboardGo">▸ começar tour</button>
+      <button class="otskip" id="onboardSkip">explorar livre</button>
+    </div>
+  </div>
+  <div class="mapsvg-hint">arraste para navegar · pinça ou roda do mouse para zoom · pontos = vinhetas · tracejado laranja = pistas</div>
+  <div class="tourbar" id="tourbar">
+    <button class="tourbar-btn" id="tourPrev">‹ voltar</button>
+    <div class="tourbar-info">
+      <span class="tourbar-n" id="tourStepN"></span>
+      <span class="tourbar-title" id="tourStepTitle"></span>
+    </div>
+    <button class="tourbar-btn" id="tourNext">seguinte ›</button>
+    <button class="tourbar-exit" id="tourExit">✕ sair do tour</button>
+  </div>
+  <div class="vpanel" id="vpanel">
+    <div class="vp-cab">
+      <div class="vp-n" id="vpN">1</div>
+      <div class="vp-title" id="vpTitle"></div>
+      <button class="vp-close" id="vpClose">✕ fechar</button>
+    </div>
+    <div class="vp-body">
+      <div class="vp-tabs">
+        <button class="vp-tab on" id="tabArg">O argumento</button>
+        <button class="vp-tab" id="tabMech">Como funciona</button>
+      </div>
+      <div class="vp-pane on" id="paneArg">
+        <p class="vp-excerpt" id="vpExcerpt"></p>
+      </div>
+      <div class="vp-pane" id="paneMech">
+        <p class="vp-mech" id="vpMech"></p>
+      </div>
+      <div class="vp-widget" id="vpWidget"></div>
+      <span class="vp-fonte" id="vpFonte"></span>
+    </div>
+  </div>
+</div>
+<div class="clue-tooltip" id="clueTooltip"></div>
+
+<div id="article">
+  <div class="art-top"><button class="backlink" id="backBtn">← mapa</button></div>
+
+  <div class="art-hero">
+    <div class="kicker">Texto-guia · Atlas da Desconexão</div>
+    <h1>A recusa que virou vitrine</h1>
+    <div class="dek">Por que uma geração hiperconectada está comprando de volta o mundo analógico — e por que o mercado já estava esperando por ela</div>
+  </div>
+
+  <div class="jerseys-wrap"><svg viewBox="0 0 1200 260" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <clipPath id="j1"><path d="M30,85 L30,70 L55,60 Q55,55 65,55 Q80,68 95,55 Q105,55 105,60 L130,70 L130,85 L118,95 L118,210 L42,210 L42,95 Z"/></clipPath>
+    <clipPath id="j2"><path d="M160,85 L160,70 L185,60 Q185,55 195,55 Q210,68 225,55 Q235,55 235,60 L260,70 L260,85 L248,95 L248,210 L172,210 L172,95 Z"/></clipPath>
+    <clipPath id="j3"><path d="M290,85 L290,70 L315,60 Q315,55 325,55 Q340,68 355,55 Q365,55 365,60 L390,70 L390,85 L378,95 L378,210 L302,210 L302,95 Z"/></clipPath>
+    <clipPath id="j4"><path d="M420,85 L420,70 L445,60 Q445,55 455,55 Q470,68 485,55 Q495,55 495,60 L520,70 L520,85 L508,95 L508,210 L432,210 L432,95 Z"/></clipPath>
+    <clipPath id="j5"><path d="M550,85 L550,70 L575,60 Q575,55 585,55 Q600,68 615,55 Q625,55 625,60 L650,70 L650,85 L638,95 L638,210 L562,210 L562,95 Z"/></clipPath>
+    <clipPath id="j6"><path d="M680,85 L680,70 L705,60 Q705,55 715,55 Q730,68 745,55 Q755,55 755,60 L780,70 L780,85 L768,95 L768,210 L692,210 L692,95 Z"/></clipPath>
+    <clipPath id="j7"><path d="M810,85 L810,70 L835,60 Q835,55 845,55 Q860,68 875,55 Q885,55 885,60 L910,70 L910,85 L898,95 L898,210 L822,210 L822,95 Z"/></clipPath>
+    <clipPath id="j8"><path d="M940,85 L940,70 L965,60 Q965,55 975,55 Q990,68 1005,55 Q1015,55 1015,60 L1040,70 L1040,85 L1028,95 L1028,210 L952,210 L952,95 Z"/></clipPath>
+    <clipPath id="j9"><path d="M1070,85 L1070,70 L1095,60 Q1095,55 1105,55 Q1120,68 1135,55 Q1145,55 1145,60 L1170,70 L1170,85 L1158,95 L1158,210 L1082,210 L1082,95 Z"/></clipPath>
+  </defs>
+  <path d="M0,55 Q600,90 1200,55" stroke="#1a1a1a" stroke-width="2"/>
+  <g><path d="M30,85 L30,70 L55,60 Q55,55 65,55 Q80,68 95,55 Q105,55 105,60 L130,70 L130,85 L118,95 L118,210 L42,210 L42,95 Z" fill="#f5d033"/>
+    <g clip-path="url(#j1)"><path d="M55,60 Q80,80 105,60 L100,72 Q80,85 60,72 Z" fill="#0a6b3a" stroke="none"/><rect x="30" y="195" width="100" height="15" fill="#0a6b3a" stroke="none"/><rect x="42" y="95" width="6" height="100" fill="#0a6b3a" stroke="none"/><rect x="112" y="95" width="6" height="100" fill="#0a6b3a" stroke="none"/></g>
+    <line x1="58" y1="55" x2="58" y2="50" stroke="#1a1a1a"/><ellipse cx="58" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M160,85 L160,70 L185,60 Q185,55 195,55 Q210,68 225,55 Q235,55 235,60 L260,70 L260,85 L248,95 L248,210 L172,210 L172,95 Z" fill="#ffffff"/>
+    <g clip-path="url(#j2)"><rect x="172" y="55" width="11" height="160" fill="#7cb9e8" stroke="none"/><rect x="194" y="55" width="11" height="160" fill="#7cb9e8" stroke="none"/><rect x="216" y="55" width="11" height="160" fill="#7cb9e8" stroke="none"/><rect x="238" y="55" width="11" height="160" fill="#7cb9e8" stroke="none"/></g>
+    <line x1="188" y1="55" x2="188" y2="50" stroke="#1a1a1a"/><ellipse cx="188" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M290,85 L290,70 L315,60 Q315,55 325,55 Q340,68 355,55 Q365,55 365,60 L390,70 L390,85 L378,95 L378,210 L302,210 L302,95 Z" fill="#5badd6"/>
+    <g clip-path="url(#j3)"><path d="M315,60 Q340,80 365,60 L360,72 Q340,85 320,72 Z" fill="#ffffff" stroke="none"/><rect x="290" y="78" width="14" height="10" fill="#ffffff" stroke="none"/><rect x="376" y="78" width="14" height="10" fill="#ffffff" stroke="none"/></g>
+    <line x1="318" y1="55" x2="318" y2="50" stroke="#1a1a1a"/><ellipse cx="318" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M420,85 L420,70 L445,60 Q445,55 455,55 Q470,68 485,55 Q495,55 495,60 L520,70 L520,85 L508,95 L508,210 L432,210 L432,95 Z" fill="#d52b1e"/>
+    <g clip-path="url(#j4)"><rect x="432" y="195" width="76" height="15" fill="#ffffff" stroke="none"/><rect x="432" y="195" width="20" height="15" fill="#0033a0" stroke="none"/><path d="M445,60 Q470,80 495,60 L490,72 Q470,85 450,72 Z" fill="#ffffff" stroke="none"/></g>
+    <line x1="448" y1="55" x2="448" y2="50" stroke="#1a1a1a"/><ellipse cx="448" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M550,85 L550,70 L575,60 Q575,55 585,55 Q600,68 615,55 Q625,55 625,60 L650,70 L650,85 L638,95 L638,210 L562,210 L562,95 Z" fill="#fcd116"/>
+    <g clip-path="url(#j5)"><rect x="550" y="180" width="100" height="15" fill="#003893" stroke="none"/><rect x="550" y="195" width="100" height="15" fill="#ce1126" stroke="none"/><path d="M575,60 Q600,80 625,60 L620,72 Q600,85 580,72 Z" fill="#003893" stroke="none"/></g>
+    <line x1="578" y1="55" x2="578" y2="50" stroke="#1a1a1a"/><ellipse cx="578" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M680,85 L680,70 L705,60 Q705,55 715,55 Q730,68 745,55 Q755,55 755,60 L780,70 L780,85 L768,95 L768,210 L692,210 L692,95 Z" fill="#ffffff"/>
+    <g clip-path="url(#j6)"><path d="M680,80 L780,150 L780,170 L680,100 Z" fill="#d91023" stroke="none"/><path d="M705,60 Q730,80 755,60 L750,72 Q730,85 710,72 Z" fill="#d91023" stroke="none"/></g>
+    <line x1="708" y1="55" x2="708" y2="50" stroke="#1a1a1a"/><ellipse cx="708" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M810,85 L810,70 L835,60 Q835,55 845,55 Q860,68 875,55 Q885,55 885,60 L910,70 L910,85 L898,95 L898,210 L822,210 L822,95 Z" fill="#0f7b3b"/>
+    <g clip-path="url(#j7)"><rect x="810" y="78" width="14" height="10" fill="#d52b1e" stroke="none"/><rect x="896" y="78" width="14" height="10" fill="#d52b1e" stroke="none"/><rect x="822" y="195" width="76" height="15" fill="#d52b1e" stroke="none"/><path d="M835,60 Q860,80 885,60 L880,72 Q860,85 840,72 Z" fill="#ffffff" stroke="none"/></g>
+    <line x1="838" y1="55" x2="838" y2="50" stroke="#1a1a1a"/><ellipse cx="838" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M940,85 L940,70 L965,60 Q965,55 975,55 Q990,68 1005,55 Q1015,55 1015,60 L1040,70 L1040,85 L1028,95 L1028,210 L952,210 L952,95 Z" fill="#ffffff"/>
+    <g clip-path="url(#j8)"><rect x="940" y="55" width="100" height="55" fill="#d52b1e" stroke="none"/><rect x="940" y="160" width="100" height="55" fill="#0038a8" stroke="none"/></g>
+    <line x1="968" y1="55" x2="968" y2="50" stroke="#1a1a1a"/><ellipse cx="968" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g><path d="M1070,85 L1070,70 L1095,60 Q1095,55 1105,55 Q1120,68 1135,55 Q1145,55 1145,60 L1170,70 L1170,85 L1158,95 L1158,210 L1082,210 L1082,95 Z" fill="#ffd700"/>
+    <g clip-path="url(#j9)"><rect x="1070" y="178" width="100" height="18" fill="#034ea2" stroke="none"/><rect x="1070" y="196" width="100" height="18" fill="#ed1c24" stroke="none"/><path d="M1095,60 Q1120,80 1145,60 L1140,72 Q1120,85 1100,72 Z" fill="#034ea2" stroke="none"/></g>
+    <line x1="1098" y1="55" x2="1098" y2="50" stroke="#1a1a1a"/><ellipse cx="1098" cy="48" rx="4" ry="3" fill="#c9a96a"/></g>
+  <g fill="none">
+    <path d="M30,85 L30,70 L55,60 Q55,55 65,55 Q80,68 95,55 Q105,55 105,60 L130,70 L130,85 L118,95 L118,210 L42,210 L42,95 Z"/>
+    <path d="M160,85 L160,70 L185,60 Q185,55 195,55 Q210,68 225,55 Q235,55 235,60 L260,70 L260,85 L248,95 L248,210 L172,210 L172,95 Z"/>
+    <path d="M290,85 L290,70 L315,60 Q315,55 325,55 Q340,68 355,55 Q365,55 365,60 L390,70 L390,85 L378,95 L378,210 L302,210 L302,95 Z"/>
+    <path d="M420,85 L420,70 L445,60 Q445,55 455,55 Q470,68 485,55 Q495,55 495,60 L520,70 L520,85 L508,95 L508,210 L432,210 L432,95 Z"/>
+    <path d="M550,85 L550,70 L575,60 Q575,55 585,55 Q600,68 615,55 Q625,55 625,60 L650,70 L650,85 L638,95 L638,210 L562,210 L562,95 Z"/>
+    <path d="M680,85 L680,70 L705,60 Q705,55 715,55 Q730,68 745,55 Q755,55 755,60 L780,70 L780,85 L768,95 L768,210 L692,210 L692,95 Z"/>
+    <path d="M810,85 L810,70 L835,60 Q835,55 845,55 Q860,68 875,55 Q885,55 885,60 L910,70 L910,85 L898,95 L898,210 L822,210 L822,95 Z"/>
+    <path d="M940,85 L940,70 L965,60 Q965,55 975,55 Q990,68 1005,55 Q1015,55 1015,60 L1040,70 L1040,85 L1028,95 L1028,210 L952,210 L952,95 Z"/>
+    <path d="M1070,85 L1070,70 L1095,60 Q1095,55 1105,55 Q1120,68 1135,55 Q1145,55 1145,60 L1170,70 L1170,85 L1158,95 L1158,210 L1082,210 L1082,95 Z"/>
+  </g>
+  </svg></div>
+
+  <article class="copy">
+    <p id="sec-camisas">Em algum momento entre 2023 e 2024, ficou comum ver alguém saindo para um bar, uma festa ou um show usando a camisa de um time de futebol que nem existe mais. Não é fantasia, não é dia de jogo, não tem ninguém torcendo. Antes, vestir a camisa de um time era gesto de torcida, reservado para o dia da partida. Hoje ela circula solta desse contexto, usada num bar, numa festa ou num show sem relação nenhuma com o time em campo. A camisa deixou de ser símbolo de torcida e passou a ser peça de moda, equivalente a uma jaqueta ou uma calça de alfaiataria.</p>
+
+    <p>Um vídeo específico marcou essa virada nas redes, sem tê-la criado sozinho. Uma jovem no TikTok filmou o próprio look, todo produzido, ao lado do <a href="https://ge.globo.com/futebol/times/vasco/noticia/2023/10/15/namorado-que-viralizou-com-camisa-do-vasco-em-encontro-avisa-camisa-de-time-e-elite.ghtml" target="_blank" rel="noopener">namorado de camisa de futebol</a>, e comentou o contraste como se fosse motivo de vergonha para ele. O vídeo não inaugurou a tendência, mas expôs ela em plena disputa: viralizou na direção contrária à que a autora esperava, e homens e mulheres passaram a postar fotos com blusas de time, afirmando o objeto como peça de estilo. O episódio ajudou a consolidar publicamente algo que já vinha se formando nas ruas e nas redes havia meses, batizado de blokecore, estilo nascido no Reino Unido que mistura roupa esportiva com streetwear.</p>
+
+    <p>O mercado sentiu o movimento antes de qualquer relatório confirmar. Donos de brechós especializados em camisas de futebol relatam que, nos últimos anos, os <a href="https://m.cbn.globoradio.globo.com/media/audio/419818/amantes-de-futebol-gastam-milhares-de-reais-em-col.htm" target="_blank" rel="noopener">preços das peças usadas subiram</a> mesmo sem aumento proporcional nas vendas. Antes, quem comprava era colecionador. Agora é um público jovem que recolocou a camisa retrô dentro de um estilo de vida. Uma blusa da <a href="https://www.instagram.com/reel/C30zOJnuJE_/" target="_blank" rel="noopener">Fiorentina patrocinada pela Nintendo, lançada em 1998</a>, hoje tem mais de <a href="https://footballshirtcollective.com/blogs/collectors-club/how-to-spot-a-fake-1998-fiorentina-shirt" target="_blank" rel="noopener">95% de chance de ser falsificação</a>, exatamente porque a demanda multiplicou.</p>
+
+    <p>Times que nem existem mais entraram nesse circuito. No Rio de Janeiro, confecções pequenas passaram a fabricar sob encomenda <a href="https://oglobo.globo.com/cultura/noticia/2025/01/05/pesquisadores-resgatam-historias-e-camisas-de-clubes-de-futebol-extintos-do-rio-de-janeiro.ghtml" target="_blank" rel="noopener">camisas de clubes extintos há décadas</a>, como o Andaraí Atlético Clube e o Engenho de Dentro. A maioria desses times desapareceu por falta de dinheiro ou pela profissionalização do futebol carioca. A memória deles sobreviveu graças a historiadores amadores, e agora vira produto de moda comprado por gente que nunca viu esses times jogar uma partida sequer.</p>
+
+    <p>Ao mesmo tempo, o mercado oficial também migrou para essa estética. Fabricantes de material esportivo passaram a lançar uniformes atuais com <a href="https://investnews.com.br/off-work/nostalgia-que-vende-camisas-retro-impulsionam-mercado-esportivo-em-ano-de-copa/" target="_blank" rel="noopener">design que imita as décadas de 1980 e 1990</a>, e campeonatos europeus organizaram rodadas inteiras dedicadas a essa referência visual. A moda retrô deixou de ser resistência de nicho e virou linha de produto dentro da própria indústria que ela supostamente contestava.</p>
+
+    <h2 id="sec-campo-quarto">Do campo para o quarto: por que essa camisa importa</h2>
+
+    <p>A camisa de futebol é só a ponta mais visível de um movimento maior. A mesma geração que recolocou uma blusa de time descontinuado dentro do guarda-roupa também redescobriu o gesto manual: zine feito à mão, crochê, bordado, cerâmica, qualquer atividade que produza um objeto físico a partir do tempo e das mãos de quem faz.</p>
+
+    <div class="inline-fig"><svg viewBox="0 0 300 220" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="0" width="300" height="220" fill="#c9a96a"/>
+      <g stroke="#a08050" stroke-width="1" opacity="0.5"><path d="M0 30 Q150 25 300 32"/><path d="M0 80 Q150 78 300 82"/><path d="M0 140 Q150 138 300 142"/><path d="M0 190 Q150 188 300 192"/></g>
+      <g><rect x="20" y="45" width="90" height="8" rx="4" fill="#e89a1c" transform="rotate(15 65 49)"/><path d="M105 40 q8 -2 10 6" stroke-width="3" transform="rotate(15 65 49)"/>
+        <circle cx="40" cy="150" r="28" fill="#d94a32"/>
+        <g stroke="#a03020" stroke-width="1.5" fill="none"><path d="M18 140 Q40 155 62 140"/><path d="M18 155 Q40 170 62 155"/><path d="M25 130 Q40 165 55 130"/></g>
+        <path d="M62 150 Q100 130 130 60" stroke="#d94a32" fill="none" stroke-width="2"/></g>
+      <g transform="rotate(-8 200 90)"><rect x="160" y="50" width="80" height="90" fill="#fffaf0"/><rect x="160" y="50" width="80" height="18" fill="#4a8fd1"/>
+        <text x="167" y="63" font-family="monospace" font-weight="bold" font-size="10" fill="#fffaf0" stroke="none">ZINE</text>
+        <line x1="167" y1="78" x2="230" y2="78" stroke-width="1.2"/><line x1="167" y1="86" x2="225" y2="86" stroke-width="1.2"/><line x1="167" y1="94" x2="228" y2="94" stroke-width="1.2"/>
+        <rect x="167" y="104" width="30" height="25" fill="#e89a1c"/>
+        <line x1="202" y1="108" x2="230" y2="108" stroke-width="1.2"/><line x1="202" y1="116" x2="225" y2="116" stroke-width="1.2"/><line x1="202" y1="124" x2="228" y2="124" stroke-width="1.2"/>
+        <line x1="200" y1="50" x2="200" y2="140" stroke-dasharray="2 2" stroke-width="1"/></g>
+      <g><circle cx="230" cy="175" r="22" fill="#fffaf0"/><circle cx="230" cy="175" r="22" fill="none" stroke-width="2"/><circle cx="230" cy="175" r="16" fill="none" stroke-width="1"/>
+        <circle cx="225" cy="172" r="1.5" fill="#1a1a1a" stroke="none"/><circle cx="235" cy="172" r="1.5" fill="#1a1a1a" stroke="none"/><circle cx="225" cy="180" r="1.5" fill="#1a1a1a" stroke="none"/><circle cx="235" cy="180" r="1.5" fill="#1a1a1a" stroke="none"/>
+        <path d="M208 175 a22 22 0 0 1 44 0" fill="#d94a32" stroke="none" opacity="0.6"/></g>
+      <g transform="rotate(-25 130 110)"><line x1="90" y1="110" x2="170" y2="110" stroke-width="2"/><circle cx="90" cy="110" r="3" fill="#9aa0a6"/><circle cx="88" cy="110" r="1.5" fill="#fffaf0" stroke="none"/></g>
+    </svg><div class="cap">a mesa dos hobbies táteis · crochê, zine, botão de time</div></div>
+
+    <p>O que conecta a camisa ao crochê não é nostalgia de época, porque quem está fazendo isso, em boa parte, nasceu depois que esses objetos já tinham saído de moda pela primeira vez. O que conecta é a busca por algo que a tela não entrega: um resultado tangível, produzido devagar, que existe fora do feed e não desaparece quando o aplicativo atualiza.</p>
+
+    <p>Essa procura por objeto físico e gesto lento é o mesmo impulso que puxou a geração para dentro do retrotech, o nome dado ao revival de tecnologias analógicas ou semianalógicas entre jovens. Câmera instantânea, MP3 player, celular com teclado físico, walkman, tudo isso voltou a circular não como peça de museu, mas como equipamento de uso diário escolhido de propósito.</p>
+
+    <h2 id="sec-retorno">O retorno da tecnologia velha</h2>
+
+    <p>Os números confirmam que não é fenômeno marginal. Uma pesquisa da Mission Brasil, com 400 entrevistados, constatou que 92,3% das pessoas reconhecem a influência direta do conteúdo publicado em redes sociais na compra de produtos considerados nostálgicos. Câmeras instantâneas específicas registraram alta de mais de 50% nas vendas desde janeiro de 2024. iPods e MP3 players voltaram a circular, valorizados pela experiência de ouvir um álbum inteiro, offline, sem interrupção. Fones com fio, antes vistos como sucata, viraram acessório de moda.</p>
+
+    <div class="fig-row">
+      <div class="cell"><svg viewBox="0 0 200 200"><use href="#sym-instax"/></svg><div class="cap">Instax · Fujifilm</div></div>
+      <div class="cell"><svg viewBox="0 0 200 200"><use href="#sym-mp3"/></svg><div class="cap">tocador de MP3</div></div>
+    </div>
+
+    <p>Celulares antigos, principalmente os modelos com teclado físico ou formato flip, reapareceram como objeto de desejo. Parte de quem usa esses aparelhos escolheu especificamente modelos sem acesso à internet, como forma deliberada de reduzir o ritmo da própria vida e se afastar da notificação constante.</p>
+
+    <div class="inline-fig"><svg viewBox="0 0 400 220" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <g><rect x="20" y="20" width="70" height="180" rx="10" fill="#4a8fd1"/><rect x="30" y="35" width="50" height="35" rx="3" fill="#9bbf5a"/><circle cx="55" cy="90" r="6" fill="#1a1a1a"/>
+        <g fill="#f1ead0" stroke="#1a1a1a" stroke-width="1.2"><rect x="30" y="110" width="14" height="10" rx="2"/><rect x="48" y="110" width="14" height="10" rx="2"/><rect x="66" y="110" width="14" height="10" rx="2"/><rect x="30" y="124" width="14" height="10" rx="2"/><rect x="48" y="124" width="14" height="10" rx="2"/><rect x="66" y="124" width="14" height="10" rx="2"/><rect x="30" y="138" width="14" height="10" rx="2"/><rect x="48" y="138" width="14" height="10" rx="2"/><rect x="66" y="138" width="14" height="10" rx="2"/><rect x="30" y="152" width="14" height="10" rx="2"/><rect x="48" y="152" width="14" height="10" rx="2"/><rect x="66" y="152" width="14" height="10" rx="2"/></g></g>
+      <g><path d="M115 30 h60 q6 0 6 6 v75 h-72 v-75 q0-6 6-6 z" fill="#d94a32"/><rect x="120" y="42" width="52" height="55" rx="2" fill="#fffaf0"/>
+        <path d="M109 115 h72 v80 q0 6 -6 6 h-60 q-6 0 -6 -6 z" fill="#d94a32"/>
+        <g fill="#f1ead0" stroke="#1a1a1a" stroke-width="1.2"><rect x="118" y="125" width="16" height="9" rx="2"/><rect x="137" y="125" width="16" height="9" rx="2"/><rect x="156" y="125" width="16" height="9" rx="2"/><rect x="118" y="138" width="16" height="9" rx="2"/><rect x="137" y="138" width="16" height="9" rx="2"/><rect x="156" y="138" width="16" height="9" rx="2"/><rect x="118" y="151" width="16" height="9" rx="2"/><rect x="137" y="151" width="16" height="9" rx="2"/><rect x="156" y="151" width="16" height="9" rx="2"/><rect x="118" y="164" width="16" height="9" rx="2"/><rect x="137" y="164" width="16" height="9" rx="2"/><rect x="156" y="164" width="16" height="9" rx="2"/></g></g>
+      <g><rect x="215" y="30" width="65" height="165" rx="12" fill="#1a1a1a"/><rect x="222" y="45" width="51" height="90" rx="3" fill="#f1ead0"/><line x1="230" y1="60" x2="266" y2="60" stroke-width="1.5"/><line x1="230" y1="70" x2="260" y2="70" stroke-width="1.5"/><circle cx="247" cy="165" r="10" fill="none" stroke="#f1ead0"/></g>
+      <g><path d="M305 30 h60 q6 0 6 6 v70 h-72 v-70 q0-6 6-6 z" fill="#e89a1c"/><rect x="313" y="42" width="46" height="50" rx="2" fill="#fffaf0"/><circle cx="336" cy="60" r="6" fill="#d94a32" stroke-width="1.5"/><path d="M336 56 l-3 5 h6 z M336 64 l-3 -5 h6 z" fill="#fffaf0" stroke="none"/>
+        <path d="M299 110 h72 v85 q0 6 -6 6 h-60 q-6 0 -6 -6 z" fill="#e89a1c"/>
+        <g fill="#fffaf0" stroke="#1a1a1a" stroke-width="1.2"><rect x="308" y="120" width="16" height="9" rx="2"/><rect x="327" y="120" width="16" height="9" rx="2"/><rect x="346" y="120" width="16" height="9" rx="2"/><rect x="308" y="133" width="16" height="9" rx="2"/><rect x="327" y="133" width="16" height="9" rx="2"/><rect x="346" y="133" width="16" height="9" rx="2"/><rect x="308" y="146" width="16" height="9" rx="2"/><rect x="327" y="146" width="16" height="9" rx="2"/><rect x="346" y="146" width="16" height="9" rx="2"/><rect x="308" y="159" width="16" height="9" rx="2"/><rect x="327" y="159" width="16" height="9" rx="2"/><rect x="346" y="159" width="16" height="9" rx="2"/></g></g>
+    </svg><div class="cap">candybar, flip, e-ink e o flip cor-de-rosa: quatro formas do mesmo recuo</div></div>
+
+    <p>A Fujifilm é o caso mais evidente de como esse desejo virou negócio bilionário. A linha Instax, de câmeras e impressoras instantâneas, ultrapassou 100 milhões de unidades vendidas no mundo em abril de 2025, e a divisão de imagem da empresa bateu recorde de receita, puxada pela demanda de usuários jovens. O mercado global de câmeras de impressão instantânea deve crescer de 1,84 bilhão de dólares em 2025 para 2,59 bilhões em 2031.</p>
+
+    <p>O disco de vinil conta a mesma história em outro setor. Segundo a Recording Industry Association of America, o vinil cresceu pelo décimo nono ano consecutivo em 2025, ultrapassando 1 bilhão de dólares em vendas só nos Estados Unidos, quase metade da receita global do formato. Foram vendidos 46,8 milhões de LPs contra 29,5 milhões de CDs, mais do triplo em receita. O disco físico de Taylor Swift, <em>The Life of a Showgirl</em>, sozinho vendeu cerca de 1,6 milhão de cópias em vinil.</p>
+
+    <h2 id="sec-anemoia">O nome disso é anemoia</h2>
+
+    <p>Existe uma palavra para o sentimento que move esse consumo: anemoia, criada em 2012 pelo escritor norte-americano John Koenig, que define a saudade de um tempo ou lugar que a pessoa nunca viveu de fato. Uma pesquisa da Harris Poll, amplamente citada, mostrou que perto de 60% dos jovens adultos da Geração Z afirmam desejar voltar a uma época passada, especificamente antes de todo mundo estar permanentemente conectado à rede.</p>
+
+    <p class="pullquote">Quem nasceu depois de 1993 não passou pela transição entre o mundo analógico e o digital, porque já nasceu dentro dele. O que ela sente não é memória. É falta de uma experiência que nunca teve a chance de acontecer.</p>
+
+    <p>Essa nostalgia por um tempo nunca vivido tem uma explicação geracional concreta. A geração anterior, a dos millennials, viveu a passagem do analógico para o digital e guardou a lembrança de como era o mundo antes da conexão permanente. A Geração Z tem passado, memória e história como qualquer outra geração. O que ela não tem é a lembrança desse antes específico, o mundo anterior à rede ligada o tempo inteiro, porque já nasceu com ela em funcionamento.</p>
+
+    <div class="fig-row">
+      <div class="cell"><svg viewBox="0 0 400 200"><use href="#sym-cameras-compact"/></svg><div class="cap">Cybershot · PowerShot · Coolpix</div></div>
+      <div class="cell"><svg viewBox="0 0 200 180"><use href="#sym-camp-snap"/></svg><div class="cap">Camp Snap · sem tela</div></div>
+    </div>
+
+    <p>Um dos sintomas mais específicos desse mal-estar é o que pesquisadores chamam de recusa à ditadura da alta resolução. Nas últimas duas décadas, Apple, Samsung e Google disputaram entre si a corrida por câmeras cada vez mais nítidas, com inteligência artificial corrigindo pele, exposição e imperfeição em milissegundos. A resposta de parte da Geração Z foi ir atrás exatamente do oposto: câmeras digitais compactas do início dos anos 2000, como Canon Powershot e Sony Cyber-shot, compradas em brechós e sites de usados pela imagem imperfeita que produzem, cheia de grão e flash estourado.</p>
+
+    <p>Só que essa recusa já vem torta desde o início. A imagem que essas câmeras produzem, com todo o grão, sai direto para o feed e é postada dentro do mesmo sistema digital que ela deveria contestar. E boa parte da estética analógica que circula nas redes nem passa por uma câmera de verdade. É filtro de celular que simula grão e vazamento de luz sobre uma foto tirada no próprio telefone. Nesses casos a câmera antiga vira enfeite, um objeto de cena que aparece na mão de quem fotografa e na foto de perfil, enquanto a imagem que alimenta o feed continua nascendo digital do começo ao fim.</p>
+
+    <h2 id="sec-engrenagem">A engrenagem que empurrou até aqui</h2>
+
+    <p>Para entender por que uma geração inteira está cansada a ponto de forjar uma nostalgia por um tempo que nunca viveu, é preciso olhar para o desenho dos aparelhos e aplicativos que ocupam o tempo dela.</p>
+
+    <p>Um aplicativo de rede social não é neutro. Cada elemento dele, do jeito que o feed rola sem fim até a forma como as notificações chegam, foi desenhado para prender a atenção da pessoa pelo maior tempo possível. Esse tempo é convertido em dado, o dado é vendido para anunciante, e o anunciante paga mais quanto mais tempo a pessoa passar olhando a tela. O modelo de negócio inteiro depende de a pessoa não conseguir parar.</p>
+
+    <p>Esse modelo tem nome na literatura sobre tecnologia: capitalismo de vigilância, termo cunhado pela pesquisadora Shoshana Zuboff para descrever um sistema em que o comportamento da pessoa, não só o tempo dela, vira matéria-prima. Cada rolagem, cada pausa na tela, cada curtida alimenta um perfil que prevê e direciona a próxima ação do usuário. A pessoa não precisa entender esse cálculo para estar dentro dele. Basta usar o aplicativo todo dia.</p>
+
+    <p>Empresas de pesquisa de mercado já tratam esse desgaste como fato consolidado. A MIDiA Research afirma que tempo e atenção são recursos finitos, algo que a própria indústria já sabe muito bem, e descreve como o público está tentando recuperar parte desse tempo que hoje é dedicado ao celular. No primeiro trimestre de 2024, mais de três quartos dos consumidores entrevistados pela MIDiA disseram ter tentado reduzir o tempo de tela, principalmente apagando aplicativos do celular.</p>
+
+    <p>A recusa da Geração Z não precisa ser consciente para ter peso. Não há como afirmar que quem troca o smartphone de última geração por um celular com teclado físico faz isso como ato deliberado contra o capitalismo de vigilância. É mais provável que a maioria sinta apenas o cansaço, sem nomear a causa nem pensar a decisão em termos políticos. Ainda assim, o gesto de escolher um objeto com limite, vinte e sete fotos reveladas em vez de três mil guardadas na nuvem, um disco físico em vez de uma faixa perdida em playlist algorítmica, retira aquela pessoa, por um momento, do fluxo de dado que sustenta o sistema. A intenção pode não estar lá. O efeito material está. O disco físico ou a foto impressa têm limite, e é exatamente esse limite que devolve valor a cada faixa e cada imagem, porque uma coleção de 5 mil músicas ouvidas em streaming dificulta lembrar até o nome de quem canta.</p>
+
+    <h2 id="sec-captura">A recusa que virou produto</h2>
+
+    <p>O problema é que essa recusa foi identificada, nomeada e vendida de volta para quem a estava fazendo, na mesma velocidade em que ela apareceu.</p>
+
+    <p>A cooptação não é acidental nem recente. Já em 2001, pesquisadores de marketing descreveram o retrobranding como estratégia deliberada, que combina o design de um período passado com a tecnologia do presente, criando o que chamam de graus de autenticidade. Nenhum produto retrô é realmente antigo, ele foi construído para parecer antigo. Marcas como Granado, Brastemp e Mococa já usam embalagem e identidade visual antigas há mais de uma década, exatamente para vender a mesma saudade que hoje move a compra de uma câmera Instax.</p>
+
+    <p>Quando corporações de tecnologia perceberam que a geração mais jovem procurava a estética crua e imperfeita, a resposta veio rápido. Marcas como Urban Outfitters e a própria Apple passaram a produzir e vender design neovintage em escala. A recusa à inovação constante virou nicho hiperlucrativo dentro da própria lógica que ela recusava.</p>
+
+    <div class="fig-row">
+      <div class="cell"><svg viewBox="0 0 220 180"><use href="#sym-freewrite"/></svg><div class="cap">Freewrite · e-ink, sem internet</div></div>
+      <div class="cell"><svg viewBox="0 0 240 200"><use href="#sym-ep133"/></svg><div class="cap">EP-133 · fricção como interface</div></div>
+    </div>
+
+    <p>O caso da Fujifilm resume essa virada melhor do que qualquer outro. A empresa não vende puramente o passado, vende uma ponte entre a estética analógica e a conveniência digital. Modelos híbridos como a Instax Wide Evo permitem revisar, editar e escolher a imagem numa tela digital antes de decidir se vale a pena gastar o filme, que é caro e configura o verdadeiro obstáculo do negócio. A escassez que antes era física, o rolo de filme com número limitado de poses, virou escassez simulada por firmware, calculada para preservar a margem de lucro sem abrir mão da promessa de autenticidade.</p>
+
+    <p>O mesmo aconteceu com o próprio ato de sair das redes. Levantamento da MIDiA mostrou que o Instagram foi, ao mesmo tempo, um dos aplicativos mais apagados e um dos mais baixados de novo, formando um ciclo de baixar, apagar e baixar outra vez que só infla os números da empresa nos dois sentidos. Tentar sair da rede virou, ela própria, uma métrica que alimenta o sistema que a pessoa estava tentando deixar.</p>
+
+    <div class="inline-fig"><svg viewBox="0 0 140 220"><use href="#sym-nothing-phone"/></svg><div class="cap">carcaça transparente, matriz de LED: a estética de circuito como assinatura de um aparelho de ponta</div></div>
+
+    <p>O passo mais recente dessa captura é vender de volta a própria desconexão como experiência de consumo. Encontros presenciais sem celular, clubes de leitura offline, cafés que cobram para guardar o telefone na entrada, campanhas de marketing inteiras desenhadas especificamente para uma economia da atenção fragmentada. A pesquisa MIDiA já chama esse movimento de faca de dois gumes para a própria indústria do entretenimento, porque devolve margem maior por produto, mas em volume muito menor do que o consumo digital em massa que ele substitui.</p>
+
+    <h2 id="sec-fecho">O que fica</h2>
+
+    <p>A camisa de um time extinto, comprada por alguém que nunca viu aquele time jogar, e a câmera antiga que na prática vira enfeite enquanto a foto de verdade sai do próprio celular, contam a mesma história por ângulos diferentes. Uma geração inteira sentiu, na pele, o custo de viver dentro de um sistema desenhado para nunca soltar sua atenção, e respondeu buscando objetos com limite, peso e tempo próprio.</p>
+
+    <p>Essa resposta é real. O cansaço que a origina também é. Mas o mesmo mercado que desenhou o sistema de onde essa geração está tentando escapar já aprendeu a vender o próprio escape, embalado, com firmware, filtro de grão e campanha de marketing.</p>
+
+    <p>A recusa não desapareceu dentro dessa captura. Ela continua sendo, no fundo, uma recusa genuína a um modelo de negócio que trata tempo de vida como matéria-prima. O que mudou é que agora ela também é vitrine.</p>
+  </article>
+
+  <div class="art-end"><button id="loopBtn">↺ voltar ao mapa</button></div>
+
+  <footer>
+    <div class="fcol">
+      <h3>Fontes</h3>
+      <p>RIAA, relatório anual 2025 (mar. 2026) · TechSci Research, Instant Print Camera Market 2025–2031 · Fujifilm Holdings (jan., abr. e mai. 2025) · MIDiA Research, Analogue Revival (set. 2024) · Mission Brasil · Harris Poll · Koenig, The Dictionary of Obscure Sorrows · Zuboff, The Age of Surveillance Capitalism.</p>
+    </div>
+  </footer>
+</div>
+
+<div id="conversation">
+  <div class="conv-top"><button class="backlink" id="convBackBtn">← mapa</button></div>
+  <div class="conv-hero">
+    <div class="kicker" id="convKicker">Conversa reconstruída</div>
+    <h2 id="convTitle"></h2>
+    <p class="intro" id="convIntro"></p>
+  </div>
+  <div class="conv-thread" id="convThread"></div>
+  <p class="conv-source" id="convSource"></p>
+  <div class="conv-end"><button id="convBackBtn2">↺ voltar ao mapa</button></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const TILE_W = 64, TILE_H = 32;
+const r = n => Math.round(n*1000)/1000;
+const iso = (x,y,z=0) => ({ sx:r((x-y)*(TILE_W/2)), sy:r((x+y)*(TILE_H/2) - z*(TILE_H/2)) });
+const STROKE = "hsl(230 35% 18%)", SW = 1.6;
+const C = {
+  ink:"hsl(230 35% 18%)",
+  peach:"hsl(18 78% 72%)", peachDeep:"hsl(14 65% 58%)",
+  mustard:"hsl(42 85% 62%)", mustardDeep:"hsl(36 75% 48%)",
+  teal:"hsl(188 55% 62%)", tealDeep:"hsl(196 55% 40%)",
+  rose:"hsl(348 60% 74%)", roseDeep:"hsl(348 45% 52%)",
+  paper:"hsl(38 40% 96%)",
+};
+function el(tag, attrs, ...kids){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) if(attrs[k]!=null) e.setAttribute(k, attrs[k]);
+  kids.forEach(k => k && e.appendChild(k));
+  return e;
+}
+function g(...kids){ return el("g", {}, ...kids); }
+function Tile({x,y,z=0,w=1,d=1,fill=C.peach,stroke=STROKE}){
+  const a=iso(x,y,z), b=iso(x+w,y,z), c=iso(x+w,y+d,z), e=iso(x,y+d,z);
+  return el("polygon",{points:`${a.sx},${a.sy} ${b.sx},${b.sy} ${c.sx},${c.sy} ${e.sx},${e.sy}`,
+    fill, stroke, "stroke-width":SW, "stroke-linejoin":"round"});
+}
+function Box({x,y,z=0,w=1,d=1,h=1,top=C.mustard,left=C.mustardDeep,right=C.peachDeep,stroke=STROKE}){
+  const p=(dx,dy,dz)=>iso(x+dx,y+dy,z+dz);
+  const A=p(0,0,h),B=p(w,0,h),D=p(w,d,h),E=p(0,d,h),F=p(w,0,0),G=p(w,d,0),H=p(0,d,0),O=p(0,0,0);
+  const pt=q=>`${q.sx},${q.sy}`;
+  return g(
+    el("polygon",{points:`${pt(A)} ${pt(E)} ${pt(H)} ${pt(O)}`,fill:left,stroke,"stroke-width":SW,"stroke-linejoin":"round"}),
+    el("polygon",{points:`${pt(B)} ${pt(D)} ${pt(G)} ${pt(F)}`,fill:right,stroke,"stroke-width":SW,"stroke-linejoin":"round"}),
+    el("polygon",{points:`${pt(E)} ${pt(D)} ${pt(G)} ${pt(H)}`,fill:right,stroke,"stroke-width":SW,"stroke-linejoin":"round"}),
+    el("polygon",{points:`${pt(A)} ${pt(B)} ${pt(D)} ${pt(E)}`,fill:top,stroke,"stroke-width":SW,"stroke-linejoin":"round"}),
+  );
+}
+function IsoAnchor(ox,oy,child){ const {sx,sy}=iso(ox,oy); return el("g",{transform:`translate(${sx} ${sy})`},child); }
+function FlowArrow(d,color,dashed){
+  return el("path",{d,fill:"none",stroke:color,"stroke-width":3,"stroke-linecap":"round","stroke-linejoin":"round",
+    "stroke-dasharray": dashed ? "6 6" : null, "marker-end":"url(#arrowhead)"});
+}
+
+function FeedFigure(){
+  const body = g();
+  body.appendChild(Tile({x:-1,y:-1,w:3,d:3,fill:C.rose}));
+  const p0 = iso(0.5,0.5);
+  const person = el("g",{transform:`translate(${p0.sx} ${p0.sy-60})`});
+  person.appendChild(el("circle",{cx:0,cy:-4,r:9,fill:C.paper,stroke:STROKE,"stroke-width":SW}));
+  person.appendChild(el("path",{d:"M-6 -8 Q0 -14 6 -8",fill:"none",stroke:STROKE,"stroke-width":SW}));
+  person.appendChild(el("path",{d:"M-14 8 L-10 34 L12 34 L16 8 Q8 4 -8 4 Z",fill:C.tealDeep,stroke:STROKE,"stroke-width":SW,"stroke-linejoin":"round"}));
+  person.appendChild(el("path",{d:"M12 12 L26 22 L24 34",fill:"none",stroke:STROKE,"stroke-width":SW,"stroke-linecap":"round"}));
+  const phone = el("g",{transform:"translate(22 20) rotate(-18)"});
+  phone.appendChild(el("rect",{x:-6,y:-10,width:12,height:22,rx:2,fill:C.ink,stroke:STROKE,"stroke-width":SW}));
+  phone.appendChild(el("rect",{x:-4,y:-8,width:8,height:16,fill:C.mustard}));
+  person.appendChild(phone);
+  body.appendChild(person);
+  ["♡","☆","▶","@"].forEach((s,i)=>{
+    const ic = el("g",{transform:`translate(${20+i*14} ${-90-i*18})`});
+    ic.appendChild(el("circle",{r:7,fill:C.peach,stroke:STROKE,"stroke-width":SW}));
+    const t = el("text",{x:0,y:3,"text-anchor":"middle","font-size":9,"font-weight":700,fill:STROKE});
+    t.textContent = s; ic.appendChild(t);
+    body.appendChild(ic);
+  });
+  return body;
+}
+function HobbyTable(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:4,d:3,fill:C.mustard}));
+  b.appendChild(Box({x:0,y:0,w:3,d:2,h:1.6,top:C.paper,left:C.peachDeep,right:C.peachDeep}));
+  const doilyP = iso(0.6,0.6,1.6);
+  const doily = el("g",{transform:`translate(${doilyP.sx} ${doilyP.sy})`});
+  doily.appendChild(el("ellipse",{cx:0,cy:0,rx:22,ry:11,fill:C.rose,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(doily);
+  const zineP = iso(1.9,0.4,1.6);
+  const zine = el("g",{transform:`translate(${zineP.sx} ${zineP.sy})`});
+  zine.appendChild(el("polygon",{points:"-14,-2 0,-8 14,-2 0,4",fill:C.paper,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(zine);
+  return b;
+}
+function AnchorShelf(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:6,d:3,fill:C.teal}));
+  b.appendChild(Box({x:0,y:0,w:5,d:1.2,h:0.4,top:C.paper,left:C.tealDeep,right:C.tealDeep}));
+  let p = iso(0.4,0.6,0.4);
+  let m = el("g",{transform:`translate(${p.sx} ${p.sy-26})`});
+  const discGroup = el("g",{});
+  discGroup.appendChild(el("ellipse",{cx:0,cy:22,rx:22,ry:11,fill:C.ink,stroke:STROKE,"stroke-width":SW}));
+  discGroup.appendChild(el("ellipse",{cx:0,cy:22,rx:7,ry:3.5,fill:C.peachDeep,stroke:STROKE,"stroke-width":SW}));
+  m.appendChild(discGroup);
+  b.appendChild(m);
+  b._discGroup = discGroup;
+  p = iso(1.7,0.6,0.4);
+  m = el("g",{transform:`translate(${p.sx} ${p.sy-22})`});
+  m.appendChild(el("rect",{x:-16,y:-6,width:32,height:18,rx:2,fill:C.ink,stroke:STROKE,"stroke-width":SW}));
+  m.appendChild(el("circle",{cx:2,cy:4,r:7,fill:C.tealDeep,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(m);
+  p = iso(2.9,0.6,0.4);
+  m = el("g",{transform:`translate(${p.sx} ${p.sy-24})`});
+  m.appendChild(el("rect",{x:-14,y:-8,width:28,height:22,rx:1,fill:C.peachDeep,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(m);
+  p = iso(4.0,0.6,0.4);
+  m = el("g",{transform:`translate(${p.sx} ${p.sy-28})`});
+  m.appendChild(el("rect",{x:-8,y:-14,width:16,height:30,rx:2,fill:C.tealDeep,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(m);
+  return b;
+}
+function DesignBench(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:4,d:3,fill:C.peach}));
+  b.appendChild(Box({x:0,y:0,w:3,d:2,h:1.4,top:C.paper,left:C.peachDeep,right:C.peachDeep}));
+  const bp = iso(1.3,0.9,1.4);
+  const board = el("g",{transform:`translate(${bp.sx} ${bp.sy-6})`});
+  board.appendChild(el("polygon",{points:"-32,-6 6,-22 32,-2 -6,16",fill:C.paper,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(board);
+  return b;
+}
+function RetailShelf(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:5,d:3,fill:C.rose}));
+  [0,1.6,3.2].forEach(zh=>{
+    b.appendChild(Box({x:0,y:0,z:zh,w:4,d:1,h:0.25,top:C.paper,left:C.roseDeep,right:C.roseDeep}));
+    b.appendChild(Box({x:0.2,y:0.15,z:zh+0.25,w:0.8,d:0.7,h:0.9,top:C.mustard,left:C.mustardDeep,right:C.peachDeep}));
+    b.appendChild(Box({x:1.2,y:0.15,z:zh+0.25,w:0.8,d:0.7,h:0.9,top:C.teal,left:C.tealDeep,right:C.tealDeep}));
+  });
+  return b;
+}
+function DiagnosisBook(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:4,d:3,fill:C.paper}));
+  let p = iso(1,1);
+  const book = el("g",{transform:`translate(${p.sx} ${p.sy-4})`});
+  book.appendChild(el("polygon",{points:"-46,4 0,-22 46,4 0,30",fill:C.paper,stroke:STROKE,"stroke-width":SW}));
+  book.appendChild(el("line",{x1:0,y1:-22,x2:0,y2:30,stroke:STROKE,"stroke-width":SW}));
+  b.appendChild(book);
+  return b;
+}
+
+function VinylPress(){
+  const b = g();
+  const vinyl = (gx,gy,gz,labelColor)=>{
+    const p = iso(gx,gy,gz);
+    const m = el("g",{transform:`translate(${p.sx} ${p.sy})`});
+    m.appendChild(el("ellipse",{cx:0,cy:0,rx:18,ry:9,fill:C.ink,stroke:STROKE,"stroke-width":SW}));
+    m.appendChild(el("ellipse",{cx:0,cy:0,rx:5,ry:2.5,fill:labelColor,stroke:STROKE,"stroke-width":SW}));
+    return m;
+  };
+  b.appendChild(Tile({x:-1,y:-1,w:5,d:5,fill:C.teal}));
+  b.appendChild(Box({x:1.1,y:1.1,w:1.6,d:1.6,h:1.1,top:C.mustard,left:C.mustardDeep,right:C.peachDeep}));
+  [[1.15,1.15],[2.52,1.15],[1.15,2.52],[2.52,2.52]].forEach(([x,y])=>{
+    b.appendChild(Box({x,y,z:1.1,w:0.18,d:0.18,h:1.7,top:C.ink,left:C.ink,right:C.ink}));
+  });
+  b.appendChild(Box({x:1.05,y:1.05,z:2.8,w:1.7,d:1.7,h:0.3,top:C.paper,left:C.ink,right:C.ink}));
+  b.appendChild(vinyl(1.9,1.9,1.1,C.mustard));
+  b.appendChild(vinyl(3.35,3.05,0.85,C.peach));
+  b.appendChild(vinyl(4.20,3.05,0.85,C.rose));
+  return b;
+}
+function BrandWorker(){
+  const b = g();
+  b.appendChild(Tile({x:-1,y:-1,w:3,d:3,fill:C.mustard}));
+  const p = iso(0.5,0.5);
+  const person = el("g",{transform:`translate(${p.sx} ${p.sy-54})`});
+  person.appendChild(el("circle",{cx:0,cy:-6,r:8,fill:C.paper,stroke:STROKE,"stroke-width":SW}));
+  person.appendChild(el("path",{d:"M-12 6 L-8 32 L10 32 L14 6 Q6 2 -6 2 Z",fill:C.peachDeep,stroke:STROKE,"stroke-width":SW}));
+  const box = el("g",{transform:"translate(-2 14)"});
+  box.appendChild(el("rect",{x:-10,y:-6,width:20,height:12,fill:C.tealDeep,stroke:STROKE,"stroke-width":SW}));
+  person.appendChild(box);
+  b.appendChild(person);
+  return b;
+}
+
+function StickFigure(color=STROKE){
+  const g0 = g();
+  g0.appendChild(el("circle",{cx:0,cy:-26,r:7,fill:"none",stroke:color,"stroke-width":2.2}));
+  g0.appendChild(el("line",{x1:0,y1:-19,x2:0,y2:6,stroke:color,"stroke-width":2.2,"stroke-linecap":"round"}));
+  g0.appendChild(el("line",{x1:-11,y1:-10,x2:11,y2:-10,stroke:color,"stroke-width":2.2,"stroke-linecap":"round"}));
+  g0.appendChild(el("line",{x1:0,y1:6,x2:-9,y2:22,stroke:color,"stroke-width":2.2,"stroke-linecap":"round"}));
+  g0.appendChild(el("line",{x1:0,y1:6,x2:9,y2:22,stroke:color,"stroke-width":2.2,"stroke-linecap":"round"}));
+  return g0;
+}
+function SpeechBubble(w,h,text,tailLeft){
+  const wrap = g();
+  wrap.appendChild(el("rect",{x:0,y:0,width:w,height:h,rx:8,fill:C.paper,stroke:STROKE,"stroke-width":1.6}));
+  const tailX = tailLeft ? 18 : w-18;
+  wrap.appendChild(el("polygon",{points:`${tailX-7},${h} ${tailX+7},${h} ${tailX},${h+9}`,fill:C.paper,stroke:STROKE,"stroke-width":1.6}));
+  const fo = el("foreignObject",{x:8,y:6,width:w-16,height:h-10});
+  const div = document.createElementNS("http://www.w3.org/1999/xhtml","div");
+  div.setAttribute("style","font-family:'Spline Sans Mono',monospace;font-size:10.5px;line-height:1.35;color:#16232e");
+  div.textContent = text;
+  fo.appendChild(div);
+  wrap.appendChild(fo);
+  return wrap;
+}
+function ConversationMarker(figColors){
+  const scene = g();
+  scene.appendChild(el("circle",{cx:0,cy:10,r:42,fill:"transparent"}));
+  figColors.forEach((c,i)=>{
+    const fig = el("g",{transform:`translate(${i===0?-16:16} 30) scale(0.85)`});
+    fig.appendChild(StickFigure(c));
+    scene.appendChild(fig);
+  });
+  const badge = el("g",{transform:"translate(0 -20)"});
+  badge.appendChild(el("circle",{class:"cpulse",cx:0,cy:0,r:20}));
+  badge.appendChild(el("circle",{class:"cbadge",cx:0,cy:0,r:14}));
+  const icon = el("g",{class:"cicon"});
+  icon.appendChild(el("path",{d:"M-7,-5 Q-7,-8 -4,-8 L4,-8 Q7,-8 7,-5 L7,-1 Q7,2 4,2 L-1,2 L-4,5 L-3,2 L-4,2 Q-7,2 -7,-1 Z",
+    fill:"none",stroke:STROKE,"stroke-width":1.6,"stroke-linejoin":"round"}));
+  icon.appendChild(el("circle",{cx:-2.3,cy:-3,r:0.9,fill:STROKE,stroke:"none"}));
+  icon.appendChild(el("circle",{cx:0.3,cy:-3,r:0.9,fill:STROKE,stroke:"none"}));
+  icon.appendChild(el("circle",{cx:2.9,cy:-3,r:0.9,fill:STROKE,stroke:"none"}));
+  badge.appendChild(icon);
+  scene.appendChild(badge);
+  return scene;
+}
+
+const BAYS = {
+  feed:    { ox:6,  oy:0,  w:3, d:3, mod:FeedFigure,    accent:C.rose },
+  hobby:   { ox:0,  oy:6,  w:4, d:3, mod:HobbyTable,    accent:C.mustard },
+  anchors: { ox:6,  oy:6,  w:6, d:3, mod:AnchorShelf,   accent:C.teal },
+  worker:  { ox:20, oy:4,  w:3, d:3, mod:BrandWorker,   accent:C.mustard },
+  press:   { ox:14, oy:12, w:4, d:4, mod:VinylPress,    accent:C.tealDeep },
+  capture: { ox:14, oy:6,  w:4, d:3, mod:DesignBench,   accent:C.peach },
+  retail:  { ox:20, oy:9,  w:5, d:3, mod:RetailShelf,   accent:C.rose },
+  diag:    { ox:4,  oy:14, w:4, d:3, mod:DiagnosisBook, accent:C.paper },
+};
+function bayAnchor(key){ const b=BAYS[key]; const c=iso(b.ox+b.w/2, b.oy+b.d/2); return {sx:c.sx, sy:c.sy}; }
+
+const VIGNETTES = [
+  { n:1, bay:"hobby",   dx:-40, dy:-70,  anchor:"sec-camisas",     color:C.roseDeep,
+    title:"A camisa que virou moda",
+    excerpt:"Antes, vestir a camisa de um time era gesto de torcida, reservado para o dia da partida. Hoje ela circula solta desse contexto podendo ser usada num bar, numa festa, num show, sem ninguém torcendo.",
+    mech:"Poliéster reciclado ou algodão penteado; escudos em serigrafia ou sublimação térmica. As réplicas <b>ditas \"tailandesas\"</b> usam moldes escaneados diretamente de uma peça original, o que explica a precisão visual mesmo sem licença oficial do clube e por que uma camisa de 1998 tem hoje mais de 95% de chance de ser falsificação.",
+    fonte:"blokecore · confecções cariocas · rodadas retrô europeias", widget:"jersey" },
+  { n:2, bay:"anchors", dx:60,  dy:-90,  anchor:"sec-retorno",     color:C.tealDeep,
+    title:"O lado inteiro do disco",
+    excerpt:"O vinil cresceu pelo 19º ano consecutivo em 2025, ultrapassando US$ 1 bilhão só nos EUA. Foram 46,8 milhões de LPs contra 29,5 milhões de CDs. Mais do triplo em receita.",
+    mech:"Um <b>estampo</b> (stamper) prensa PVC aquecido, gravando um sulco espiral contínuo. A agulha, de safira ou diamante, vibra ao percorrer esse sulco; uma cápsula piezoelétrica ou de bobina móvel converte a vibração mecânica em sinal elétrico, depois amplificado. Não existe playlist: a ordem das faixas é a distância física entre um ponto do sulco e o próximo.",
+    fonte:"RIAA, relatório anual, mar. 2026", widget:"vinyl" },
+  { n:3, bay:"feed",    dx:20,  dy:-90,  anchor:"sec-engrenagem",  color:C.peachDeep,
+    title:"O fim do feed não existe",
+    excerpt:"O feed foi desenhado para prender a atenção pelo maior tempo possível. Esse tempo vira dado, o dado é vendido pra anunciante. O modelo inteiro depende de você não conseguir parar de rolar.",
+    mech:"Um modelo de ranqueamento prevê, pra cada post, a probabilidade de você curtir, comentar ou ficar olhando mais tempo e ordena o feed por essa pontuação, não por ordem cronológica. A <b>rolagem infinita</b> é só paginação automática sem tela de \"fim\": tecnicamente trivial, mas decisiva, porque remove o momento em que você pararia pra decidir se quer continuar.",
+    fonte:"Zuboff, capitalismo de vigilância · MIDiA Research, 2024", widget:"feed" },
+  { n:4, bay:"diag",    dx:-30, dy:-40,  anchor:"sec-anemoia",     color:C.roseDeep,
+    title:"A ditadura da alta resolução",
+    excerpt:"Apple, Samsung e Google disputam a câmera mais nítida, corrigida por IA em milissegundos. A resposta foi ir atrás do oposto: câmeras de 2005, compradas pela imagem imperfeita que produzem.",
+    mech:"Sensores CCD do início dos anos 2000 tinham menos fotossítios e processamento simples, produzindo ruído visível em pouca luz, o \"grão\". Câmeras atuais combinam vários quadros e redes neurais pra reduzir ruído e realçar detalhe <b>antes mesmo</b> do obturador disparar: a foto que você vê nunca é a captura crua, é sempre uma reconstrução.",
+    fonte:"recusa à alta resolução · anemoia, Koenig (2012)", widget:"compare" },
+  { n:5, bay:"capture", dx:-100,dy:-50,  anchor:"sec-captura",     color:C.mustardDeep,
+    title:"Vinte e sete fotos, não três mil",
+    excerpt:"Um disco físico ou uma foto impressa têm limite e é esse limite que devolve valor a cada faixa e cada imagem. Uma coleção de 5 mil músicas no streaming dificulta lembrar até quem canta.",
+    mech:"Filme fotográfico é uma emulsão de sais de prata sensível à luz numa janela química limitada — por isso o número fixo de poses por rolo (24 ou 36) e a impossibilidade de apagar uma foto ruim. A escassez aqui é <b>química</b>, e é exatamente por não poder ser ajustada que ela funciona como argumento.",
+    fonte:"escassez física vs. escassez de firmware", widget:"film" },
+  { n:6, bay:"retail",  dx:60,  dy:-30,  anchor:"sec-captura",     color:C.tealDeep,
+    title:"A escassez virou firmware",
+    excerpt:"A Instax Wide Evo deixa revisar a foto numa tela antes de gastar o filme, que é caro. Isto significa dizer que a escassez que antes era física, virou escassez simulada, calculada pra preservar a margem sem abrir mão da autenticidade.",
+    mech:"Combina um sensor digital comum com uma impressora térmica <b>Zink</b>, sem tinta: o calor revela cristais de cor pré-impregnados no papel. A pré-visualização digital é decisão de produto, não limitação técnica — tecnicamente dava pra imprimir tudo sem mostrar nada antes, do jeito que um rolo de filme sempre funcionou.",
+    fonte:"Fujifilm · retrobranding, Brown & Sherry (2001)", widget:"jersey2" },
+  { n:7, bay:"capture", dx:-25, dy:-100, anchor:"sec-captura",     color:C.peachDeep,
+    title:"Simulacro: Fujifilm X half",
+    excerpt:"Por fora, uma alavanca de avanço de filme, igual à de qualquer câmera analógica dos anos 1990. Por dentro, sensor digital comum. A alavanca não move filme nenhum.",
+    mech:"Um firmware só libera a visualização das 36 fotos depois que você gira a alavanca 36 vezes, simulando o fim de um rolo que nunca existiu. A escassez da vinheta 5 é química; esta é <b>código</b> — reversível, ajustável, e decidida numa reunião de produto.",
+    fonte:"Fujifilm, 2025", widget:"xray", xrayOuter:"sym-xhalf", xrayInside:"Sensor digital padrão + firmware que conta \"poses\" e bloqueia a galeria até zerar. Nenhuma peça mecânica está de fato ligada à alavanca." },
+  { n:8, bay:"capture", dx:45,  dy:-100, anchor:"sec-captura",     color:C.roseDeep,
+    title:"Simulacro: Teenage Engineering TP-7",
+    excerpt:"O carretel de fato gira quando você grava. Mas a fita que passa por ele não grava nada, é decorativa, presa nas duas pontas do aparelho.",
+    mech:"O áudio vai direto pra uma memória flash interna. O carretel gira por um motor de passo sincronizado ao tempo de gravação, só pra <b>dar peso ao gesto</b>. Aqui, o objeto encena a fricção mecânica que o gravador de fita de verdade tinha, sem herdar nenhuma das limitações dela.",
+    fonte:"Teenage Engineering · dossiê Febre Retrotech", widget:"xray", xrayOuter:"sym-tp7", xrayInside:"Memória flash + motor de passo girando um carretel vazio. A fita visível não passa por nenhuma cabeça de gravação." },
+  { n:9, bay:"capture", dx:110, dy:-50, anchor:"sec-captura",     color:C.mustardDeep,
+    title:"O simulacro que não engana",
+    excerpt:"A manivela do Panic Playdate é a única peça mecânica desta baía que faz algo de verdade: ela é a entrada real de alguns jogos, não um enfeite girando por cima de um firmware.",
+    mech:"Um encoder rotativo lê o ângulo e a velocidade da manivela e manda esse dado direto pro jogo rodando. Não há rolo simulado, não há contagem regressiva escondida. A fricção <b>é</b> a interface, não o disfarce dela. Entre os três desta baía, é o único que avisa, desde o primeiro giro, que o teatro é o produto.",
+    fonte:"Panic", widget:"xray", xrayOuter:"sym-playdate", xrayInside:"Encoder rotativo real, ligado ao software do jogo. O giro da manivela é lido e usado — não simulado." },
+  { n:10, bay:"diag",    dx:70,  dy:20,   anchor:"sec-fecho",       color:C.peachDeep,
+    title:"O que fica",
+    excerpt:"A recusa não desapareceu dentro dessa captura. Ela continua sendo, no fundo, uma recusa genuína a um modelo que trata tempo de vida como matéria-prima. O que mudou é que agora ela também é vitrine.",
+    mech:"O próprio ciclo de divulgação dessas recusas roda dentro dos aplicativos que elas recusam: conteúdo de nostalgia tem engajamento mais alto que a média, o que faz os algoritmos de TikTok e Instagram <b>promoverem mais</b> esse tipo de post.",
+    fonte:"fecho do texto-guia", widget:"loop" },
+];
+
+const CONVERSATIONS = {
+  hobby: {
+    bay:"hobby", dx:110, dy:60, figColors:[C.roseDeep,C.mustardDeep],
+    kicker:"Mesa Tátil · conversa reconstruída",
+    title:"\u201cA camisa virou ativo financeiro e nem todo mundo topa pagar o preço\u201d",
+    intro:"Entre a feira de antiguidades da Praça XV e os catálogos escondidos do AliExpress, duas comunidades discutem o que é, de fato, possuir uma camisa retrô.",
+    source:"baseado em fóruns r/futebol, r/CRFla, r/riodejaneiro",
+    msgs:[
+      {who:"garimpa toda semana", right:false, text:"Todo sábado eu tô na Praça XV, virando pilha de camisa atrás de camisa. É inspecionar o desgaste do tecido, a costura de perto. A internet não deixa fazer isso."},
+      {who:"importa pelo Yupoo", right:true, text:"Com o valor de uma original de 1998, dava pra importar seis réplicas tailandesas perfeitas. Fiz as contas e não tive dúvida."},
+      {who:"não sente culpa nenhuma", right:false, text:"Pra mim não é pirataria, é correção de mercado. Eu tô comprando de volta a memória da minha própria infância, não vou pagar o preço que especulador colocou nela."},
+      {who:"colecionador raiz", right:true, text:"Pra mim é outra coisa: é ter o artefato de verdade na mão. Uma seleção brasileira de 2004 vale dez mil reais porque é história, não é só pano."},
+      {who:"teve encomenda apreendida", right:false, text:"Peguei confisco da Receita ano passado. Nem hesitei, pedi de novo, o fornecedor já manda com seguro de reenvio incluso."},
+      {who:"cética do blokecore", right:true, text:"Confesso que fico em dúvida se é orgulho de torcida ou só o TikTok mostrando idol de K-pop combinando camisa de time com calça larga."},
+      {who:"acompanha a colab de grife", right:false, text:"Quando uma marca grande lança linha \u201cinspirada\u201d na camisa de time, cortada diferente, redesenhada, eu já sei que virou produto de moda, não símbolo de mais nada."},
+      {who:"cresceu com a camisa no corpo", right:true, text:"Pra quem cresceu na periferia, a camisa sempre foi identidade, nunca foi trend. O resto do mundo é que descobriu isso agora."}
+    ]
+  },
+  feed: {
+    bay:"feed", dx:-20, dy:80, figColors:[C.roseDeep,C.tealDeep],
+    kicker:"Baía do Feed · conversa reconstruída",
+    title:"\u201cÉ só a nova tendência, ou alguém levou isso a sério?\u201d",
+    intro:"Um fórum sobre minimalismo digital discute se a onda do analógico é performance ou mudança real. Vozes reconstruídas a partir dessa discussão.",
+    source:"baseado em discussão do fórum r/digitalminimalism",
+    msgs:[
+      {who:"cético, quase saindo", right:false, text:"Sinto que é só mais uma onda. Compram um telefone burro de 300 dólares e postam sobre isso na internet."},
+      {who:"colecionador de vinil", right:true, text:"Talvez. Mas o vinil eu realmente uso, levo o tempo de ouvir um álbum do início ao fim, em vez de pular em 30 segundos."},
+      {who:"ouve MP3 em caixa bluetooth", right:false, text:"Definir pela experiência, não pela tecnologia por trás, ajuda a entender. Tecnicamente é tudo digital, mas a sensação de ouvir é bem diferente do streaming."},
+      {who:"trocou pra dumbphone", right:true, text:"É sobre controle, posse e desconexão. Ninguém tá disputando sua atenção, não tem algoritmo tentando te prender."},
+      {who:"saiu do Spotify", right:false, text:"Pra mim foi escapar do algoritmo e ser mais intencional, curar minhas próprias playlists em vez de deixar o app escolher por mim."},
+      {who:"dono de brechó de CD", right:true, text:"Há quem seja analógico por convicção, quem seja por razão econômica, e quem esteja performando. As três coisas coexistem sem problema."}
+    ]
+  },
+  anchors: {
+    bay:"anchors", dx:80, dy:110, figColors:[C.tealDeep,C.mustardDeep],
+    kicker:"Galpão dos Objetos-Âncora · conversa reconstruída",
+    title:"\u201cO objeto tem limite, e é esse limite que devolve valor\u201d",
+    intro:"Sobre por que discos, CDs e fotos físicas pesam diferente na vida de quem usa (e onde essa lógica esbarra na realidade).",
+    source:"baseado em discussão do fórum r/digitalminimalism",
+    msgs:[
+      {who:"começou em 2015", right:false, text:"Comecei minha fase analógica com uma coleção de vinil. Queria que a música fosse experiência ativa, não passiva."},
+      {who:"ainda ouve CD limpando a casa", right:true, text:"Eu ainda tenho muitos CDs e os ouço cozinhando, limpando. Mas não possuo tudo que gosto de ouvir, então às vezes volto pro streaming mesmo."},
+      {who:"quer ser intencional", right:false, text:"O que importa pra mim é intencionalidade, não consumir só porque estou sendo alimentado a cada segundo do tempo livre."},
+      {who:"realista sobre o custo", right:true, text:"Ser totalmente analógico não é prático. Dá pra fazer, mas tem compromisso real: você reduz seu acesso a partes inteiras da economia e da sociedade."},
+      {who:"guarda o HD por medo", right:false, text:"Comecei a ripar meus álbuns físicos pra um disco rígido, porque estou cansado de música que eu gosto sumir da internet do nada."}
+    ]
+  },
+  worker: {
+    bay:"worker", dx:0, dy:50, figColors:[C.peachDeep,C.roseDeep],
+    kicker:"Patrocinado · conversa reconstruída",
+    title:"\u201cPra que serve, na prática, um aparelho que só faz uma coisa?\u201d",
+    intro:"Sobre usos inesperados de iPods e máquinas de escrever digitais, o que as pessoas realmente fazem com um objeto \u201cfocado\u201d, longe do marketing.",
+    source:"baseado em discussões dos fóruns r/ipod e r/Astrohaus",
+    msgs:[
+      {who:"usa no carro", right:false, text:"Eu uso meu iPod exclusivamente no carro. Tenho a biblioteca inteira em qualidade sem perda, e não é interrompido por GPS, chamada ou notificação."},
+      {who:"acadêmica com Freewrite", right:true, text:"Comprei minha máquina de escrever digital achando que ia escrever livro. O uso mais comum que dou a ela é responder e-mail à noite, longe de mil abas abertas."},
+      {who:"clicou o clickwheel a vida toda", right:false, text:"É simplicidade: o aparelho é feito só pra música. Nada de rede social, nada de anúncio, nada de mensagem. Só eu e o que eu quero ouvir."},
+      {who:"escreve roteiro de quadrinho", right:true, text:"Eu escrevo o esqueleto inteiro de uma edição na máquina, com diálogo e descrição de cena. Depois exporto pra outro programa e faço o resto do trabalho lá."},
+      {who:"tem problema motor", right:false, text:"Nos dias ruins, tela sensível ao toque é pesadelo pra mim. Botão físico e clickwheel são muito mais fáceis de usar."},
+      {who:"usa uma Paper Shot", right:true, text:"A minha nem tem tela pra revisar a foto. No começo dá agonia, mas essa restrição é que libera: sem poder checar, você simplesmente aceita a falha e volta a atenção pro que tá na sua frente."}
+    ]
+  },
+  capture: {
+    bay:"capture", dx:0, dy:110, figColors:[C.mustardDeep,C.tealDeep],
+    kicker:"Oficina da Captura · conversa reconstruída",
+    title:"\u201cToda vez eu volto, isso invalida a tentativa?\u201d",
+    intro:"Sobre recaída: gente que trocou de aparelho várias vezes e voltou atrás, tentando entender se o problema é o objeto ou outra coisa.",
+    source:"baseado em discussão do fórum r/dumbphones",
+    msgs:[
+      {who:"trocou 4 vezes, voltou 4 vezes", right:false, text:"Eu acho que alguns de nós precisam encarar isso como qualquer outro vício, às vezes você tá em recaída ativa, às vezes não."},
+      {who:"analista de si mesmo", right:true, text:"O celular não é o problema pra maioria das pessoas. É o que ele virou: um atalho pro tédio, pra ansiedade leve, pros dois segundos de atrito entre um pensamento e o outro."},
+      {who:"trocou por causa do trabalho", right:false, text:"Troquei de volta porque o flip que comprei falhava, ligava pra gente sozinho, parecia frágil. Não foi exatamente escolha."},
+      {who:"mesmo argumento, mais duro", right:true, text:"Trocar pra um telefone simples não muda nada disso sozinho, só remove um mecanismo de entrega. A vontade continua ativa por baixo. Mesmo loop, tela diferente."},
+      {who:"ainda assim, ficou", right:false, text:"Discos de vinil desaceleram de um jeito que parece escolhido, não forçado. Isso é uma energia diferente de simplesmente tirar o aplicativo."},
+      {who:"passou pela abstinência", right:true, text:"Ninguém me avisou que ia ser assim: depois que troquei de vez, passei a dormir 14, 16 horas por dia. Era o corpo cobrando uma dívida de sono que eu não sabia que tinha."}
+    ]
+  },
+  diag: {
+    bay:"diag", dx:20, dy:100, figColors:[C.roseDeep,C.mustardDeep],
+    kicker:"Fossa do Diagnóstico · conversa reconstruída",
+    title:"\u201cDez horas por dia. Decidi parar de vez.\u201d",
+    intro:"O plano de quem decide ir ao extremo, vender o smartphone, comprar um celular simples e as dúvidas de quem já tentou algo parecido.",
+    source:"baseado em discussão do fórum r/digitalminimalism",
+    msgs:[
+      {who:"screen time de 10h/dia", right:false, text:"Sei que está destruindo minhas relações e não é bom pra minha filha. Tentei moderar por anos. Cold turkey é a única coisa que sobrou."},
+      {who:"já tentou o extremo antes", right:true, text:"Corajoso. Mas tédio vai te comer vivo se você não tiver muita coisa pra preencher o tempo que sobra."},
+      {who:"tem TDAH", right:false, text:"Meu maior medo é gerenciamento de tarefas. Papel nunca funcionou pra mim, perco as coisas com facilidade. Vou ter que achar outro jeito."},
+      {who:"resposta gentil", right:true, text:"Cada aplicativo que você tira é uma decisão a menos que o sistema toma no seu lugar. Isso sozinho já vale a tentativa."},
+      {who:"fechando o pensamento", right:false, text:"Tive meu primeiro computador aos 5 anos. Não sei muito bem quem eu sou sem isso. Mas quero ensinar minha filha um jeito diferente de viver."}
+    ]
+  }
+};
+
+const PISTAS = [
+  { bay:"hobby",   dx:120, dy:10,  text:"Uma camisa da Fiorentina x Nintendo de 1998 hoje tem mais de 95% de chance de ser falsificação." },
+  { bay:"hobby",   dx:-90, dy:30,  text:"Blokecore nasceu no Reino Unido: roupa esportiva de time + streetwear, sem relação com o dia do jogo." },
+  { bay:"anchors", dx:-60, dy:20,  text:"Fones com fio, antes vistos como sucata, viraram acessório de moda." },
+  { bay:"anchors", dx:150, dy:20,  text:"iPods voltaram pela promessa de ouvir o álbum inteiro, offline, sem pular faixa." },
+  { bay:"feed",    dx:-70, dy:30,  text:"No 1º trimestre de 2024, mais de 3 em cada 4 pessoas entrevistadas pela MIDiA já tinham tentado reduzir o tempo de tela." },
+  { bay:"feed",    dx:90,  dy:10,  text:"O termo é de Shoshana Zuboff: capitalismo de vigilância. O comportamento, não só o tempo, vira matéria-prima." },
+  { bay:"capture", dx:0,   dy:20,  text:"Retrobranding é estratégia de marketing descrita desde 2001: design do passado + tecnologia do presente." },
+  { bay:"capture", dx:150, dy:0,   text:"O Instagram já foi, ao mesmo tempo, um dos apps mais apagados e mais reinstalados, ciclo que só infla os números da empresa." },
+  { bay:"retail",  dx:-40, dy:30,  text:"Urban Outfitters e a própria Apple já produzem e vendem design neovintage em escala." },
+  { bay:"retail",  dx:160, dy:10,  text:"O mercado de câmeras instantâneas deve ir de US$ 1,84 bi (2025) a US$ 2,59 bi (2031)." },
+  { bay:"diag",    dx:-70, dy:60,  text:"Perto de 60% da Geração Z diz querer voltar a uma época anterior à conexão permanente (Harris Poll)." },
+  { bay:"diag",    dx:130, dy:70,  text:"Quem nasceu depois de 1993 nunca teve um \"antes\" do digital pra lembrar. Por isso, é anemoia, não nostalgia." },
+];
+const foundClues = new Set();
+
+const mapSvg = document.getElementById("mapSvg");
+let sceneOrigin = {x:780,y:160};
+let ambientDiscGroup = null;
+function buildOverview(){
+  const width=1800, height=1050, originX=780, originY=160;
+  sceneOrigin = {x:originX,y:originY};
+  const defs = el("defs");
+  const marker = el("marker",{id:"arrowhead",viewBox:"0 0 10 10",refX:8,refY:5,markerWidth:7,markerHeight:7,orient:"auto-start-reverse"});
+  marker.appendChild(el("path",{d:"M0 0 L10 5 L0 10 Z",fill:C.peachDeep}));
+  defs.appendChild(marker);
+  mapSvg.appendChild(defs);
+  mapSvg.appendChild(el("rect",{width,height,fill:"hsl(202 24% 87%)"}));
+
+  const scene = el("g",{transform:`translate(${originX} ${originY})`});
+  Object.keys(BAYS).forEach(key=>{
+    const b = BAYS[key];
+    const c1=iso(b.ox,b.oy), c2=iso(b.ox+b.w,b.oy), c3=iso(b.ox+b.w,b.oy+b.d), c4=iso(b.ox,b.oy+b.d);
+    const hit = el("g",{class:"bayhit"});
+    hit.appendChild(el("polygon",{points:`${c1.sx},${c1.sy} ${c2.sx},${c2.sy} ${c3.sx},${c3.sy} ${c4.sx},${c4.sy}`,
+      fill:b.accent, stroke:STROKE, "stroke-width":1.2, opacity:0.55}));
+    const modInstance = b.mod();
+    if(key==="anchors" && modInstance._discGroup) ambientDiscGroup = modInstance._discGroup;
+    hit.appendChild(IsoAnchor(b.ox, b.oy, modInstance));
+    scene.appendChild(hit);
+  });
+
+  const feed=bayAnchor("feed"), anchors=bayAnchor("anchors"), hobby=bayAnchor("hobby"),
+        capture=bayAnchor("capture"), worker=bayAnchor("worker"), retail=bayAnchor("retail"),
+        press=bayAnchor("press"), diag=bayAnchor("diag");
+  const curve=(a,b,bend=60)=>`M ${a.sx} ${a.sy} C ${a.sx+bend} ${a.sy+bend}, ${b.sx-bend} ${b.sy-bend}, ${b.sx} ${b.sy}`;
+  scene.appendChild(FlowArrow(curve(hobby,anchors,40), C.roseDeep, true));
+  scene.appendChild(FlowArrow(curve(anchors,feed,-60), C.tealDeep, true));
+  scene.appendChild(FlowArrow(curve(feed,capture,40), C.peachDeep, true));
+  scene.appendChild(FlowArrow(curve(capture,worker,20), C.mustardDeep, true));
+  scene.appendChild(FlowArrow(curve(worker,retail,30), C.roseDeep, true));
+  scene.appendChild(FlowArrow(curve(retail,press,50), C.tealDeep, true));
+  scene.appendChild(FlowArrow(curve(press,diag,-70), C.mustardDeep, true));
+
+  VIGNETTES.forEach(v=>{
+    const a = bayAnchor(v.bay);
+    const x = a.sx + v.dx, y = a.sy + v.dy;
+    const dot = el("g",{class:"dot","data-n":v.n});
+    dot.appendChild(el("circle",{cx:x,cy:y,r:26,fill:"transparent"}));
+    dot.appendChild(el("circle",{class:"ring",cx:x,cy:y,r:14,fill:"none",stroke:v.color,"stroke-width":1.6}));
+    dot.appendChild(el("circle",{class:"core",cx:x,cy:y,r:10,fill:v.color,stroke:STROKE,"stroke-width":1.6}));
+    const numTxt = el("text",{x,y:y+4,"text-anchor":"middle","font-size":11,fill:"#fff"});
+    numTxt.textContent = String(v.n);
+    dot.appendChild(numTxt);
+    dot.addEventListener("click", ()=> openVignette(v.n));
+    scene.appendChild(dot);
+  });
+
+  Object.keys(CONVERSATIONS).forEach(key=>{
+    const c = CONVERSATIONS[key];
+    const a = bayAnchor(c.bay);
+    const grp = el("g",{class:"dot convo","data-conv":key,transform:`translate(${a.sx+c.dx} ${a.sy+c.dy})`});
+    grp.appendChild(ConversationMarker(c.figColors));
+    grp.addEventListener("click", ()=> openConversation(key));
+    scene.appendChild(grp);
+  });
+
+  PISTAS.forEach((p,i)=>{
+    const a = bayAnchor(p.bay);
+    const x = a.sx + p.dx, y = a.sy + p.dy;
+    const pd = el("g",{class:"pista","data-i":i});
+    pd.appendChild(el("circle",{cx:x,cy:y,r:26,fill:"transparent"}));
+    pd.appendChild(el("circle",{cx:x,cy:y,r:15,fill:C.sol||"#e9c46a",opacity:0.18}));
+    pd.appendChild(el("circle",{class:"pmark",cx:x,cy:y,r:13}));
+    const q = el("text",{x,y:y+4,"text-anchor":"middle"});
+    q.textContent = "?";
+    pd.appendChild(q);
+    pd.addEventListener("click", (e)=> revealClue(i, e.clientX, e.clientY, pd));
+    scene.appendChild(pd);
+  });
+
+  mapSvg.appendChild(scene);
+  requestAnimationFrame(ambientSpin);
+}
+
+let discAngle = 0;
+function ambientSpin(){
+  if(ambientDiscGroup){
+    discAngle = (discAngle + 0.55) % 360;
+    ambientDiscGroup.setAttribute("transform", `rotate(${discAngle} 0 22)`);
+  }
+  requestAnimationFrame(ambientSpin);
+}
+
+const clueTooltip = document.getElementById("clueTooltip");
+const clueChip = document.getElementById("clueChip");
+let clueHideTimer = null;
+clueTooltip.addEventListener("click", ()=>{ clueTooltip.classList.remove("on"); clearTimeout(clueHideTimer); });
+function revealClue(i, cx, cy, node){
+  foundClues.add(i);
+  node.classList.add("found");
+  clueChip.textContent = `pistas encontradas: ${foundClues.size}/${PISTAS.length}`;
+  clueTooltip.innerHTML = PISTAS[i].text + '<span class="ctclose">toque para fechar ✕</span>';
+  clueTooltip.style.left = cx + "px";
+  clueTooltip.style.top = cy + "px";
+  clueTooltip.classList.add("on");
+  clearTimeout(clueHideTimer);
+  clueHideTimer = setTimeout(()=> clueTooltip.classList.remove("on"), 7000);
+}
+
+function vbLerp(a,b,t){
+  const acx=a[0]+a[2]/2, acy=a[1]+a[3]/2, bcx=b[0]+b[2]/2, bcy=b[1]+b[3]/2;
+  const cx=acx+(bcx-acx)*t, cy=acy+(bcy-acy)*t;
+  const w=a[2]*Math.pow(b[2]/a[2],t), h=a[3]*Math.pow(b[3]/a[3],t);
+  return [cx-w/2, cy-h/2, w, h];
+}
+const easeIO = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const FULL_VB = [0,0,1800,1050];
+function bboxForBay(key){
+  const b = BAYS[key], pad = key==="capture" ? 4.6 : 2.6;
+  const c1=iso(b.ox-pad,b.oy-pad), c2=iso(b.ox+b.w+pad,b.oy-pad), c3=iso(b.ox+b.w+pad,b.oy+b.d+pad), c4=iso(b.ox-pad,b.oy+b.d+pad);
+  const xs=[c1.sx,c2.sx,c3.sx,c4.sx], ys=[c1.sy,c2.sy,c3.sy,c4.sy];
+  const minX=Math.min(...xs)+sceneOrigin.x, maxX=Math.max(...xs)+sceneOrigin.x;
+  const minY=Math.min(...ys)+sceneOrigin.y-70, maxY=Math.max(...ys)+sceneOrigin.y+40;
+  return [minX,minY,maxX-minX,maxY-minY];
+}
+let curVB = FULL_VB.slice();
+function tweenTo(target, ms){
+  const start = curVB.slice(), t0 = performance.now();
+  function frame(t){
+    const p = Math.min(1,(t-t0)/ms);
+    const vb = vbLerp(start,target,easeIO(p));
+    mapSvg.setAttribute("viewBox", vb.map(n=>n.toFixed(1)).join(" "));
+    if(p<1) requestAnimationFrame(frame); else curVB = target.slice();
+  }
+  requestAnimationFrame(frame);
+}
+
+const ZOOM_MIN_W = 320, ZOOM_MAX_W = 1800;
+function zoomAtFromVB(baseVB, clientX, clientY, factor){
+  const rect = mapSvg.getBoundingClientRect();
+  const px = (clientX-rect.left)/rect.width, py = (clientY-rect.top)/rect.height;
+  const pt = { x: baseVB[0]+px*baseVB[2], y: baseVB[1]+py*baseVB[3] };
+  let newW = baseVB[2]*factor;
+  newW = Math.max(ZOOM_MIN_W, Math.min(ZOOM_MAX_W, newW));
+  const newH = newW * (1050/1800);
+  const ratioX = (pt.x-baseVB[0])/baseVB[2], ratioY = (pt.y-baseVB[1])/baseVB[3];
+  let newX = pt.x - ratioX*newW, newY = pt.y - ratioY*newH;
+  newX = Math.max(0, Math.min(1800-newW, newX));
+  newY = Math.max(0, Math.min(1050-newH, newY));
+  curVB = [newX,newY,newW,newH];
+  mapSvg.setAttribute("viewBox", curVB.map(n=>n.toFixed(1)).join(" "));
+}
+mapSvg.addEventListener("wheel", e=>{
+  e.preventDefault();
+  const factor = e.deltaY > 0 ? 1.15 : 1/1.15;
+  zoomAtFromVB(curVB, e.clientX, e.clientY, factor);
+}, {passive:false});
+
+let isPanningMouse=false, panStartM=null, panBaseVB=null;
+mapSvg.addEventListener("mousedown", e=>{
+  isPanningMouse=true; panStartM={x:e.clientX,y:e.clientY}; panBaseVB=curVB.slice();
+  mapSvg.style.cursor="grabbing";
+});
+window.addEventListener("mousemove", e=>{
+  if(!isPanningMouse) return;
+  const rect = mapSvg.getBoundingClientRect();
+  const dx=(e.clientX-panStartM.x)/rect.width*panBaseVB[2];
+  const dy=(e.clientY-panStartM.y)/rect.height*panBaseVB[3];
+  let newX=panBaseVB[0]-dx, newY=panBaseVB[1]-dy;
+  newX=Math.max(0,Math.min(1800-panBaseVB[2],newX));
+  newY=Math.max(0,Math.min(1050-panBaseVB[3],newY));
+  curVB=[newX,newY,panBaseVB[2],panBaseVB[3]];
+  mapSvg.setAttribute("viewBox", curVB.map(n=>n.toFixed(1)).join(" "));
+});
+window.addEventListener("mouseup", ()=>{ isPanningMouse=false; mapSvg.style.cursor="grab"; });
+
+let touchState=null;
+mapSvg.addEventListener("touchstart", e=>{
+  if(e.touches.length===1){
+    touchState={mode:"pan",x:e.touches[0].clientX,y:e.touches[0].clientY,vb:curVB.slice()};
+  } else if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+    touchState={mode:"pinch",dist:Math.hypot(dx,dy),vb:curVB.slice(),
+      midX:(e.touches[0].clientX+e.touches[1].clientX)/2, midY:(e.touches[0].clientY+e.touches[1].clientY)/2};
+  }
+}, {passive:true});
+mapSvg.addEventListener("touchmove", e=>{
+  if(!touchState) return;
+  if(touchState.mode==="pan" && e.touches.length===1){
+    e.preventDefault();
+    const rect=mapSvg.getBoundingClientRect();
+    const dx=(e.touches[0].clientX-touchState.x)/rect.width*touchState.vb[2];
+    const dy=(e.touches[0].clientY-touchState.y)/rect.height*touchState.vb[3];
+    let newX=touchState.vb[0]-dx, newY=touchState.vb[1]-dy;
+    newX=Math.max(0,Math.min(1800-touchState.vb[2],newX));
+    newY=Math.max(0,Math.min(1050-touchState.vb[3],newY));
+    curVB=[newX,newY,touchState.vb[2],touchState.vb[3]];
+    mapSvg.setAttribute("viewBox", curVB.map(n=>n.toFixed(1)).join(" "));
+  } else if(touchState.mode==="pinch" && e.touches.length===2){
+    e.preventDefault();
+    const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+    const dist=Math.hypot(dx,dy);
+    zoomAtFromVB(touchState.vb, touchState.midX, touchState.midY, touchState.dist/dist);
+  }
+}, {passive:false});
+mapSvg.addEventListener("touchend", ()=>{ touchState=null; });
+mapSvg.style.cursor="grab";
+
+let activeCleanup = null;
+function clearWidget(){
+  if(activeCleanup){ activeCleanup(); activeCleanup = null; }
+  document.getElementById("vpWidget").innerHTML = "";
+}
+function openVignette(n){
+  const v = VIGNETTES.find(x=>x.n===n);
+  if(!v) return;
+  document.getElementById("tourbar").classList.remove("on");
+  tweenTo(bboxForBay(v.bay), 650);
+  document.getElementById("vpN").textContent = v.n;
+  document.getElementById("vpN").style.background = v.color;
+  document.getElementById("vpTitle").textContent = v.title;
+  document.getElementById("vpExcerpt").textContent = v.excerpt;
+  document.getElementById("vpMech").innerHTML = v.mech || "";
+  document.getElementById("vpFonte").textContent = v.fonte;
+  setTab("arg");
+  clearWidget();
+  WIDGETS[v.widget](document.getElementById("vpWidget"), v);
+  document.getElementById("vpanel").classList.add("on");
+  markVigVisited(n);
+}
+function setTab(which){
+  document.getElementById("tabArg").classList.toggle("on", which==="arg");
+  document.getElementById("tabMech").classList.toggle("on", which==="mech");
+  document.getElementById("paneArg").classList.toggle("on", which==="arg");
+  document.getElementById("paneMech").classList.toggle("on", which==="mech");
+}
+function closeVignette(){
+  document.getElementById("vpanel").classList.remove("on");
+  clearWidget();
+  if(tourIndex>=0){
+    tweenTo(bboxForBay(TOUR_ORDER[tourIndex]), 550);
+    document.getElementById("tourbar").classList.add("on");
+  } else {
+    tweenTo(FULL_VB, 550);
+  }
+}
+
+function widgetJersey(el0){
+  el0.innerHTML = `
+    <div class="w-jersey" id="wj">
+      <svg viewBox="0 0 120 150"><path d="M20,35 L20,20 L40,10 Q40,5 50,5 Q60,18 70,5 Q80,5 80,10 L100,20 L100,35 L90,45 L90,140 L30,140 L30,45 Z" fill="#f5d033" stroke="#1a1a1a" stroke-width="2.5"/><path d="M40,10 Q60,28 80,10 L76,20 Q60,32 44,20 Z" fill="#0a6b3a"/></svg>
+    </div>
+    <div class="wlabel" id="wjLabel">CONTEXTO: DIA DE JOGO — torcida em campo</div>
+    <button class="wbtn" id="wjBtn">Trocar de contexto</button>`;
+  let rua = false;
+  const jerseyEl = el0.querySelector("#wj"), label = el0.querySelector("#wjLabel"), btn = el0.querySelector("#wjBtn");
+  btn.addEventListener("click", ()=>{
+    rua = !rua;
+    jerseyEl.classList.toggle("rua", rua);
+    label.textContent = rua ? "CONTEXTO: BAR, SEM NINGUÉM TORCENDO — peça de moda" : "CONTEXTO: DIA DE JOGO — torcida em campo";
+  });
+}
+function widgetJersey2(el0){
+  el0.innerHTML = `<div class="w-filmcount" id="wf2">36</div>
+    <div class="wlabel">poses restantes no rolo simulado</div>
+    <button class="wbtn" id="wf2Btn">Revisar na tela antes de gastar</button>
+    <div class="wlabel" id="wf2Note" style="color:#c2410c">a tela sempre deixa ver antes — o filme físico, nunca deixava</div>`;
+  const disp = el0.querySelector("#wf2"), btn = el0.querySelector("#wf2Btn");
+  let n = 36;
+  btn.addEventListener("click", ()=>{
+    if(n>0){ n--; disp.textContent = n; }
+  });
+}
+
+function widgetVinyl(el0){
+  el0.innerHTML = `
+    <svg viewBox="0 0 140 140" width="120" height="120">
+      <circle cx="70" cy="70" r="60" fill="#1a1a1a"/>
+      <g class="w-vinyl-disc" id="wvDisc">
+        <circle cx="70" cy="70" r="60" fill="#1a1a1a"/>
+        <circle cx="70" cy="70" r="46" fill="none" stroke="#333" stroke-width="1"/>
+        <circle cx="70" cy="70" r="34" fill="none" stroke="#333" stroke-width="1"/>
+        <circle cx="70" cy="70" r="22" fill="#c2410c"/>
+        <circle cx="70" cy="70" r="4" fill="#1a1a1a"/>
+      </g>
+    </svg>
+    <div style="display:flex;gap:.6rem">
+      <button class="wbtn" id="wvPlay">▶ tocar o lado inteiro</button>
+      <button class="wbtn" id="wvSkip" disabled title="esta baía não deixa pular">⏭ pular faixa</button>
+    </div>
+    <div class="wlabel" id="wvNote">o algoritmo pula. o disco, não.</div>`;
+  const disc = el0.querySelector("#wvDisc"), playBtn = el0.querySelector("#wvPlay"), skipBtn = el0.querySelector("#wvSkip");
+  let playing = false;
+  playBtn.addEventListener("click", ()=>{
+    playing = !playing;
+    disc.classList.toggle("playing", playing);
+    playBtn.textContent = playing ? "⏸ tocando o lado inteiro" : "▶ tocar o lado inteiro";
+  });
+  skipBtn.addEventListener("click", (e)=> e.preventDefault());
+}
+
+function widgetFeed(el0){
+  el0.innerHTML = `<div class="w-feed" id="wfFeed"></div><div class="w-timer" id="wfTimer">tempo nesta baía: 0:00</div>`;
+  const feed = el0.querySelector("#wfFeed"), timerEl = el0.querySelector("#wfTimer");
+  const hues = [C.roseDeep,C.tealDeep,C.mustardDeep,C.peachDeep];
+  function addCards(nCards){
+    for(let i=0;i<nCards;i++){
+      const card = document.createElement("div");
+      card.className = "card";
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      bar.style.background = hues[Math.floor(Math.random()*hues.length)];
+      card.appendChild(bar);
+      card.appendChild(document.createTextNode("post automático · sem fim projetado"));
+      feed.appendChild(card);
+    }
+  }
+  addCards(30);
+  feed.addEventListener("scroll", ()=>{
+    if(feed.scrollTop + feed.clientHeight > feed.scrollHeight - 80) addCards(10);
+  });
+  let secs = 0;
+  const iv = setInterval(()=>{
+    secs++;
+    const m = String(Math.floor(secs/60)).padStart(1,"0"), s = String(secs%60).padStart(2,"0");
+    timerEl.textContent = `tempo nesta baía: ${m}:${s}`;
+  },1000);
+  activeCleanup = ()=> clearInterval(iv);
+}
+
+function widgetCompare(el0){
+  el0.innerHTML = `
+    <div class="w-compare">
+      <div class="layer grain"></div>
+      <div class="layer smooth" id="wcSmooth"></div>
+      <input type="range" min="0" max="100" value="50" id="wcRange">
+    </div>
+    <div class="wlabel">arraste: grão de câmera de 2005 ↔ nitidez corrigida por IA</div>`;
+  const smooth = el0.querySelector("#wcSmooth"), range = el0.querySelector("#wcRange");
+  range.addEventListener("input", ()=>{
+    smooth.style.setProperty("--split", (100-range.value)+"%");
+  });
+}
+
+function widgetFilm(el0){
+  el0.innerHTML = `<div class="w-filmcount" id="wfc">27</div>
+    <div class="wlabel">fotos reveladas · não 3 mil guardadas na nuvem</div>
+    <button class="wbtn" id="wfcBtn">disparar o obturador</button>`;
+  const disp = el0.querySelector("#wfc"), btn = el0.querySelector("#wfcBtn");
+  let n = 27;
+  btn.addEventListener("click", ()=>{
+    if(n<=0) return;
+    n--;
+    disp.textContent = n;
+    if(n===0){ disp.classList.add("zero"); disp.textContent = "FIM DO ROLO"; btn.disabled = true; }
+  });
+}
+
+function widgetLoop(el0){
+  el0.innerHTML = `
+    <svg class="w-loop-svg" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#d8dfe2" stroke-width="6"/>
+      <circle id="wlArc" cx="50" cy="50" r="40" fill="none" stroke="${C.roseDeep}" stroke-width="6"
+        stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"/>
+    </svg>
+    <div class="wlabel">a recusa vira vitrine, e a vitrine volta pro feed</div>
+    <button class="wbtn" id="wlBtn">voltar à baía do feed</button>`;
+  const arc = el0.querySelector("#wlArc");
+  requestAnimationFrame(()=>{ arc.style.transition = "stroke-dashoffset 1.4s ease"; arc.style.strokeDashoffset = "0"; });
+  el0.querySelector("#wlBtn").addEventListener("click", ()=>{
+    closeVignette();
+    setTimeout(()=> openVignette(3), 620);
+  });
+}
+
+function widgetXray(el0, v){
+  el0.innerHTML = `
+    <div class="w-xray" id="wxBox">
+      <svg class="outside" viewBox="0 0 200 200"><use href="#${v.xrayOuter}"/></svg>
+      <svg class="inside" viewBox="0 0 200 200">
+        <rect x="20" y="20" width="160" height="160" rx="10" fill="#1a1a1a"/>
+        <rect x="35" y="35" width="60" height="30" rx="3" fill="#4a8fd1"/>
+        <text x="38" y="55" font-family="monospace" font-size="8" fill="#fffaf0">SENSOR</text>
+        <rect x="105" y="35" width="60" height="30" rx="3" fill="#e89a1c"/>
+        <text x="112" y="55" font-family="monospace" font-size="8" fill="#1a1a1a">FIRMWARE</text>
+        <rect x="35" y="140" width="130" height="25" rx="3" fill="#d94a32"/>
+        <text x="55" y="157" font-family="monospace" font-size="8" fill="#fffaf0">BATERIA</text>
+        <circle cx="100" cy="100" r="24" fill="none" stroke="#f1ead0" stroke-width="2" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+    <button class="wbtn" id="wxBtn">Revelar por dentro</button>
+    <div class="wlabel" id="wxLabel">por fora: parece mecânico</div>`;
+  const box = el0.querySelector("#wxBox"), btn = el0.querySelector("#wxBtn"), label = el0.querySelector("#wxLabel");
+  let inside = false;
+  btn.addEventListener("click", ()=>{
+    inside = !inside;
+    box.classList.toggle("on", inside);
+    btn.textContent = inside ? "Voltar pra fora" : "Revelar por dentro";
+    label.textContent = inside ? (v.xrayInside || "por dentro: é tudo digital") : "por fora: parece mecânico";
+  });
+}
+
+const WIDGETS = { jersey:widgetJersey, jersey2:widgetJersey2, vinyl:widgetVinyl, feed:widgetFeed, compare:widgetCompare, film:widgetFilm, loop:widgetLoop, xray:widgetXray };
+
+function openArticle(anchorId){
+  document.getElementById("overview").style.display = "none";
+  document.getElementById("article").style.display = "block";
+  window.scrollTo(0,0);
+  if(anchorId){
+    requestAnimationFrame(()=>{
+      const target = document.getElementById(anchorId);
+      if(target){
+        const y = target.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo(0, y);
+      }
+    });
+  }
+}
+function backToMap(){
+  document.getElementById("article").style.display = "none";
+  document.getElementById("conversation").style.display = "none";
+  document.getElementById("overview").style.display = "block";
+  window.scrollTo(0,0);
+}
+
+function renderConversation(key){
+  const c = CONVERSATIONS[key];
+  document.getElementById("convKicker").textContent = c.kicker;
+  document.getElementById("convTitle").textContent = c.title;
+  document.getElementById("convIntro").textContent = c.intro;
+  document.getElementById("convSource").textContent = c.source;
+  const thread = document.getElementById("convThread");
+  thread.innerHTML = "";
+  c.msgs.forEach((m,i)=>{
+    const color = i%2===0 ? "hsl(196 55% 40%)" : "hsl(14 65% 58%)";
+    const row = document.createElement("div");
+    row.className = "conv-msg" + (m.right ? " right" : "");
+    const av = document.createElement("div");
+    av.className = "avatar";
+    av.innerHTML = `<svg viewBox="-30 -40 60 70"><circle cx="0" cy="-26" r="7" fill="none" stroke="${color}" stroke-width="2.4"/><line x1="0" y1="-19" x2="0" y2="6" stroke="${color}" stroke-width="2.4" stroke-linecap="round"/><line x1="-11" y1="-10" x2="11" y2="-10" stroke="${color}" stroke-width="2.4" stroke-linecap="round"/><line x1="0" y1="6" x2="-9" y2="22" stroke="${color}" stroke-width="2.4" stroke-linecap="round"/><line x1="0" y1="6" x2="9" y2="22" stroke="${color}" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+    const bub = document.createElement("div");
+    bub.className = "bubble";
+    bub.innerHTML = `<span class="who" style="color:${color}">${m.who}</span><p>${m.text}</p>`;
+    row.appendChild(av); row.appendChild(bub);
+    thread.appendChild(row);
+  });
+}
+function openConversation(key){
+  document.getElementById("overview").style.display = "none";
+  document.getElementById("conversation").style.display = "block";
+  renderConversation(key);
+  window.scrollTo(0,0);
+}
+
+document.getElementById("enterBtn").addEventListener("click", ()=>{
+  document.getElementById("landing").style.display = "none";
+  document.getElementById("overview").style.display = "block";
+  const tip = document.getElementById("onboardTip");
+  tip.classList.add("on");
+  setTimeout(()=> tip.classList.remove("on"), 7000);
+});
+document.getElementById("onboardGo").addEventListener("click", ()=>{
+  document.getElementById("onboardTip").classList.remove("on");
+  showTourStep(0);
+});
+document.getElementById("onboardSkip").addEventListener("click", ()=>{
+  document.getElementById("onboardTip").classList.remove("on");
+});
+document.getElementById("toArticleBtn").addEventListener("click", ()=> openArticle(null));
+document.getElementById("backBtn").addEventListener("click", backToMap);
+document.getElementById("loopBtn").addEventListener("click", backToMap);
+document.getElementById("resetViewBtn").addEventListener("click", ()=>{
+  tourIndex = -1;
+  document.getElementById("tourbar").classList.remove("on");
+  tweenTo(FULL_VB, 500);
+});
+
+const TOUR_ORDER = ["hobby","feed","anchors","capture","worker","retail","press","diag"];
+let tourIndex = -1;
+function showTourStep(i){
+  tourIndex = i;
+  const key = TOUR_ORDER[i];
+  tweenTo(bboxForBay(key), 650);
+  document.getElementById("tourbar").classList.add("on");
+  document.getElementById("tourStepN").textContent = `parada ${i+1} de ${TOUR_ORDER.length}`;
+  document.getElementById("tourStepTitle").textContent = BAY_LABELS[key] || key;
+  document.getElementById("tourPrev").style.visibility = i===0 ? "hidden" : "visible";
+  document.getElementById("tourNext").textContent = i===TOUR_ORDER.length-1 ? "concluir ✕" : "seguinte ›";
+}
+function exitTour(){
+  tourIndex = -1;
+  document.getElementById("tourbar").classList.remove("on");
+  tweenTo(FULL_VB, 550);
+}
+document.getElementById("tourBtn").addEventListener("click", ()=> showTourStep(0));
+document.getElementById("tourExit").addEventListener("click", exitTour);
+document.getElementById("tourPrev").addEventListener("click", ()=>{
+  if(tourIndex>0) showTourStep(tourIndex-1);
+});
+document.getElementById("tourNext").addEventListener("click", ()=>{
+  if(tourIndex < TOUR_ORDER.length-1) showTourStep(tourIndex+1);
+  else exitTour();
+});
+document.getElementById("vpClose").addEventListener("click", closeVignette);
+document.getElementById("convBackBtn").addEventListener("click", backToMap);
+document.getElementById("convBackBtn2").addEventListener("click", backToMap);
+document.getElementById("helpBtn").addEventListener("click", ()=>{
+  document.getElementById("helpPanel").classList.toggle("on");
+});
+document.getElementById("legendBtn").addEventListener("click", ()=>{
+  document.getElementById("baylegend").classList.add("on");
+});
+document.getElementById("legendClose").addEventListener("click", ()=>{
+  document.getElementById("baylegend").classList.remove("on");
+});
+document.getElementById("tabArg").addEventListener("click", ()=> setTab("arg"));
+document.getElementById("tabMech").addEventListener("click", ()=> setTab("mech"));
+
+const BAY_LABELS = {
+  feed:"Baía do Feed", hobby:"Mesa Tátil", anchors:"Galpão dos Âncoras",
+  worker:"Oficina Patrocinada", press:"Prensa", capture:"Oficina da Captura",
+  retail:"Convés do Varejo", diag:"Fossa do Diagnóstico"
+};
+const COLOR_NAMES = {};
+COLOR_NAMES[C.roseDeep]="rosa"; COLOR_NAMES[C.tealDeep]="azul-petróleo";
+COLOR_NAMES[C.peachDeep]="coral"; COLOR_NAMES[C.mustardDeep]="mostarda";
+const visitedVig = new Set();
+
+function vigLoc(v){
+  const a = bayAnchor(v.bay);
+  const x = sceneOrigin.x + a.sx + v.dx, y = sceneOrigin.y + a.sy + v.dy;
+  const horiz = x < 620 ? "à esquerda" : (x < 1180 ? "no centro" : "à direita");
+  const vert  = y < 360 ? "no alto"    : (y < 720  ? "no meio"  : "embaixo");
+  return `${vert}, ${horiz} · ${BAY_LABELS[v.bay]||v.bay} · ${COLOR_NAMES[v.color]||"colorida"}`;
+}
+function buildVigNav(){
+  const list = document.getElementById("vnavList");
+  if(!list) return;
+  list.innerHTML = "";
+  VIGNETTES.forEach(v=>{
+    const row = document.createElement("div");
+    row.className = "vrow"; row.dataset.n = v.n;
+    row.innerHTML =
+      `<span class="vswatch" style="background:${v.color}">${v.n}</span>`+
+      `<span class="vmeta"><span class="vtit">${v.title}</span><span class="vloc">${vigLoc(v)}</span></span>`+
+      `<span class="vcheck">○</span>`;
+    row.addEventListener("click", ()=>{
+      document.getElementById("vnav").classList.remove("on");
+      openVignette(v.n);
+    });
+    list.appendChild(row);
+  });
+  updateVigNav();
+}
+function updateVigNav(){
+  const total = VIGNETTES.length, seen = visitedVig.size, left = total - seen;
+  const cnt = document.getElementById("vnavCount");
+  if(cnt) cnt.textContent = `${seen}/${total}`;
+  const prog = document.getElementById("vnavProg");
+  if(prog) prog.textContent = left===0
+    ? `todas as ${total} vinhetas visitadas ✓`
+    : `${seen} de ${total} visitadas · faltam ${left}`;
+  document.querySelectorAll("#vnavList .vrow").forEach(row=>{
+    const n = +row.dataset.n, has = visitedVig.has(n);
+    row.classList.toggle("seen", has);
+    const chk = row.querySelector(".vcheck");
+    if(chk) chk.textContent = has ? "✓" : "○";
+  });
+}
+function markVigVisited(n){
+  visitedVig.add(n);
+  const dot = mapSvg.querySelector(`.dot[data-n="${n}"]`);
+  if(dot) dot.classList.add("seen");
+  updateVigNav();
+}
+document.getElementById("vnavBtn").addEventListener("click", ()=>{
+  document.getElementById("vnav").classList.toggle("on");
+});
+document.getElementById("vnavClose").addEventListener("click", ()=>{
+  document.getElementById("vnav").classList.remove("on");
+});
+
+function reportHeightToParent(){
+  try{
+    parent.postMessage({ atlasHeight: document.documentElement.scrollHeight }, "*");
+  }catch(e){}
+}
+window.addEventListener("resize", reportHeightToParent);
+new MutationObserver(reportHeightToParent).observe(document.body, {childList:true, subtree:true, attributes:true});
+setInterval(reportHeightToParent, 800);
+
+buildOverview();
+buildVigNav();
+reportHeightToParent();
+})();
+</script>
+</body>
+</html>
