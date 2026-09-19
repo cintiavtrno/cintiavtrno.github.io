@@ -301,7 +301,7 @@ i,em{font-style:italic}
 
 @media (max-width:860px){
   .mesa{
-    left:0;right:0;top:auto;bottom:0;width:100%;height:68dvh;
+    left:0;right:0;top:auto;bottom:0;width:100%;height:62dvh;
     padding:34px 20px 34px;
     background:linear-gradient(180deg,rgba(8,6,14,0),rgba(8,6,14,.9) 42px,rgba(8,6,14,.94));
   }
@@ -865,9 +865,32 @@ i,em{font-style:italic}
     return { w: r.width / k, h: r.height / k, k: k };
   }
   function estreito() { return window.innerWidth <= 860; }
-  // num celular a janela visível tem ~416 unidades de largura e a parede
-  // de entrada tem 504: sem reduzir a escala, a cena não cabe.
-  function escalaBase() { return estreito() ? 0.62 : 1; }
+
+  /* A cena precisa caber em duas dimensões, não só na largura:
+     dentro de um iframe (a vitrine do site) a janela fica larga e
+     baixa, e a plaqueta da fileira de baixo some atrás da régua.
+     CENA_* é a faixa que precisa estar visível; chrome() é o que a
+     régua, o rodapé e os atalhos ocupam por cima dela.            */
+  // medidos no próprio desenho: é até onde a plaqueta e a sombra descem
+  var CENA_TOPO = 210, CENA_BASE = 834, CENA_LARG = 560;
+
+  function chrome() {
+    return estreito() ? { topo: 62, base: 58 } : { topo: 52, base: 112 };
+  }
+
+  function escalaBase() {
+    var j = janela(), c = chrome(), k = j.k || 1;
+    var porAltura  = (j.h - (c.topo + c.base) / k) / (CENA_BASE - CENA_TOPO);
+    var porLargura = (j.w - 32 / k) / CENA_LARG;
+    return Math.max(0.35, Math.min(1, porAltura, porLargura));
+  }
+
+  // centra a cena na faixa que sobra entre os atalhos e a régua
+  function deslocamentoY(b) {
+    var j = janela(), c = chrome(), k = j.k || 1;
+    var centroDaFaixa = VBH / 2 + (c.topo - c.base) / (2 * k);
+    return centroDaFaixa - (CENA_TOPO + CENA_BASE) / 2 * b;
+  }
 
   // translação que coloca o ponto de cena `px` na fração `f` da janela
   function enquadrar(px, f, s) {
@@ -882,14 +905,26 @@ i,em{font-style:italic}
   function aplicar() {
     var j = janela();
     if (aberta === null) {
-      var b = escalaBase(), esq = VBW / 2 - j.w / 2, dir = VBW / 2 + j.w / 2;
+      var b = escalaBase(), ty = deslocamentoY(b),
+          esq = VBW / 2 - j.w / 2, dir = VBW / 2 + j.w / 2;
       tx = Math.min(Math.max(tx, dir - 3260 * b), esq + 900 * b);
-      scene.setAttribute('transform', 'translate(' + tx.toFixed(1) + ',0) scale(' + b + ')');
+      scene.setAttribute('transform',
+        'translate(' + tx.toFixed(1) + ',' + ty.toFixed(1) + ') scale(' + b.toFixed(3) + ')');
     } else {
-      var p = POS[aberta],
-          s = estreito() ? 0.90 : 1.78,
+      /* Uma vitrine tem ~351 unidades de altura. A escala e o
+         enquadramento saem da faixa livre entre o que está por cima
+         (régua) e o que está por baixo — a régua no desktop, a gaveta
+         de papéis no celular. Assim a peça nunca passa por baixo de
+         nada, em qualquer proporção de tela.                        */
+      var k = j.k || 1, alt = window.innerHeight || 800,
+          topoPx = estreito() ? 62 : chrome().topo,
+          basePx = estreito() ? alt * 0.62 : chrome().base,
+          banda  = Math.max(120, alt - topoPx - basePx),
+          teto   = (banda - 24) / (351 * k),
+          p = POS[aberta],
+          s = Math.max(0.45, Math.min(estreito() ? 0.95 : 1.78, teto)),
           fx = estreito() ? 0.50 : 0.70,
-          fy = estreito() ? 0.17 : 0.50;
+          fy = (topoPx + (alt - basePx)) / (2 * alt);
       scene.setAttribute('transform',
         'translate(' + enquadrar(p.x, fx, s).toFixed(1) + ',' +
         enquadrarY(p.y, fy, s).toFixed(1) + ') scale(' + s + ')');
