@@ -541,7 +541,7 @@ animation:scan 8s linear infinite;
 
   <!-- Releitura Warja Lavater — sequência de formas, não diagrama -->
   <div id="warja-ensaios" style="margin-bottom:3rem;overflow:hidden;">
-    <svg viewBox="0 0 1200 160" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos cinco ensaios ao estilo Warja Lavater">
+    <svg viewBox="0 0 1340 160" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos cinco ensaios ao estilo Warja Lavater">
       <defs>
         <filter id="glow-verde"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="glow-roxo"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -550,7 +550,7 @@ animation:scan 8s linear infinite;
       </defs>
 
       <!-- fio de tempo — linha da narrativa -->
-      <line x1="60" y1="80" x2="1140" y2="80" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
+      <line x1="60" y1="80" x2="1290" y2="80" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
 
       <!-- conectores sutis entre nós -->
       <line x1="116" y1="80" x2="204" y2="80" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
@@ -680,6 +680,24 @@ animation:scan 8s linear infinite;
   <line x1="18" y1="12" x2="18" y2="-36" stroke="#ff2000" stroke-width=".5" stroke-dasharray="2 2" opacity=".4"/>
 </g>
 <text x="1100" y="132" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(200,184,144,0.5)" text-anchor="middle" letter-spacing="1.5">08</text>
+
+      <!-- conector 08 → 09 -->
+      <line x1="1142" y1="80" x2="1178" y2="80" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
+
+      <!-- ── 09 do prazer ao dever — a bola dentro do vidro, virando cotação (ouro) ── -->
+      <g transform="translate(1210,80)">
+        <!-- tampo de vidro: losango isométrico -->
+        <polygon points="0,-34 30,-18 0,-2 -30,-18" fill="none" stroke="#e8b547" stroke-width=".6" opacity=".45"/>
+        <!-- faces da caixa -->
+        <polygon points="-30,-18 0,-2 0,30 -30,14" fill="none" stroke="#e8b547" stroke-width="1.1"/>
+        <polygon points="30,-18 0,-2 0,30 30,14" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".5"/>
+        <!-- a bola, reduzida a ponto no fundo da caixa -->
+        <circle cx="-13" cy="10" r="4.5" fill="#e8b547" opacity=".6"/>
+        <!-- a cotação atravessa o vidro e sobe em degraus -->
+        <line x1="-7" y1="10" x2="30" y2="10" stroke="#e8b547" stroke-width=".4" stroke-dasharray="2 2" opacity=".35"/>
+        <polyline points="30,10 38,10 38,0 46,0 46,-11 54,-11" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".55"/>
+      </g>
+      <text x="1210" y="132" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,181,71,0.5)" text-anchor="middle" letter-spacing="1.5">09</text>
 
       <!-- linha de fecho — o fio que conecta tudo, como Warja -->
       <path d="M 96,80 C 180,80 220,80 288,80 C 360,80 400,80 468,80 C 550,80 590,80 648,80 C 730,80 770,80 840,80"
@@ -833,6 +851,27 @@ animation:scan 8s linear infinite;
           <line x1="5" y1="10" x2="5" y2="74" stroke="#c8b890" stroke-width="1.5" opacity=".35"/>
           <!-- ponto vermelho — primeira nomeação racial -->
           <circle cx="52" cy="55" r="4" fill="#ff2000" opacity=".75"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- card 9 -->
+    <article class="ecard" style="--c:#e8b547;" data-cat="pesquisa" data-url="/doprazeraodever/">
+      <div class="ecard-num">09</div>
+      <div class="ecard-cat">futebol · mercado · raça</div>
+      <h3 class="ecard-titulo">do prazer<br><em>ao dever</em></h3>
+      <p class="ecard-desc">
+        um século de mercantilização do futebol brasileiro em sete vitrines de museu. do ofício de 1907 que barrava jogador negro à arena patrocinada por bet que filtra quem entra. um guia descreve cada caixa; os documentos ficam na mesa de consulta.
+      </p>
+      <span class="ecard-badge">autoral · independente</span>
+      <div class="ecard-geo">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <polygon points="34,10 62,24 34,38 6,24" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".5"/>
+          <polygon points="6,24 34,38 34,70 6,56" fill="none" stroke="#e8b547" stroke-width="1"/>
+          <polygon points="62,24 34,38 34,70 62,56" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".5"/>
+          <circle cx="22" cy="50" r="4.5" fill="#e8b547" opacity=".6"/>
+          <line x1="28" y1="50" x2="56" y2="50" stroke="#e8b547" stroke-width=".4" stroke-dasharray="2 2" opacity=".4"/>
+          <polyline points="56,50 62,50 62,42 68,42 68,32 74,32" fill="none" stroke="#e8b547" stroke-width=".7" opacity=".55"/>
         </svg>
       </div>
     </article>
@@ -1047,6 +1086,7 @@ const btnFechar  = document.getElementById('modal-fechar');
   '/plataformizacao/': { num:'06', titulo:'plataformização', cor:'#e879a0' },
   '/paredaoefisica/': { num:'07', titulo:'paredão e física', cor:'#f97316' },
   '/acaradocrime/':   { num:'08', titulo:'cara de bandido',  cor:'#c8a850' },
+  '/doprazeraodever/':{ num:'09', titulo:'do prazer ao dever', cor:'#e8b547' },
 };
 
 function abrirEnsaio(url){

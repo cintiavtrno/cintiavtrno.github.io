@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Do prazer ao dever — vitrine interativa do futebol brasileiro</title>
+<meta name="description" content="Um século de mercantilização do futebol brasileiro guardado em sete vitrines: ofício, ficha de votação, carimbo, prancheta de scout, contrato, catraca.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   Do prazer ao dever
+   A sala e a mesa de consulta.
+   Nada de painel: os documentos são o conteúdo e a interface.
+   ══════════════════════════════════════════════════════════════ */
+
+:root{
+  --noite:#14121c;
+  --breu:#08060e;
+  --osso:#f2ece0;
+  --ouro:#e8b547;
+
+  --serif:"Newsreader",Georgia,serif;
+  --disp:"Playfair Display",Georgia,serif;
+  --dat:"Courier Prime","Courier New",monospace;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--noite);color:var(--osso);
+  font-family:var(--serif);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+body[data-view="folheto"]{overflow:auto;background:#171420}
+[hidden]{display:none !important}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+i,em{font-style:italic}
+
+/* ══════════════════ A SALA ══════════════════ */
+#sala{position:fixed;inset:0;overflow:hidden}
+.hall-stage{position:absolute;inset:0}
+#hallSvg{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#hallSvg.arrastando{cursor:grabbing}
+#hallSvg #scene{transition:transform .8s cubic-bezier(.22,.9,.24,1)}
+#hallSvg.sem-transicao #scene{transition:none}
+#hallSvg .vitrine{cursor:pointer;transition:opacity .5s ease}
+#hallSvg #entrada{transition:opacity .5s ease}
+#hallSvg .folheto-chamada{transition:opacity .3s ease}
+#hallSvg #folhetos:hover .folheto-chamada{opacity:.55}
+
+/* régua de sala */
+.regua{
+  position:absolute;left:50%;bottom:58px;transform:translateX(-50%);z-index:6;
+  display:flex;align-items:flex-end;border-bottom:1px solid rgba(242,236,224,.2);
+}
+.regua button{
+  position:relative;width:52px;padding:0 0 9px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  color:rgba(242,236,224,.34);transition:color .18s ease;
+}
+.regua button::after{
+  content:"";position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
+  width:1px;height:7px;background:rgba(242,236,224,.28);
+}
+.regua button .marca{
+  width:8px;height:8px;border:1px solid rgba(242,236,224,.3);
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.regua button:hover{color:var(--osso)}
+.regua button[aria-current="true"]{color:var(--osso)}
+.regua button[aria-current="true"] .marca{transform:rotate(45deg) scale(1.1)}
+.regua button[aria-current="true"]::after{height:11px}
+#sala.aberto .regua{left:auto;right:3.5vw;transform:none}
+
+.rodape-museu{
+  position:absolute;left:0;right:0;bottom:22px;z-index:4;text-align:center;pointer-events:none;
+  font-family:var(--serif);font-style:italic;font-size:14.5px;color:rgba(242,236,224,.4);
+  transition:opacity .3s ease;
+}
+#sala.aberto .rodape-museu{opacity:0}
+
+.atalho-folheto,.atalho-sala,.fh-volta,.mesa-devolver{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+}
+.atalho-folheto{
+  position:absolute;right:20px;top:18px;z-index:7;
+  color:rgba(242,236,224,.4);padding:.4rem 0;
+  border-bottom:1px solid rgba(242,236,224,.22);
+  transition:color .18s ease,border-color .18s ease;
+}
+.atalho-folheto:hover{color:var(--ouro);border-color:var(--ouro)}
+
+/* ══════════════════════════════════════════════════════════════
+   MESA DE CONSULTA
+   Papéis avulsos sobre o chão escuro. Cada folha é um documento
+   com a tipografia dele; a de cima mostra as primeiras linhas e
+   a pessoa levanta a que quiser ler.
+   ══════════════════════════════════════════════════════════════ */
+.mesa{
+  position:absolute;z-index:12;left:0;top:0;bottom:0;
+  width:min(540px,45vw);
+  padding:52px 30px 74px 36px;
+  overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(90deg,rgba(8,6,14,.9) 0%,rgba(8,6,14,.84) 58%,rgba(8,6,14,0) 100%);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+  scrollbar-width:thin;scrollbar-color:rgba(242,236,224,.2) transparent;
+}
+.mesa::-webkit-scrollbar{width:7px}
+.mesa::-webkit-scrollbar-thumb{background:rgba(242,236,224,.18)}
+.mesa.on{opacity:1;pointer-events:auto}
+.mesa-papeis{display:flex;flex-direction:column;align-items:center;padding-bottom:8px}
+
+.mesa-devolver{
+  display:block;margin:14px auto 0;color:rgba(242,236,224,.4);
+  border-bottom:1px solid rgba(242,236,224,.22);padding:.35rem 0;
+  transition:color .18s ease,border-color .18s ease;
+}
+.mesa-devolver:hover{color:var(--osso);border-color:var(--osso)}
+
+/* ─── a folha ─── */
+.folha{
+  position:relative;width:100%;max-width:396px;
+  margin-bottom:-16px;
+  transform:rotate(var(--r));transform-origin:52% 8%;
+  max-height:112px;overflow:hidden;cursor:pointer;
+  color:#26242c;
+  box-shadow:0 12px 26px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.4);
+  transition:max-height .42s cubic-bezier(.2,.9,.25,1),transform .28s ease,box-shadow .28s ease,margin .42s ease;
+}
+.folha::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:52px;
+  background:linear-gradient(180deg,transparent,rgba(20,14,8,.42));
+  pointer-events:none;transition:opacity .3s ease;
+}
+.folha:hover{transform:rotate(calc(var(--r) * .35)) translateY(-4px)}
+.folha.aberta,.folha.aberta:hover{
+  max-height:1600px;margin-bottom:14px;
+  transform:rotate(0deg);z-index:5;
+  box-shadow:0 26px 54px rgba(0,0,0,.68),0 2px 6px rgba(0,0,0,.5);
+  cursor:default;
+}
+.folha.aberta::after{opacity:0}
+
+/* ─── ofício datilografado ─── */
+.f-oficio{background:#e6dcc4;padding:20px 24px 22px}
+.f-oficio .timbre{
+  font-family:var(--dat);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  text-align:center;color:#4a453a;
+  border-bottom:3px double rgba(51,48,42,.55);padding-bottom:9px;margin-bottom:15px;
+}
+.f-oficio p{
+  font-family:var(--dat);font-size:12.5px;line-height:1.9;color:#33302a;
+  text-shadow:0 0 .6px rgba(51,48,42,.5);
+}
+.f-oficio p + p{margin-top:.9em}
+.f-oficio .assina{
+  margin-top:24px;width:170px;border-top:1px solid rgba(51,48,42,.5);
+  padding-top:5px;font-family:var(--dat);font-size:10px;color:#4a453a;
+}
+.f-oficio .carimbo{
+  position:absolute;right:20px;bottom:22px;width:98px;height:98px;border-radius:50%;
+  border:2px solid #8a3a2e;color:#8a3a2e;opacity:.32;transform:rotate(-13deg);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;
+  line-height:1.5;padding:12px;mix-blend-mode:multiply;pointer-events:none;
+}
+
+/* ─── recorte de jornal ─── */
+.f-recorte{
+  background:#d8d1bc;padding:16px 20px 22px;
+  clip-path:polygon(0 5px,7% 0,17% 6px,27% 1px,38% 6px,49% 0,60% 5px,71% 0,82% 6px,92% 1px,100% 5px,
+                    100% calc(100% - 5px),91% 100%,80% calc(100% - 6px),69% 100%,57% calc(100% - 4px),
+                    45% 100%,33% calc(100% - 6px),21% 100%,10% calc(100% - 4px),0 100%);
+}
+.f-recorte .veio{
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(43,40,35,.62);margin-bottom:8px;
+}
+.f-recorte h4{
+  font-family:var(--disp);font-weight:900;font-size:25px;line-height:1;letter-spacing:-.018em;
+  color:#201e1a;margin-bottom:11px;
+}
+.f-recorte .colunas{
+  column-count:2;column-gap:15px;column-rule:1px solid rgba(43,40,35,.28);
+  font-family:var(--serif);font-size:11.5px;line-height:1.52;text-align:justify;
+  hyphens:auto;color:#35322b;
+}
+.f-recorte .colunas p + p{margin-top:.7em}
+
+/* ─── folha avulsa: a prosa, sem rótulo nenhum ─── */
+.f-nota{background:#efe9dd;padding:24px 26px 26px}
+.f-nota::before{
+  content:"";position:absolute;right:20px;top:15px;width:11px;height:11px;border-radius:50%;
+  background:var(--breu);box-shadow:inset 0 1px 2px rgba(0,0,0,.7);
+}
+.f-nota p{font-family:var(--serif);font-size:15px;line-height:1.62;color:#26242c;text-wrap:pretty}
+.f-nota p + p{margin-top:.72em}
+.f-nota .lapis{
+  display:block;margin-top:18px;font-family:var(--dat);font-size:10.5px;
+  color:rgba(38,36,44,.5);
+}
+
+/* ─── folha de relatório em papel pautado de contabilidade ─── */
+.f-relatorio{
+  background:#e2e7df;
+  background-image:repeating-linear-gradient(180deg,transparent 0 20px,rgba(84,124,94,.22) 20px 21px);
+  padding:20px 24px 24px;
+}
+.f-relatorio strong{
+  display:block;font-family:var(--disp);font-weight:900;font-size:44px;line-height:1;
+  letter-spacing:-.035em;color:#1d2a20;
+}
+.f-relatorio span{
+  display:block;margin-top:12px;font-family:var(--mono);font-size:10px;line-height:1.7;
+  color:rgba(29,42,32,.74);
+}
+
+/* ─── tira de teleimpressora ─── */
+.f-telex{background:#eee5d1;padding:16px 30px;max-width:340px}
+.f-telex::before,.f-telex::after{
+  content:"";position:absolute;top:0;bottom:0;width:15px;
+  background-image:radial-gradient(circle at 7.5px 9px,var(--breu) 2.6px,transparent 2.8px);
+  background-size:15px 18px;
+}
+.f-telex::before{left:0}
+.f-telex::after{right:0}
+.f-telex p{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  line-height:2;color:#3c3628;
+}
+
+/* ─── página arrancada do livro ─── */
+.f-pagina{background:#eee7d6;padding:26px 30px 30px}
+.f-pagina .cabeca{
+  display:flex;justify-content:space-between;gap:1rem;
+  font-family:var(--serif);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(40,36,30,.52);
+  border-bottom:1px solid rgba(40,36,30,.25);padding-bottom:9px;margin-bottom:20px;
+}
+.f-pagina blockquote{
+  font-family:var(--serif);font-style:italic;font-size:20.5px;line-height:1.38;
+  color:#282420;letter-spacing:-.005em;
+}
+.f-pagina .fonte{
+  margin-top:18px;font-family:var(--serif);font-size:12.5px;line-height:1.5;
+  color:rgba(40,36,30,.66);
+}
+
+/* ─── cupom térmico de casa de aposta ─── */
+.f-cupom{
+  background:#f7f7f4;max-width:306px;padding:18px 22px 30px;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 9px),
+    94% 100%,88% calc(100% - 9px),82% 100%,76% calc(100% - 9px),70% 100%,64% calc(100% - 9px),
+    58% 100%,52% calc(100% - 9px),46% 100%,40% calc(100% - 9px),34% 100%,28% calc(100% - 9px),
+    22% 100%,16% calc(100% - 9px),10% 100%,4% calc(100% - 9px),0 100%);
+}
+.f-cupom .topo{
+  text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:#78786f;border-bottom:1px dashed #b9b9b0;padding-bottom:10px;margin-bottom:12px;
+}
+.f-cupom p{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  font-family:var(--mono);font-size:10px;line-height:1.7;color:#4a4a42;margin-bottom:7px;
+}
+.f-cupom p b{font-weight:600;color:#1d1d18;white-space:nowrap}
+.f-cupom .total{
+  border-top:1px dashed #b9b9b0;margin-top:11px;padding-top:11px;
+  font-size:12px;color:#1d1d18;
+}
+.f-cupom .total b{font-size:15px}
+.f-cupom .pe{
+  margin-top:14px;font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:#9a9a90;text-align:center;
+}
+
+/* ─── etiqueta de tombo ─── */
+.f-etiqueta{
+  background:#cbb692;max-width:276px;padding:28px 22px 20px;
+  clip-path:polygon(50% 0,100% 15px,100% 100%,0 100%,0 15px);
+}
+.f-etiqueta::before{
+  content:"";position:absolute;left:50%;top:16px;transform:translateX(-50%);
+  width:12px;height:12px;border-radius:50%;background:var(--breu);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.7);
+}
+.f-etiqueta .tombo{
+  margin-top:12px;text-align:center;font-family:var(--dat);font-size:19px;letter-spacing:.06em;
+  color:#2f2a20;border-bottom:1px solid rgba(58,50,38,.45);padding-bottom:8px;margin-bottom:14px;
+}
+.f-etiqueta dt{
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(58,50,38,.62);
+}
+.f-etiqueta dd{font-family:var(--dat);font-size:12.5px;line-height:1.35;color:#2f2a20;margin-bottom:11px}
+.f-etiqueta dd:last-child{margin-bottom:0}
+
+@media (max-width:860px){
+  .mesa{
+    left:0;right:0;top:auto;bottom:0;width:100%;height:68dvh;
+    padding:34px 20px 34px;
+    background:linear-gradient(180deg,rgba(8,6,14,0),rgba(8,6,14,.9) 42px,rgba(8,6,14,.94));
+  }
+  .folha{max-width:100%}
+  .f-cupom{max-width:308px}
+  .f-telex{max-width:342px}
+  .f-etiqueta{max-width:278px}
+  .regua{bottom:auto;top:16px}
+  #sala.aberto .regua{left:50%;right:auto;transform:translateX(-50%)}
+  .rodape-museu{display:none}
+  .atalho-folheto{top:auto;bottom:16px;right:16px}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   O GUIA DA SALA
+   Quem descreve o que está dentro do vidro é uma pessoa falando
+   ao lado da peça — não uma ficha descrevendo a obra que está
+   logo ali. O balão nasce no crachá e aponta para ele.
+   ══════════════════════════════════════════════════════════════ */
+.guia{
+  position:absolute;z-index:14;display:flex;align-items:flex-start;gap:11px;
+  opacity:0;pointer-events:none;transform:translateY(8px) scale(.97);transform-origin:0 0;
+  transition:opacity .3s ease,transform .34s cubic-bezier(.2,.9,.25,1.15);
+}
+.guia.on{opacity:1;pointer-events:auto;transform:none}
+.guia-badge{
+  width:40px;height:40px;flex:none;border-radius:50%;
+  background:#1c1830;border:1px solid rgba(232,181,71,.55);
+  display:grid;place-items:center;padding:0;
+  box-shadow:0 8px 18px rgba(0,0,0,.6);
+  transition:border-color .18s ease,transform .18s ease;
+}
+.guia-badge:hover{border-color:var(--ouro);transform:translateY(-2px)}
+.guia-badge svg{width:24px;height:24px;display:block}
+.guia-balao{
+  position:relative;background:#efe9dd;color:#26242c;
+  padding:13px 17px 14px;max-width:362px;
+  box-shadow:0 18px 38px rgba(0,0,0,.55),0 2px 5px rgba(0,0,0,.4);
+  cursor:pointer;
+}
+.guia-balao::before{
+  content:"";position:absolute;left:-9px;top:14px;
+  width:0;height:0;border-top:7px solid transparent;border-bottom:9px solid transparent;
+  border-right:9px solid #efe9dd;
+}
+.guia-quem{
+  display:block;font-family:var(--mono);font-size:8px;letter-spacing:.24em;
+  text-transform:uppercase;color:#7c3a24;margin-bottom:7px;
+}
+.guia-balao p{font-family:var(--serif);font-size:14.5px;line-height:1.5;text-wrap:pretty}
+.guia-pe{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:11px;padding-top:9px;border-top:1px solid rgba(38,36,44,.16);
+}
+.guia-passos{display:flex;gap:5px}
+.guia-passos i{width:14px;height:2px;background:rgba(38,36,44,.22);display:block}
+.guia-passos i.dito{background:#7c3a24}
+.guia-mais{
+  font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(38,36,44,.45);
+}
+.guia-balao:hover .guia-mais{color:#7c3a24}
+.guia.calado .guia-balao{display:none}
+.guia.calado .guia-badge{opacity:.75}
+
+@media (max-width:860px){
+  .guia{
+    position:static !important;left:auto !important;top:auto !important;
+    flex-direction:column;align-items:flex-start;gap:9px;
+    width:100%;margin:0 0 22px;
+  }
+  .guia.on{transform:none}
+  .guia-balao{max-width:none;width:100%}
+  .guia-balao::before{
+    left:13px;top:-9px;
+    border-left:7px solid transparent;border-right:9px solid transparent;
+    border-bottom:9px solid #efe9dd;border-top:0;
+  }
+  .guia-balao p{font-size:13.5px}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   O FOLHETO — o ensaio impresso que se pega na entrada
+   ══════════════════════════════════════════════════════════════ */
+#folheto{
+  min-height:100dvh;padding:34px 4vw 8vh;
+  background:
+    radial-gradient(120% 60% at 50% 0%,rgba(232,181,71,.05),transparent 70%),
+    #171420;
+}
+.atalho-sala{
+  display:block;max-width:1080px;margin:0 auto 18px;
+  color:rgba(242,236,224,.42);padding:.35rem 0;width:max-content;
+  border-bottom:1px solid rgba(242,236,224,.2);
+}
+.atalho-sala:hover{color:var(--osso);border-color:var(--osso)}
+
+.folha-impressa{
+  max-width:1080px;margin:0 auto;
+  background:#efe9dc;color:#22202a;
+  padding:clamp(28px,4vw,54px) clamp(24px,4.5vw,64px) clamp(40px,5vw,66px);
+  box-shadow:0 30px 70px rgba(0,0,0,.55);
+  background-image:linear-gradient(90deg,transparent calc(50% - 1px),rgba(34,32,42,.09) 50%,transparent calc(50% + 1px));
+}
+@media (max-width:760px){
+  .folha-impressa{background-image:none}
+}
+
+.fh-regra{
+  display:flex;justify-content:space-between;gap:1rem;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(34,32,42,.5);
+  border-top:2px solid #22202a;border-bottom:1px solid #22202a;
+  padding:7px 0;margin-bottom:clamp(24px,4vw,44px);
+}
+.fh-titulo{
+  font-family:var(--disp);font-weight:900;
+  font-size:clamp(3rem,11vw,7.2rem);line-height:.84;letter-spacing:-.045em;
+  margin-bottom:1.1rem;
+}
+.fh-titulo i{font-weight:700;font-style:italic;color:#7c3a24}
+.fh-sub{
+  font-family:var(--serif);font-size:clamp(1.02rem,1.9vw,1.28rem);line-height:1.45;
+  max-width:30em;color:rgba(34,32,42,.76);margin-bottom:clamp(26px,4vw,42px);
+}
+
+/* índice das salas, com pontilhado de sumário impresso */
+.fh-indice{
+  list-style:none;border-top:1px solid rgba(34,32,42,.35);
+  margin-bottom:clamp(30px,5vw,52px);
+  columns:2;column-gap:44px;
+}
+@media (max-width:700px){ .fh-indice{columns:1} }
+.fh-indice li{border-bottom:1px solid rgba(34,32,42,.16);break-inside:avoid}
+.fh-indice button{
+  display:flex;align-items:baseline;gap:.5rem;width:100%;
+  padding:.62rem 0;text-align:left;
+}
+.fh-indice .n{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#7c3a24;flex:none;
+}
+.fh-indice .t{font-family:var(--serif);font-size:15.5px;color:#22202a}
+.fh-indice .pontos{
+  flex:1;border-bottom:1px dotted rgba(34,32,42,.42);transform:translateY(-4px);min-width:14px;
+}
+.fh-indice .e{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:rgba(34,32,42,.5);flex:none;
+}
+.fh-indice button:hover .t{color:#7c3a24}
+
+/* corpo do folheto em duas colunas, como material impresso */
+.fh-colunas{columns:2;column-gap:clamp(28px,4vw,56px);column-rule:1px solid rgba(34,32,42,.16)}
+@media (max-width:760px){ .fh-colunas{columns:1;column-rule:none} }
+.fh-colunas p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.58;margin-bottom:.95em;
+  text-align:justify;hyphens:auto;text-wrap:pretty;
+}
+.fh-abre{
+  font-size:1.18rem !important;line-height:1.45 !important;text-align:left !important;
+  border-left:3px solid #7c3a24;padding-left:1rem;margin-bottom:1.6em !important;
+}
+.fh-colunas h2{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:#7c3a24;
+  margin:1.9em 0 .8em;padding-top:.7em;border-top:1px solid rgba(34,32,42,.3);
+  break-after:avoid;
+}
+.fh-destaque{
+  font-family:var(--disp) !important;font-weight:700;
+  font-size:1.32rem !important;line-height:1.22 !important;letter-spacing:-.02em;
+  text-align:left !important;
+  border-top:2px solid #22202a;border-bottom:2px solid #22202a;
+  padding:.75em 0 !important;margin:1.4em 0 1.6em !important;break-inside:avoid;
+}
+.fh-destaque.final{color:#7c3a24}
+
+.fh-pe{border-top:2px solid #22202a;margin-top:clamp(28px,4vw,48px);padding-top:16px}
+.fh-pe p{
+  font-family:var(--mono);font-size:9.5px;line-height:1.85;letter-spacing:.02em;
+  color:rgba(34,32,42,.6);margin-bottom:1.4rem;
+}
+.fh-pe b{color:#22202a}
+.fh-volta{
+  color:#22202a;border-bottom:1px solid rgba(34,32,42,.4);padding:.35rem 0;
+}
+.fh-volta:hover{color:#7c3a24;border-color:#7c3a24}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+</style>
+</head>
+<body data-view="sala">
+
+<!-- ══════════════════ A SALA ══════════════════ -->
+<section id="sala">
+
+  <div class="hall-stage">
+    <svg id="hallSvg" viewBox="0 0 1500 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Corredor isométrico com a parede de entrada e sete vitrines de museu">
+<defs>
+<pattern id="chevron" patternUnits="userSpaceOnUse" width="24" height="24"><rect width="24" height="24" fill="#7a4a2a"/><polygon points="0,0 12,0 6,12 0,12" fill="#4a2f1e" opacity="0.55"/><polygon points="12,0 24,0 24,12 18,12" fill="#b57a48" opacity="0.35"/><polygon points="0,12 6,12 12,24 0,24" fill="#b57a48" opacity="0.4"/><polygon points="18,12 24,12 24,24 12,24" fill="#4a2f1e" opacity="0.5"/><line x1="0" y1="0" x2="0" y2="24" stroke="rgba(0,0,0,0.15)" stroke-width="0.5"/><line x1="12" y1="0" x2="12" y2="24" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"/></pattern>
+<pattern id="brick-light" patternUnits="userSpaceOnUse" width="30" height="14"><rect width="30" height="14" fill="#e4d5bd"/><rect x="0" y="0" width="14" height="6" fill="none" stroke="#b89a78" stroke-width="0.6"/><rect x="15" y="0" width="14" height="6" fill="none" stroke="#b89a78" stroke-width="0.6"/><rect x="-7" y="7" width="14" height="6" fill="none" stroke="#b89a78" stroke-width="0.6"/><rect x="8" y="7" width="14" height="6" fill="none" stroke="#b89a78" stroke-width="0.6"/><rect x="23" y="7" width="14" height="6" fill="none" stroke="#b89a78" stroke-width="0.6"/></pattern>
+<pattern id="brick-dark" patternUnits="userSpaceOnUse" width="30" height="14"><rect width="30" height="14" fill="#2b283f"/><rect x="0" y="0" width="14" height="6" fill="none" stroke="#403c5f" stroke-width="0.6"/><rect x="15" y="0" width="14" height="6" fill="none" stroke="#403c5f" stroke-width="0.6"/><rect x="-7" y="7" width="14" height="6" fill="none" stroke="#403c5f" stroke-width="0.6"/><rect x="8" y="7" width="14" height="6" fill="none" stroke="#403c5f" stroke-width="0.6"/><rect x="23" y="7" width="14" height="6" fill="none" stroke="#403c5f" stroke-width="0.6"/></pattern>
+<pattern id="terrazzo" patternUnits="userSpaceOnUse" width="46" height="46"><rect width="46" height="46" fill="#2a2638"/><circle cx="8" cy="12" r="1.6" fill="#e8b547" opacity="0.35"/><circle cx="30" cy="6" r="1.1" fill="#f2ece0" opacity="0.22"/><circle cx="38" cy="28" r="1.8" fill="#6ea089" opacity="0.28"/><circle cx="18" cy="34" r="1.3" fill="#d1583a" opacity="0.3"/><circle cx="42" cy="42" r="1" fill="#f2ece0" opacity="0.18"/><circle cx="4" cy="40" r="1.4" fill="#e8b547" opacity="0.2"/><circle cx="24" cy="20" r="0.9" fill="#f2ece0" opacity="0.2"/></pattern>
+<pattern id="marble" patternUnits="userSpaceOnUse" width="40" height="40"><rect width="40" height="40" fill="none"/><path d="M 0 30 q 12 -14 24 -4 q 10 8 16 -6" fill="none" stroke="#b9c4c8" stroke-width="0.7"/><path d="M -6 12 q 14 8 26 -6" fill="none" stroke="#c8d0d3" stroke-width="0.5"/></pattern>
+<radialGradient id="floorShadow"><stop offset="0%" stop-color="#000" stop-opacity="0.55"/><stop offset="70%" stop-color="#000" stop-opacity="0.18"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(232,181,71,0.16)"/><stop offset="45%" stop-color="rgba(232,181,71,0.05)"/><stop offset="100%" stop-color="rgba(180,200,220,0.03)"/></linearGradient>
+<linearGradient id="floorTint" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(20,18,28,0.42)"/><stop offset="100%" stop-color="rgba(20,18,28,0.05)"/></linearGradient>
+<linearGradient id="hallBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#14121c"/><stop offset="55%" stop-color="#1e1b2a"/><stop offset="100%" stop-color="#100e18"/></linearGradient>
+<linearGradient id="spotBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(245,217,138,0.35)"/><stop offset="100%" stop-color="rgba(245,217,138,0)"/></linearGradient>
+<radialGradient id="bulbGlow"><stop offset="0%" stop-color="rgba(245,217,138,0.55)"/><stop offset="100%" stop-color="rgba(245,217,138,0)"/></radialGradient>
+<linearGradient id="dust" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(255,214,150,0.25)"/><stop offset="100%" stop-color="rgba(120,70,40,0.15)"/></linearGradient>
+<linearGradient id="dusk" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(232,140,70,0.22)"/><stop offset="100%" stop-color="rgba(40,26,44,0.5)"/></linearGradient>
+<linearGradient id="vignette" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#14121c"/><stop offset="12%" stop-color="rgba(20,18,28,0)"/><stop offset="88%" stop-color="rgba(20,18,28,0)"/><stop offset="100%" stop-color="#14121c"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="1500" height="900" fill="url(#hallBg)"/>
+<g id="scene" transform="translate(0,0) scale(1)"><rect x="-1080" y="120" width="4820" height="720" fill="url(#terrazzo)" opacity="0.85"/><rect x="-1080" y="120" width="4820" height="720" fill="url(#floorTint)" opacity="0.6"/><line x1="-200" y1="130" x2="-200" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="230" y1="130" x2="230" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="660" y1="130" x2="660" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="1090" y1="130" x2="1090" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="1520" y1="130" x2="1520" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="1950" y1="130" x2="1950" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="2380" y1="130" x2="2380" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="2810" y1="130" x2="2810" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="3240" y1="130" x2="3240" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><line x1="3670" y1="130" x2="3670" y2="830" stroke="rgba(232,181,71,0.10)" stroke-dasharray="2 10"/><rect x="-1080" y="120" width="4820" height="3" fill="rgba(232,181,71,0.35)"/><rect x="-200" y="830" width="3940" height="3" fill="rgba(232,181,71,0.25)"/><line x1="-200" y1="560" x2="3740" y2="560" stroke="rgba(232,181,71,0.16)" stroke-dasharray="3 9"/><g class="vitrine" data-i="0" data-cx="300" data-cy="470"><ellipse cx="300" cy="574" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="150,470 300,548 450,470 300,392" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="150,494 300,572 300,586 150,508" fill="#17141f"/><polygon points="450,494 300,572 300,586 450,508" fill="#100e18"/><polygon points="150,470 300,548 450,470 300,392" fill="#1b1826" transform="translate(0,20)"/><polygon points="150,470 300,392 300,280 150,358" fill="url(#brick-light)"/><polygon points="150,470 300,392 300,280 150,358" fill="rgba(0,0,0,0.26)"/><polygon points="300,392 450,470 450,358 300,280" fill="url(#brick-light)"/><polygon points="300,392 450,470 450,358 300,280" fill="rgba(0,0,0,0.10)"/><polygon points="150,470 300,392 300,280 150,358" fill="#e8b547" opacity="0.10"/><polygon points="150,470 300,392 450,470 300,548" fill="url(#chevron)"/><polygon points="150,470 300,392 450,470 300,548" fill="url(#floorTint)"/><polyline points="150,470 300,392 450,470" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><polygon points="254,286 346,286 396,462 204,462" fill="url(#spotBeam)" opacity="0.85"/><circle cx="260" cy="356" r="1.4" fill="#f5d98a" opacity="0.55"/><circle cx="318" cy="380" r="1.1" fill="#f5d98a" opacity="0.55"/><circle cx="292" cy="326" r="1.2" fill="#f5d98a" opacity="0.55"/><circle cx="346" cy="336" r="1" fill="#f5d98a" opacity="0.55"/><circle cx="244" cy="416" r="1.3" fill="#f5d98a" opacity="0.55"/><circle cx="330" cy="430" r="1.1" fill="#f5d98a" opacity="0.55"/><circle cx="304" cy="404" r="0.9" fill="#f5d98a" opacity="0.55"/><circle cx="276" cy="446" r="1" fill="#f5d98a" opacity="0.55"/><ellipse cx="300" cy="478" rx="62" ry="21.1" fill="url(#floorShadow)" opacity="0.85"/><path d="M 256 474 L 344 474 L 334 422 L 266 422 Z" fill="#5b1f2a"/><ellipse cx="300" cy="422" rx="34" ry="11" fill="#7a2b39"/><ellipse cx="300" cy="420" rx="30" ry="9" fill="#93374a"/><path d="M 270 418 q 30 10 60 0" fill="none" stroke="#e8b547" stroke-width="0.8" opacity="0.7"/><path d="M 300 410 L 244 400 L 246 384 L 300 394 Z" fill="#f6f0e2" stroke="#e8b547" stroke-width="0.7"/><path d="M 300 410 L 356 400 L 354 384 L 300 394 Z" fill="#fbf6ea" stroke="#e8b547" stroke-width="0.7"/><path d="M 300 410 L 300 394" stroke="#c9bda2" stroke-width="1"/><line x1="250.0" y1="402.6" x2="292" y2="409.4" stroke="#8d8474" stroke-width="0.7" opacity="0.75"/><line x1="308" y1="409.4" x2="350.0" y2="402.6" stroke="#8d8474" stroke-width="0.7" opacity="0.75"/><line x1="251.2" y1="400.0" x2="292" y2="406.79999999999995" stroke="#8d8474" stroke-width="0.7" opacity="0.67"/><line x1="308" y1="406.79999999999995" x2="348.8" y2="400.0" stroke="#8d8474" stroke-width="0.7" opacity="0.67"/><line x1="252.4" y1="397.40000000000003" x2="292" y2="404.2" stroke="#8d8474" stroke-width="0.7" opacity="0.59"/><line x1="308" y1="404.2" x2="347.6" y2="397.40000000000003" stroke="#8d8474" stroke-width="0.7" opacity="0.59"/><line x1="253.6" y1="394.8" x2="292" y2="401.59999999999997" stroke="#8d8474" stroke-width="0.7" opacity="0.51"/><line x1="308" y1="401.59999999999997" x2="346.4" y2="394.8" stroke="#8d8474" stroke-width="0.7" opacity="0.51"/><line x1="254.8" y1="392.20000000000005" x2="292" y2="399.0" stroke="#8d8474" stroke-width="0.7" opacity="0.43"/><line x1="308" y1="399.0" x2="345.2" y2="392.20000000000005" stroke="#8d8474" stroke-width="0.7" opacity="0.43"/><line x1="256.0" y1="389.6" x2="292" y2="396.4" stroke="#8d8474" stroke-width="0.7" opacity="0.35"/><line x1="308" y1="396.4" x2="344.0" y2="389.6" stroke="#8d8474" stroke-width="0.7" opacity="0.35"/><text x="300" y="380" text-anchor="middle" fill="#e8b547" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:13px">festa dos olhos</text></g><polygon points="150,470 300,548 300,436 150,358" fill="url(#glass)" opacity="0.55"/><polygon points="300,548 450,470 450,358 300,436" fill="url(#glass)" opacity="0.35"/><polygon points="150,358 300,280 450,358 300,436" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="148.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="150" cy="358" r="3.2" fill="#e8b547"/><circle cx="150" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="448.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="450" cy="358" r="3.2" fill="#e8b547"/><circle cx="450" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="298.4" y="436" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="300" cy="436" r="3.2" fill="#e8b547"/><circle cx="300" cy="548" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="298.4" y="280" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="300" cy="280" r="3.2" fill="#e8b547"/><circle cx="300" cy="392" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="150,470 300,548 450,470" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="181" y="592" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="200" cy="610" r="4.5" fill="#e8b547"/><text x="214" y="607" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">00 · Pórtico</text><text x="214" y="621" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Galeano, Futebol ao Sol e à Sombra</text></g></g><g class="vitrine" data-i="1" data-cx="730" data-cy="620"><ellipse cx="730" cy="724" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="580,620 730,698 880,620 730,542" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="580,644 730,722 730,736 580,658" fill="#17141f"/><polygon points="880,644 730,722 730,736 880,658" fill="#100e18"/><polygon points="580,620 730,698 880,620 730,542" fill="#1b1826" transform="translate(0,20)"/><polygon points="580,620 730,542 730,430 580,508" fill="url(#brick-light)"/><polygon points="580,620 730,542 730,430 580,508" fill="rgba(0,0,0,0.26)"/><polygon points="730,542 880,620 880,508 730,430" fill="url(#brick-light)"/><polygon points="730,542 880,620 880,508 730,430" fill="rgba(0,0,0,0.10)"/><polygon points="580,620 730,542 730,430 580,508" fill="#c46b3c" opacity="0.10"/><polygon points="580,620 730,542 880,620 730,698" fill="url(#chevron)"/><polygon points="580,620 730,542 880,620 730,698" fill="url(#floorTint)"/><polyline points="580,620 730,542 880,620" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><ellipse cx="730" cy="612" rx="126" ry="52" fill="#8a5c3a" opacity="0.55"/><ellipse cx="730" cy="612" rx="126" ry="52" fill="url(#dust)" opacity="0.5"/><line x1="626" y1="596" x2="626" y2="556" stroke="#6b4a2c" stroke-width="3"/><line x1="668" y1="608" x2="670" y2="568" stroke="#6b4a2c" stroke-width="3"/><line x1="626" y1="556" x2="670" y2="568" stroke="#7d5834" stroke-width="3"/><ellipse cx="646" cy="620" rx="13" ry="4.4" fill="url(#floorShadow)" opacity="0.85"/><rect x="639" y="588" width="14" height="18" rx="3" fill="#e0a271" stroke="#c46b3c" stroke-width="0.6"/><line x1="643" y1="606" x2="641" y2="618" stroke="#4a3524" stroke-width="2.4"/><line x1="649" y1="606" x2="651" y2="618" stroke="#4a3524" stroke-width="2.4"/><circle cx="646" cy="583" r="5" fill="#6d4a30"/><ellipse cx="670" cy="624" rx="13" ry="4.4" fill="url(#floorShadow)" opacity="0.85"/><rect x="663" y="592" width="14" height="18" rx="3" fill="#e0a271" stroke="#c46b3c" stroke-width="0.6"/><line x1="667" y1="610" x2="665" y2="622" stroke="#4a3524" stroke-width="2.4"/><line x1="673" y1="610" x2="675" y2="622" stroke="#4a3524" stroke-width="2.4"/><circle cx="670" cy="587" r="5" fill="#6d4a30"/><ellipse cx="692" cy="628" rx="13" ry="4.4" fill="url(#floorShadow)" opacity="0.85"/><rect x="685" y="596" width="14" height="18" rx="3" fill="#e0a271" stroke="#c46b3c" stroke-width="0.6"/><line x1="689" y1="614" x2="687" y2="626" stroke="#4a3524" stroke-width="2.4"/><line x1="695" y1="614" x2="697" y2="626" stroke="#4a3524" stroke-width="2.4"/><circle cx="692" cy="591" r="5" fill="#6d4a30"/><circle cx="708" cy="620" r="7" fill="#efe6d2" stroke="#5a4630"/><path d="M 701 620 q 7 -5 14 0 q -7 5 -14 0" fill="none" stroke="#5a4630" stroke-width="0.7"/><ellipse cx="774" cy="616" rx="13" ry="4.4" fill="url(#floorShadow)" opacity="0.85"/><rect x="767" y="584" width="14" height="19" rx="2" fill="#f4efe2" stroke="#b9ae95" stroke-width="0.6"/><line x1="774" y1="586" x2="774" y2="601" stroke="#c8bda2" stroke-width="0.6"/><line x1="771" y1="603" x2="770" y2="614" stroke="#2f2a33" stroke-width="2.4"/><line x1="777" y1="603" x2="778" y2="614" stroke="#2f2a33" stroke-width="2.4"/><circle cx="774" cy="579" r="5" fill="#e7c3a2"/><ellipse cx="798" cy="621" rx="13" ry="4.4" fill="url(#floorShadow)" opacity="0.85"/><rect x="791" y="589" width="14" height="19" rx="2" fill="#f4efe2" stroke="#b9ae95" stroke-width="0.6"/><line x1="798" y1="591" x2="798" y2="606" stroke="#c8bda2" stroke-width="0.6"/><line x1="795" y1="608" x2="794" y2="619" stroke="#2f2a33" stroke-width="2.4"/><line x1="801" y1="608" x2="802" y2="619" stroke="#2f2a33" stroke-width="2.4"/><circle cx="798" cy="584" r="5" fill="#e7c3a2"/><rect x="814" y="596" width="20" height="13" rx="1.5" fill="#3c2f22" stroke="#c46b3c" stroke-width="0.6"/><rect x="816" y="592" width="16" height="6" rx="2" fill="#7a5c3a"/><line x1="736" y1="610" x2="736" y2="540" stroke="#5c4029" stroke-width="3"/><rect x="714" y="522" width="46" height="34" rx="1" fill="#efe7d2" stroke="#a8987b" stroke-width="0.7" transform="rotate(-2 736 538)"/><line x1="719" y1="529" x2="755" y2="529" stroke="#6c6252" stroke-width="1"/><line x1="719" y1="535" x2="746" y2="535" stroke="#6c6252" stroke-width="1"/><line x1="719" y1="541" x2="755" y2="541" stroke="#6c6252" stroke-width="1"/><line x1="719" y1="547" x2="746" y2="547" stroke="#6c6252" stroke-width="1"/><line x1="719" y1="553" x2="755" y2="553" stroke="#6c6252" stroke-width="1"/><ellipse cx="834" cy="630" rx="12" ry="4.1" fill="url(#floorShadow)" opacity="0.85"/><ellipse cx="832" cy="618" rx="7" ry="2.6" fill="#efe8dc"/><rect x="825" y="612" width="14" height="6" fill="#d8cfc0" stroke="#9c917e" stroke-width="0.5"/><ellipse cx="848" cy="620" rx="8" ry="3.4" fill="#cfd6d8" stroke="#c46b3c" stroke-width="0.6"/></g><polygon points="580,620 730,698 730,586 580,508" fill="url(#glass)" opacity="0.55"/><polygon points="730,698 880,620 880,508 730,586" fill="url(#glass)" opacity="0.35"/><polygon points="580,508 730,430 880,508 730,586" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="578.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="580" cy="508" r="3.2" fill="#e8b547"/><circle cx="580" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="878.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="880" cy="508" r="3.2" fill="#e8b547"/><circle cx="880" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="728.4" y="586" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="730" cy="586" r="3.2" fill="#e8b547"/><circle cx="730" cy="698" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="728.4" y="430" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="730" cy="430" r="3.2" fill="#e8b547"/><circle cx="730" cy="542" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="580,620 730,698 880,620" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="611" y="742" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="630" cy="760" r="4.5" fill="#c46b3c"/><text x="644" y="757" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">01 · 1907–1920</text><text x="644" y="771" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Liga Metropolitana, 1907</text></g></g><g class="vitrine" data-i="2" data-cx="1160" data-cy="470"><ellipse cx="1160" cy="574" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="1010,470 1160,548 1310,470 1160,392" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="1010,494 1160,572 1160,586 1010,508" fill="#17141f"/><polygon points="1310,494 1160,572 1160,586 1310,508" fill="#100e18"/><polygon points="1010,470 1160,548 1310,470 1160,392" fill="#1b1826" transform="translate(0,20)"/><polygon points="1010,470 1160,392 1160,280 1010,358" fill="url(#brick-dark)"/><polygon points="1010,470 1160,392 1160,280 1010,358" fill="rgba(0,0,0,0.26)"/><polygon points="1160,392 1310,470 1310,358 1160,280" fill="url(#brick-dark)"/><polygon points="1160,392 1310,470 1310,358 1160,280" fill="rgba(0,0,0,0.10)"/><polygon points="1010,470 1160,392 1160,280 1010,358" fill="#8a9a4f" opacity="0.10"/><polygon points="1010,470 1160,392 1310,470 1160,548" fill="url(#chevron)"/><polygon points="1010,470 1160,392 1310,470 1160,548" fill="url(#floorTint)"/><polyline points="1010,470 1160,392 1310,470" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><ellipse cx="1160" cy="480" rx="108" ry="36.7" fill="url(#floorShadow)" opacity="0.85"/><polygon points="1056,436 1160,384 1264,436 1160,488" fill="#3a3323" stroke="#c8b25e" stroke-width="0.8"/><polygon points="1056,436 1160,488 1160,498 1056,446" fill="#241f14"/><polygon points="1264,436 1160,488 1160,498 1264,446" fill="#2e2718"/><ellipse cx="1114" cy="428.0" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="424.6" rx="15" ry="5" fill="#d9cfae" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="421.2" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="417.8" rx="15" ry="5" fill="#d9cfae" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="414.4" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="411.0" rx="15" ry="5" fill="#d9cfae" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="407.6" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="404.2" rx="15" ry="5" fill="#d9cfae" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="400.8" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="397.4" rx="15" ry="5" fill="#d9cfae" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1114" cy="394.0" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><ellipse cx="1156" cy="436" rx="15" ry="5" fill="#efe6c8" stroke="#8f855f" stroke-width="0.4"/><text x="1156" y="438" text-anchor="middle" fill="#8a7c4a" style="font-family:'Space Grotesk',sans-serif;font-size:5px;letter-spacing:0.2em">1</text><g transform="translate(1194,380) rotate(-3)"><rect width="66" height="44" fill="#f3ecd8" stroke="#8a9a4f" stroke-width="1.6"/><line x1="6" y1="10" x2="60" y2="10" stroke="#7d7457" stroke-width="1.2"/><line x1="6" y1="17" x2="58" y2="17" stroke="#a49b7f" stroke-width="0.8"/><line x1="6" y1="22" x2="44" y2="22" stroke="#a49b7f" stroke-width="0.8"/><line x1="6" y1="27" x2="58" y2="27" stroke="#a49b7f" stroke-width="0.8"/><line x1="6" y1="32" x2="44" y2="32" stroke="#a49b7f" stroke-width="0.8"/><line x1="6" y1="37" x2="58" y2="37" stroke="#a49b7f" stroke-width="0.8"/><text x="33" y="41" text-anchor="middle" fill="#6a6047" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:8px">boa mistura portuguesa</text></g><g transform="translate(1182,424)"><rect width="42" height="28" rx="2" fill="#3d5a3a" stroke="#c8b25e" stroke-width="0.7"/><rect x="5" y="6" width="32" height="16" fill="#e9e2cc"/><circle cx="21" cy="14" r="5" fill="none" stroke="#8a9a4f" stroke-width="0.8"/></g><g transform="translate(1200,372)"><rect x="-11" y="0" width="22" height="9" rx="2" fill="#4b3a24"/><rect x="-4" y="-16" width="8" height="17" rx="2" fill="#6b5334"/><circle cx="0" cy="-20" r="6" fill="#3c2e1d"/><rect x="-11" y="9" width="22" height="3" fill="#8a9a4f" opacity="0.85"/></g><line x1="1200" y1="388" x2="1200" y2="414" stroke="#8a9a4f" stroke-width="0.7" stroke-dasharray="2 4" opacity="0.7"/></g><polygon points="1010,470 1160,548 1160,436 1010,358" fill="url(#glass)" opacity="0.55"/><polygon points="1160,548 1310,470 1310,358 1160,436" fill="url(#glass)" opacity="0.35"/><polygon points="1010,358 1160,280 1310,358 1160,436" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="1008.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1010" cy="358" r="3.2" fill="#e8b547"/><circle cx="1010" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1308.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1310" cy="358" r="3.2" fill="#e8b547"/><circle cx="1310" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1158.4" y="436" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1160" cy="436" r="3.2" fill="#e8b547"/><circle cx="1160" cy="548" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1158.4" y="280" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1160" cy="280" r="3.2" fill="#e8b547"/><circle cx="1160" cy="392" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="1010,470 1160,548 1310,470" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="1041" y="592" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="1060" cy="610" r="4.5" fill="#8a9a4f"/><text x="1074" y="607" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">02 · 1923–1933</text><text x="1074" y="621" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Amea, 1924 · Profissionalização, 1933</text></g></g><g class="vitrine" data-i="3" data-cx="1590" data-cy="620"><ellipse cx="1590" cy="724" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="1440,620 1590,698 1740,620 1590,542" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="1440,644 1590,722 1590,736 1440,658" fill="#17141f"/><polygon points="1740,644 1590,722 1590,736 1740,658" fill="#100e18"/><polygon points="1440,620 1590,698 1740,620 1590,542" fill="#1b1826" transform="translate(0,20)"/><polygon points="1440,620 1590,542 1590,430 1440,508" fill="url(#brick-dark)"/><polygon points="1440,620 1590,542 1590,430 1440,508" fill="rgba(0,0,0,0.26)"/><polygon points="1590,542 1740,620 1740,508 1590,430" fill="url(#brick-dark)"/><polygon points="1590,542 1740,620 1740,508 1590,430" fill="rgba(0,0,0,0.10)"/><polygon points="1440,620 1590,542 1590,430 1440,508" fill="#5b86b0" opacity="0.10"/><polygon points="1440,620 1590,542 1740,620 1590,698" fill="url(#chevron)"/><polygon points="1440,620 1590,542 1740,620 1590,698" fill="url(#floorTint)"/><polyline points="1440,620 1590,542 1740,620" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><g opacity="0.85"><rect x="1470" y="440" width="240" height="18" fill="#101a24" stroke="#5b86b0" stroke-width="0.5" opacity="0.7"/><text x="1478" y="453" fill="#cfe0ee" style="font-family:'Space Grotesk',monospace;font-size:8px;letter-spacing:0.18em">▲ 17y +2.4M  ▼ 24y −800K  ▲ 19y +1.1M</text></g><path d="M 1472 462 q 60 26 120 6 q 60 -20 118 10" fill="none" stroke="#cfe0ee" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/><ellipse cx="1580" cy="630" rx="96" ry="32.6" fill="url(#floorShadow)" opacity="0.85"/><polygon points="1494,582 1584,538 1662,580 1572,624" fill="#39424e" stroke="#cfe0ee" stroke-width="0.7"/><polygon points="1494,582 1572,624 1572,634 1494,592" fill="#232a33"/><polygon points="1662,580 1572,624 1572,634 1662,590" fill="#2c343e"/><g transform="translate(1518,552) rotate(-8)"><rect width="56" height="72" rx="2" fill="#e9e3d4" stroke="#9aa2ab" stroke-width="0.8"/><rect x="18" y="-4" width="20" height="7" rx="2" fill="#8e97a1"/><rect x="7" y="9" width="22" height="26" fill="#5d6b78"/><circle cx="18" cy="19" r="5" fill="#8a97a3"/><path d="M 9 34 q 9 -12 18 0 z" fill="#8a97a3"/><path d="M 34 34 L 46 12" stroke="#5b86b0" stroke-width="1.4"/><path d="M 46 12 l -6 1 l 4 4 z" fill="#5b86b0"/><text x="8" y="50" fill="#4d5761" style="font-family:'Space Grotesk',sans-serif;font-size:8px;letter-spacing:0.08em">US$ 4.2M ?</text><line x1="8" y1="56" x2="44" y2="56" stroke="#adb4bb" stroke-width="0.8"/><line x1="8" y1="61" x2="36" y2="61" stroke="#adb4bb" stroke-width="0.8"/><line x1="8" y1="66" x2="28" y2="66" stroke="#adb4bb" stroke-width="0.8"/></g><line x1="1636" y1="450" x2="1636" y2="506" stroke="#8d959d" stroke-width="1.4"/><path d="M 1612 508 q 24 -14 48 0" fill="none" stroke="#9aa2ab" stroke-width="2"/><path d="M 1612 510 L 1598 524 L 1608 534 L 1612 528 L 1612 582 L 1660 582 L 1660 528 L 1664 534 L 1674 524 L 1660 510 q -24 12 -48 0 Z" fill="#f2f4f6" stroke="#c3ccd4" stroke-width="0.8"/><rect x="1624" y="530" width="24" height="13" rx="2" fill="#5b86b0" opacity="0.9"/><text x="1636" y="539" text-anchor="middle" fill="#f2f4f6" style="font-family:'Space Grotesk',sans-serif;font-size:6px;letter-spacing:0.14em">LEITE</text><line x1="1620" y1="528" x2="1620" y2="546" stroke="#dfe6ec" stroke-width="0.7"/></g><polygon points="1440,620 1590,698 1590,586 1440,508" fill="url(#glass)" opacity="0.55"/><polygon points="1590,698 1740,620 1740,508 1590,586" fill="url(#glass)" opacity="0.35"/><polygon points="1440,508 1590,430 1740,508 1590,586" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="1438.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1440" cy="508" r="3.2" fill="#e8b547"/><circle cx="1440" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1738.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1740" cy="508" r="3.2" fill="#e8b547"/><circle cx="1740" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1588.4" y="586" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1590" cy="586" r="3.2" fill="#e8b547"/><circle cx="1590" cy="698" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="1588.4" y="430" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1590" cy="430" r="3.2" fill="#e8b547"/><circle cx="1590" cy="542" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="1440,620 1590,698 1740,620" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="1471" y="742" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="1490" cy="760" r="4.5" fill="#5b86b0"/><text x="1504" y="757" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">03 · anos 1990</text><text x="1504" y="771" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Hicks, Muse &amp; cia., 1999</text></g></g><g class="vitrine" data-i="4" data-cx="2020" data-cy="470"><ellipse cx="2020" cy="574" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="1870,470 2020,548 2170,470 2020,392" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="1870,494 2020,572 2020,586 1870,508" fill="#17141f"/><polygon points="2170,494 2020,572 2020,586 2170,508" fill="#100e18"/><polygon points="1870,470 2020,548 2170,470 2020,392" fill="#1b1826" transform="translate(0,20)"/><polygon points="1870,470 2020,392 2020,280 1870,358" fill="url(#brick-dark)"/><polygon points="1870,470 2020,392 2020,280 1870,358" fill="rgba(0,0,0,0.26)"/><polygon points="2020,392 2170,470 2170,358 2020,280" fill="url(#brick-dark)"/><polygon points="2020,392 2170,470 2170,358 2020,280" fill="rgba(0,0,0,0.10)"/><polygon points="1870,470 2020,392 2020,280 1870,358" fill="#c08a3e" opacity="0.10"/><polygon points="1870,470 2020,392 2170,470 2020,548" fill="url(#chevron)"/><polygon points="1870,470 2020,392 2170,470 2020,548" fill="url(#floorTint)"/><polyline points="1870,470 2020,392 2170,470" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><ellipse cx="2020" cy="480" rx="110" ry="37.4" fill="url(#floorShadow)" opacity="0.85"/><polygon points="1918,434 2020,382 2122,434 2020,486" fill="rgba(180,205,215,0.16)" stroke="#c08a3e" stroke-width="0.8"/><polygon points="1918,434 2020,486 2020,494 1918,442" fill="rgba(255,255,255,0.06)"/><polygon points="2122,434 2020,486 2020,494 2122,442" fill="rgba(0,0,0,0.25)"/><g transform="translate(1936,414) rotate(-6)"><rect width="62" height="46" fill="#f4efe2" stroke="#bdb49e" stroke-width="0.7"/><line x1="6" y1="8" x2="54" y2="8" stroke="#b0a892" stroke-width="0.8"/><line x1="6" y1="13" x2="42" y2="13" stroke="#b0a892" stroke-width="0.8"/><line x1="6" y1="18" x2="30" y2="18" stroke="#b0a892" stroke-width="0.8"/><line x1="6" y1="23" x2="54" y2="23" stroke="#b0a892" stroke-width="0.8"/><line x1="6" y1="28" x2="42" y2="28" stroke="#b0a892" stroke-width="0.8"/><line x1="6" y1="33" x2="30" y2="33" stroke="#b0a892" stroke-width="0.8"/><path d="M 10 40 q 8 -9 15 -1 q 6 8 14 -5 q 6 -8 12 2" fill="none" stroke="#1c2a44" stroke-width="1.2"/></g><g transform="translate(1980,406) rotate(24)"><rect width="46" height="4" rx="2" fill="#22201d"/><polygon points="46,0 56,2 46,4" fill="#c08a3e"/><rect x="4" y="0" width="8" height="4" fill="#c08a3e"/></g><ellipse cx="2072" cy="436" rx="34" ry="12" fill="#241f18" stroke="#c08a3e" stroke-width="0.8"/><path d="M 2038 434 a 34 44 0 0 1 68 0" fill="rgba(232,181,71,0.10)" stroke="rgba(232,181,71,0.55)" stroke-width="0.9"/><ellipse cx="2072" cy="424" rx="22" ry="8" fill="#4a4238"/><ellipse cx="2072" cy="420" rx="22" ry="8" fill="none" stroke="#c08a3e" stroke-width="1"/><path d="M 2050 420 l 4 -12 q 18 -7 36 0 l 4 12" fill="#6a6155" stroke="#3a3630" stroke-width="0.6"/><ellipse cx="2072" cy="408" rx="18" ry="6" fill="#8d8476"/><line x1="2106" y1="416" x2="2118" y2="436" stroke="#cbbf9d" stroke-width="0.7"/><g transform="translate(2106,438) rotate(9)"><rect width="40" height="24" rx="2" fill="#e8dfc6" stroke="#9d9377" stroke-width="0.6"/><text x="6" y="10" fill="#6b6249" style="font-family:'Space Grotesk',sans-serif;font-size:6px;letter-spacing:0.1em">TEXTOR</text><line x1="5" y1="7.5" x2="34" y2="7.5" stroke="#8d3a24" stroke-width="1"/><text x="6" y="19" fill="#6b6249" style="font-family:'Space Grotesk',sans-serif;font-size:6px;letter-spacing:0.1em">— — — —</text></g><circle cx="2014" cy="360" r="26" fill="#232a2e" stroke="#c08a3e" stroke-width="0.7"/><ellipse cx="2014" cy="360" rx="26" ry="9" fill="none" stroke="#3a3630" stroke-width="0.5" opacity="0.6"/><ellipse cx="2014" cy="360" rx="10" ry="26" fill="none" stroke="#3a3630" stroke-width="0.5" opacity="0.6"/><circle cx="2002" cy="352" r="2" fill="#c08a3e"/><circle cx="2018" cy="344" r="2" fill="#c08a3e"/><circle cx="2026" cy="366" r="2" fill="#c08a3e"/><circle cx="2006" cy="372" r="2" fill="#c08a3e"/><circle cx="2032" cy="352" r="2" fill="#c08a3e"/><line x1="2002" y1="352" x2="2018" y2="344" stroke="#c08a3e" stroke-width="0.6" opacity="0.8"/><line x1="2018" y1="344" x2="2026" y2="366" stroke="#c08a3e" stroke-width="0.6" opacity="0.8"/><line x1="2026" y1="366" x2="2006" y2="372" stroke="#c08a3e" stroke-width="0.6" opacity="0.8"/><line x1="2006" y1="372" x2="2032" y2="352" stroke="#c08a3e" stroke-width="0.6" opacity="0.8"/></g><polygon points="1870,470 2020,548 2020,436 1870,358" fill="url(#glass)" opacity="0.55"/><polygon points="2020,548 2170,470 2170,358 2020,436" fill="url(#glass)" opacity="0.35"/><polygon points="1870,358 2020,280 2170,358 2020,436" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="1868.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="1870" cy="358" r="3.2" fill="#e8b547"/><circle cx="1870" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2168.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2170" cy="358" r="3.2" fill="#e8b547"/><circle cx="2170" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2018.4" y="436" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2020" cy="436" r="3.2" fill="#e8b547"/><circle cx="2020" cy="548" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2018.4" y="280" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2020" cy="280" r="3.2" fill="#e8b547"/><circle cx="2020" cy="392" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="1870,470 2020,548 2170,470" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="1901" y="592" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="1920" cy="610" r="4.5" fill="#c08a3e"/><text x="1934" y="607" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">04 · 1998–2021</text><text x="1934" y="621" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Lei 14.193, 2021</text></g></g><g class="vitrine" data-i="5" data-cx="2450" data-cy="620"><ellipse cx="2450" cy="724" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="2300,620 2450,698 2600,620 2450,542" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="2300,644 2450,722 2450,736 2300,658" fill="#17141f"/><polygon points="2600,644 2450,722 2450,736 2600,658" fill="#100e18"/><polygon points="2300,620 2450,698 2600,620 2450,542" fill="#1b1826" transform="translate(0,20)"/><polygon points="2300,620 2450,542 2450,430 2300,508" fill="url(#brick-dark)"/><polygon points="2300,620 2450,542 2450,430 2300,508" fill="rgba(0,0,0,0.26)"/><polygon points="2450,542 2600,620 2600,508 2450,430" fill="url(#brick-dark)"/><polygon points="2450,542 2600,620 2600,508 2450,430" fill="rgba(0,0,0,0.10)"/><polygon points="2300,620 2450,542 2450,430 2300,508" fill="#e9eef0" opacity="0.10"/><polygon points="2300,620 2450,542 2600,620 2450,698" fill="url(#chevron)"/><polygon points="2300,620 2450,542 2600,620 2450,698" fill="url(#floorTint)"/><polyline points="2300,620 2450,542 2600,620" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><polygon points="2310,596 2448,522 2448,634 2310,612" fill="#e6eaec" opacity="0.9"/><polygon points="2310,596 2448,522 2448,634 2310,612" fill="url(#marble)" opacity="0.5"/><rect x="2350" y="450" width="52" height="10" rx="2" fill="#b9c2c6"/><line x1="2354" y1="452" x2="2354" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2361" y1="452" x2="2361" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2368" y1="452" x2="2368" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2375" y1="452" x2="2375" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2382" y1="452" x2="2382" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2389" y1="452" x2="2389" y2="458" stroke="#7f898d" stroke-width="1"/><line x1="2396" y1="452" x2="2396" y2="458" stroke="#7f898d" stroke-width="1"/><ellipse cx="2386" cy="602" rx="16" ry="5.4" fill="url(#floorShadow)" opacity="0.85"/><path d="M 2376 542 L 2396 542 L 2386 562 Z" fill="rgba(255,255,255,0.75)" stroke="#c7ced1" stroke-width="0.6"/><line x1="2386" y1="562" x2="2386" y2="592" stroke="#c7ced1" stroke-width="1.4"/><ellipse cx="2386" cy="594" rx="9" ry="3" fill="#dfe5e7"/><circle cx="2380" cy="546" r="1.3" fill="#f7fbfc"/><circle cx="2388" cy="549" r="1.3" fill="#f7fbfc"/><circle cx="2384" cy="552" r="1.3" fill="#f7fbfc"/><polygon points="2448,522 2448,634 2452,634 2452,522" fill="rgba(232,181,71,0.35)"/><line x1="2450" y1="434" x2="2450" y2="632" stroke="#e9eef0" stroke-width="1" opacity="0.5" stroke-dasharray="4 5"/><polygon points="2452,522 2590,596 2590,612 2452,634" fill="#2b2f36"/><g stroke="#7b8791" stroke-width="2" fill="none"><rect x="2484" y="522" width="52" height="62" rx="2"/><line x1="2488" y1="522" x2="2488" y2="584"/><line x1="2499" y1="522" x2="2499" y2="584"/><line x1="2510" y1="522" x2="2510" y2="584"/><line x1="2521" y1="522" x2="2521" y2="584"/><line x1="2532" y1="522" x2="2532" y2="584"/><line x1="2484" y1="552" x2="2536" y2="552"/></g><circle cx="2546" cy="556" r="7" fill="none" stroke="#7b8791" stroke-width="2"/><ellipse cx="2510" cy="608" rx="22" ry="7.5" fill="url(#floorShadow)" opacity="0.85"/><g transform="translate(2490,588)"><rect width="42" height="36" rx="2" fill="rgba(180,195,205,0.28)" stroke="#93a0ab" stroke-width="0.8"/><rect x="0" y="0" width="42" height="9" fill="rgba(232,236,240,0.5)"/><line x1="6" y1="30" x2="34" y2="12" stroke="#39ff9e" stroke-width="2" opacity="0.8"/><path d="M 34 12 l -2 -8 l 8 3 z" fill="#c14a3a"/><text x="4" y="7" fill="#3d474f" style="font-family:'Space Grotesk',sans-serif;font-size:4.4px;letter-spacing:0.12em">EVIDÊNCIA 05</text></g><g transform="translate(2430,468) rotate(-8)"><rect width="40" height="72" rx="7" fill="#0d1a14" stroke="#39ff9e" stroke-width="1"/><rect x="4" y="7" width="32" height="58" rx="3" fill="#062b1c"/><rect x="8" y="12" width="24" height="9" rx="2" fill="#39ff9e" opacity="0.85"/><rect x="8" y="25" width="24" height="9" rx="2" fill="#39ff9e" opacity="0.69"/><rect x="8" y="38" width="24" height="9" rx="2" fill="#39ff9e" opacity="0.53"/><rect x="8" y="51" width="24" height="9" rx="2" fill="#39ff9e" opacity="0.37"/><circle cx="20" cy="70" r="1.6" fill="#39ff9e"/></g><ellipse cx="2450" cy="502" rx="44" ry="30" fill="#39ff9e" opacity="0.12"/></g><polygon points="2300,620 2450,698 2450,586 2300,508" fill="url(#glass)" opacity="0.55"/><polygon points="2450,698 2600,620 2600,508 2450,586" fill="url(#glass)" opacity="0.35"/><polygon points="2300,508 2450,430 2600,508 2450,586" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="2298.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2300" cy="508" r="3.2" fill="#e8b547"/><circle cx="2300" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2598.4" y="508" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2600" cy="508" r="3.2" fill="#e8b547"/><circle cx="2600" cy="620" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2448.4" y="586" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2450" cy="586" r="3.2" fill="#e8b547"/><circle cx="2450" cy="698" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2448.4" y="430" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2450" cy="430" r="3.2" fill="#e8b547"/><circle cx="2450" cy="542" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="2300,620 2450,698 2600,620" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="2331" y="742" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="2350" cy="760" r="4.5" fill="#e9eef0"/><text x="2364" y="757" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">05 · hoje</text><text x="2364" y="771" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Série A, 2025</text></g></g><g class="vitrine" data-i="6" data-cx="2880" data-cy="470"><ellipse cx="2880" cy="574" rx="158" ry="20" fill="url(#floorShadow)"/><polygon points="2730,470 2880,548 3030,470 2880,392" fill="#0f0d18" opacity="0.9" transform="translate(0,24)"/><polygon points="2730,494 2880,572 2880,586 2730,508" fill="#17141f"/><polygon points="3030,494 2880,572 2880,586 3030,508" fill="#100e18"/><polygon points="2730,470 2880,548 3030,470 2880,392" fill="#1b1826" transform="translate(0,20)"/><polygon points="2730,470 2880,392 2880,280 2730,358" fill="url(#brick-light)"/><polygon points="2730,470 2880,392 2880,280 2730,358" fill="rgba(0,0,0,0.26)"/><polygon points="2880,392 3030,470 3030,358 2880,280" fill="url(#brick-light)"/><polygon points="2880,392 3030,470 3030,358 2880,280" fill="rgba(0,0,0,0.10)"/><polygon points="2730,470 2880,392 2880,280 2730,358" fill="#a8552f" opacity="0.10"/><polygon points="2730,470 2880,392 3030,470 2880,548" fill="url(#chevron)"/><polygon points="2730,470 2880,392 3030,470 2880,548" fill="url(#floorTint)"/><polyline points="2730,470 2880,392 3030,470" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/><g><ellipse cx="2880" cy="462" rx="126" ry="52" fill="#7a4d2e" opacity="0.6"/><ellipse cx="2880" cy="462" rx="126" ry="52" fill="url(#dusk)" opacity="0.55"/><g opacity="0.55"><ellipse cx="2966" cy="358" rx="46" ry="15" fill="#e8b547" opacity="0.10"/><path d="M 2930 364 q 36 -26 72 0 z" fill="#2c2a3a" stroke="#e8b547" stroke-width="0.7"/><circle cx="2936" cy="364" r="1.4" fill="#e8b547"/><circle cx="2946" cy="362" r="1.4" fill="#e8b547"/><circle cx="2956" cy="360" r="1.4" fill="#e8b547"/><circle cx="2966" cy="358" r="1.4" fill="#e8b547"/><circle cx="2976" cy="360" r="1.4" fill="#e8b547"/><circle cx="2986" cy="362" r="1.4" fill="#e8b547"/><circle cx="2996" cy="364" r="1.4" fill="#e8b547"/></g><line x1="2850" y1="280" x2="2850" y2="334" stroke="#4a4034" stroke-width="1"/><circle cx="2850" cy="340" r="6.5" fill="#e8b547"/><circle cx="2850" cy="340" r="20" fill="url(#bulbGlow)"/><ellipse cx="2902" cy="467" rx="44" ry="5" fill="rgba(0,0,0,0.22)"/><ellipse cx="2854" cy="465" rx="12" ry="4.1" fill="url(#floorShadow)" opacity="0.85"/><g transform="translate(2854,462) scale(1.7) translate(-2854,-462)"><rect x="2847" y="430" width="14" height="19" rx="3" fill="#a8552f" stroke="#7d3d20" stroke-width="0.6"/><line x1="2851" y1="449" x2="2848" y2="462" stroke="#5b4028" stroke-width="2.6"/><line x1="2857" y1="449" x2="2861" y2="460" stroke="#5b4028" stroke-width="2.6"/><line x1="2847" y1="434" x2="2840" y2="444" stroke="#5b4028" stroke-width="2.2"/><circle cx="2854" cy="425" r="5.4" fill="#6d4a30"/><circle cx="2869" cy="458" r="5" fill="#d8cdb8" stroke="#8d8168" stroke-width="0.6"/><path d="M 2865 456 q 5 -4 10 0 M 2866 461 q 5 4 9 -1" fill="none" stroke="#9c927c" stroke-width="0.6"/></g></g><polygon points="2730,470 2880,548 2880,436 2730,358" fill="url(#glass)" opacity="0.55"/><polygon points="2880,548 3030,470 3030,358 2880,436" fill="url(#glass)" opacity="0.35"/><polygon points="2730,358 2880,280 3030,358 2880,436" fill="rgba(232,181,71,0.06)" stroke="rgba(232,181,71,0.5)" stroke-width="1"/><rect x="2728.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2730" cy="358" r="3.2" fill="#e8b547"/><circle cx="2730" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="3028.4" y="358" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="3030" cy="358" r="3.2" fill="#e8b547"/><circle cx="3030" cy="470" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2878.4" y="436" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2880" cy="436" r="3.2" fill="#e8b547"/><circle cx="2880" cy="548" r="3.2" fill="#e8b547" opacity="0.8"/><rect x="2878.4" y="280" width="3.2" height="112" fill="#e8b547" opacity="0.55"/><circle cx="2880" cy="280" r="3.2" fill="#e8b547"/><circle cx="2880" cy="392" r="3.2" fill="#e8b547" opacity="0.8"/><polyline points="2730,470 2880,548 3030,470" fill="none" stroke="rgba(232,181,71,0.55)" stroke-width="1.2"/><g class="plaque"><rect x="2761" y="592" width="238" height="36" rx="18" fill="#0f0d18" stroke="rgba(232,181,71,0.4)"/><circle cx="2780" cy="610" r="4.5" fill="#a8552f"/><text x="2794" y="607" fill="rgba(242,236,224,0.45)" style="font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.26em;text-transform:uppercase">06 · epílogo</text><text x="2794" y="621" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:12.5px">Galeano, epílogo</text></g></g>
+<g id="entrada">
+  <ellipse cx="-500" cy="742" rx="330" ry="92" fill="rgba(245,217,138,0.045)"/>
+  <polygon points="-782,222 -278,320 -278,780 -782,682" fill="url(#brick-light)"/>
+  <polygon points="-782,222 -278,320 -278,780 -782,682" fill="rgba(20,17,30,0.58)"/>
+  <polygon points="-782,222 -278,320 -262,308 -766,210" fill="#453e63" opacity="0.7"/>
+  <polygon points="-278,320 -278,780 -262,768 -262,308" fill="#1a1728" opacity="0.9"/>
+  <polygon points="-712,246 -344,318 -330,520 -706,448" fill="url(#spotBeam)" opacity="0.3"/>
+  <g transform="matrix(1,0.1944,0,1,0,140)">
+    <text x="-720" y="372" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-size:64px;letter-spacing:-0.02em">Do prazer</text>
+    <text x="-720" y="436" fill="#f2ece0" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:64px;letter-spacing:-0.02em">ao dever</text>
+    <line x1="-720" y1="466" x2="-360" y2="466" stroke="rgba(232,181,71,0.45)"/>
+    <text x="-720" y="492" fill="rgba(242,236,224,0.55)" style="font-family:'Space Grotesk',sans-serif;font-size:11.5px;letter-spacing:0.3em;text-transform:uppercase">sete vitrines &#183; um s&#233;culo &#183; uma sala s&#243;</text>
+    <text x="-720" y="546" fill="rgba(242,236,224,0.42)" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px">Um museu guardaria assim a prova de um crime.</text>
+    <text x="-720" y="596" fill="rgba(232,181,71,0.5)" style="font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:0.26em;text-transform:uppercase">arraste para a direita &#8594;</text>
+  </g>
+
+  <g id="folhetos" style="cursor:pointer">
+    <ellipse cx="-152" cy="768" rx="86" ry="26" fill="url(#floorShadow)"/>
+    <polygon points="-214,724 -152,748 -90,724 -152,700" fill="#453e63"/>
+    <polygon points="-214,724 -152,748 -152,806 -214,782" fill="#211d31"/>
+    <polygon points="-90,724 -152,748 -152,806 -90,782" fill="#332d4a"/>
+    <polygon points="-200,712 -152,730 -104,712 -152,694" fill="#cfc4a8"/>
+    <polygon points="-200,706 -152,724 -104,706 -152,688" fill="#ded3b8"/>
+    <polygon points="-200,700 -152,718 -104,700 -152,682" fill="#efe6cf"/>
+    <polygon points="-200,700 -152,718 -152,722 -200,704" fill="#b7ab8c"/>
+    <line x1="-176" y1="697" x2="-140" y2="710" stroke="rgba(60,50,36,0.45)" stroke-width="1.2"/>
+    <line x1="-170" y1="702" x2="-146" y2="711" stroke="rgba(60,50,36,0.3)" stroke-width="1"/>
+    <g class="folheto-chamada">
+      <line x1="-152" y1="676" x2="-152" y2="646" stroke="rgba(232,181,71,0.4)" stroke-dasharray="2 4"/>
+      <text x="-152" y="636" text-anchor="middle" fill="#e8b547" style="font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:0.24em;text-transform:uppercase">leve um folheto</text>
+      <text x="-152" y="620" text-anchor="middle" fill="rgba(242,236,224,0.42)" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:14px">o ensaio inteiro, impresso</text>
+    </g>
+  </g>
+
+  <g opacity="0.55">
+    <line x1="-40" y1="806" x2="150" y2="806" stroke="rgba(232,181,71,0.3)" stroke-dasharray="7 9"/>
+    <text x="-40" y="796" fill="rgba(232,181,71,0.5)" style="font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase">sala 01 &#8594;</text>
+  </g>
+</g>
+</g>    </svg>
+  </div>
+
+  <!-- mesa de consulta: papéis avulsos do dossiê da vitrine -->
+  <div class="mesa" id="mesa" aria-hidden="true" aria-live="polite">
+    <div class="mesa-papeis" id="mesaPapeis"></div>
+    <button class="mesa-devolver" id="mesaDevolver">devolver ao acervo</button>
+  </div>
+
+  <!-- o guia da sala: quem descreve o que está dentro do vidro -->
+  <div class="guia" id="guia" aria-hidden="true">
+    <button class="guia-badge" id="guiaBadge" type="button" aria-label="o guia da sala">
+      <svg viewBox="0 0 34 34" aria-hidden="true">
+        <ellipse cx="17" cy="29" rx="9" ry="2.6" fill="rgba(0,0,0,.45)"/>
+        <rect x="10" y="14" width="14" height="15" rx="3" fill="#e0a271" stroke="#c46b3c" stroke-width=".7"/>
+        <circle cx="17" cy="9.5" r="5" fill="#6d4a30"/>
+      </svg>
+    </button>
+    <div class="guia-balao">
+      <span class="guia-quem">guia da sala</span>
+      <p id="guiaFala"></p>
+      <div class="guia-pe">
+        <span class="guia-passos" id="guiaPassos" aria-hidden="true"></span>
+        <span class="guia-mais" id="guiaMais"></span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="regua" id="regua" aria-label="Vitrines do corredor"></nav>
+
+  <p class="rodape-museu"><i>&ldquo;&hellip;uma triste viagem do prazer ao dever.&rdquo;</i></p>
+  <button class="atalho-folheto" data-go="folheto">folheto &#8594;</button>
+
+</section>
+
+<!-- ══════════════════ O FOLHETO ══════════════════ -->
+<main id="folheto" hidden>
+  <button class="atalho-sala" data-go="sala">&#8592; voltar &#224; sala</button>
+
+  <div class="folha-impressa">
+
+    <div class="fh-regra">
+      <span>folheto da exposi&#231;&#227;o</span>
+      <span>distribui&#231;&#227;o gratuita</span>
+    </div>
+
+    <h1 class="fh-titulo">Do prazer<br><i>ao dever</i></h1>
+    <p class="fh-sub">Um s&#233;culo de mercantiliza&#231;&#227;o do futebol brasileiro, em sete vitrines e um texto.</p>
+
+    <ol class="fh-indice" id="fhIndice"></ol>
+
+    <div class="fh-colunas">
+
+      <p class="fh-abre">Como o futebol brasileiro, nascido como esporte de clube fechado, importado pela elite branca e logo apropriado pelo operário, pelo migrante e pelo garoto de rua, virou, ao longo de um século, um ativo financeiro cotado em contratos internacionais, negociado por fundos americanos e árabes, hospedado em arenas desenhadas para filtrar na entrada preto e pobre?</p>
+
+      <h2>1907 &middot; O ofício</h2>
+      <p>No Rio de Janeiro de 1907, a Liga Metropolitana de Sports Atléticos mandou um ofício aos clubes filiados. Resolveu, por unanimidade, que &ldquo;não serão registrados como amadores nesta liga as pessoas de cor&rdquo;. O Bangu Athletic Club, time fundado por operários da fábrica de tecidos que dava nome ao bairro, saiu da liga em protesto e foi para a Suburbana, entidade que aceitava agremiações de operários e de negros.</p>
+      <p>O futebol daquele início de século era jogado por estudantes de Direito e Medicina, quase sempre nos horários de aula, que as faculdades chegavam a ajustar para acomodar o time. Os times operários, vinculados a fábricas como o Bangu, tentavam competir liberando o trabalhador mais cedo nos dias de treino. Mas o futebol vencedor continuava sendo o dos acadêmicos: o Flamengo campeão de 1914 e 1915 jogava quase inteiro com estudantes de medicina. Quem não estudava, quem era negro ou pobre, entrava como exceção, &ldquo;tapando buraco&rdquo; quando faltava um titular branco.</p>
+
+      <h2>1923 &middot; A boa mistura</h2>
+      <p>A ruptura veio em 1923. O Vasco da Gama, recém-saído da segunda divisão, foi campeão carioca com um time de negros, mulatos e brancos semianalfabetos. A imprensa da época apelidou esse elenco de &ldquo;boa mistura portuguesa&rdquo;. Pela primeira vez, o filho de &ldquo;família boa&rdquo; teve que competir em igualdade de condições com o pé rapado para saber quem jogava melhor, e a elite não gostou.</p>
+      <p>Em 1924, os grandes clubes fundaram uma nova liga sem o Vasco, a Amea. O sistema de votos da nova entidade dava um voto por modalidade esportiva que cada clube mantivesse, mais cinco votos extras para os clubes fundadores. O Fluminense, com várias modalidades e status de fundador, acumulava dez votos. Um clube pequeno e recém-chegado tinha direito a um voto só, jogasse bem ou mal.</p>
+      <p>A nova liga também endureceu a exigência de amadorismo puro, proibindo qualquer forma de compensação financeira ao jogador. Essa regra não nasceu no vácuo. O Vasco tinha recrutado o time campeão entre operários que só conseguiam treinar e jogar se recebessem algum tipo de sustento: horário de trabalho flexível, moradia, ajuda de custo. O estudante de família rica não precisava de nada disso para jogar de graça. Ao exigir comprovação de renda e vínculo empregatício regular como prova de amadorismo, a Amea estava filtrando, por um critério que parecia neutro no papel, exatamente o tipo de jogador que o Vasco tinha ido buscar fora do círculo da elite.</p>
+
+      <p class="fh-destaque">Um critério que parecia neutro no papel filtrava, na prática, exatamente quem tinha acabado de entrar.</p>
+
+      <h2>1933 &middot; O carimbo</h2>
+      <p>A década seguinte foi de resistência e desgaste dessa barreira. O amadorismo de fachada, disfarce que já rodava havia anos, driblava a proibição oferecendo horário de trabalho flexível, móveis, emprego melhor e gratificação em dinheiro embrulhada de outro nome. O mesmo tipo de arranjo cruzava fronteiras: um clube europeu interessado em um jogador brasileiro contornava a proibição de pagamento oferecendo passagem, hospedagem e um emprego fictício na cidade de destino, prática que alimentou as primeiras transferências entre o Rio de Janeiro e a Espanha nos anos 1920 e 1930. Foi a pressão desse mercado paralelo, mais do que qualquer compromisso com inclusão racial, que empurrou o Estado brasileiro a reconhecer oficialmente a profissionalização em 1933, sob o Estado Novo de Getúlio Vargas.</p>
+      <p>O efeito prático da nova lei, ainda que não fosse a intenção de quem a assinou, foi outro: abriu a primeira divisão para o jogador pobre e negro que antes só entrava como suplente, porque agora ele podia ser contratado e pago sem precisar disfarçar o salário.</p>
+      <p>Décadas depois, em 1952, quando o Grêmio contratou o atacante Tesourinha, torcedores do próprio clube protestaram contra a admissão de um jogador que carregava, segundo pesquisa da época, &ldquo;toda uma representação sociocultural&rdquo; indesejada nas arquibancadas gaúchas — e há muitos outros casos de jogadores negros rejeitados pelo país afora.</p>
+
+      <h2>Anos 1990 &middot; O jogador vira ativo</h2>
+      <p>Durante a maior parte do século XX, o jogador de futebol brasileiro viveu sob a chamada lei do passe. O clube podia negociar, emprestar ou dispensar o jogador quando quisesse, sem precisar do seu consentimento. Já o jogador, mesmo com o contrato de trabalho vencido, não podia trocar de camisa sem autorização do clube e sem que alguém pagasse uma indenização por ele. A obrigação corria numa direção só. Em 1993, a Lei Zico abriu uma brecha jurídica para que empresa entrasse como sócia ou patrocinadora de clube.</p>
+      <p>A década de 1990 foi de experimentos. A Parmalat comprou jogadores e os colocou para valorizar vestindo a camisa do Palmeiras, depois repetiu a fórmula no Juventude: a empresa não escolhia o elenco pensando em título, escolhia pensando em qual jogador subiria de preço mais rápido em campo para ser revendido com lucro depois. O fundo americano Hicks, Muse, Tate &amp; Furst investiu o equivalente a R$ 315 milhões em valores atuais no Corinthians, em 1999, com a mesma lógica de comprar barato, expor o ativo às vitrines do Campeonato Brasileiro e vender caro na sequência. O Vasco fechou parceria parecida com o Nationsbank dos Estados Unidos.</p>
+
+      <h2>1998 &middot; A Lei Pelé</h2>
+      <p>Em 1998, a Lei Pelé extinguiu de vez a lei do passe e equiparou o vínculo esportivo ao vínculo trabalhista comum: contrato acabou, jogador fica livre. Então vender o jogador cedo virou juridicamente mais simples e financeiramente mais racional do que segurá-lo. Assim, um clube não pode se dar ao luxo de montar um time pensando em estilo de jogo. Ele monta um time pensando em revenda. O zagueiro de dezessete anos que se destaca não é lapidado para ganhar o campeonato estadual, é lapidado para ser vendido antes dos vinte e um. A tática, nesses clubes, deixa de ser sobre como vencer o próximo adversário e passa a ser sobre como valorizar o ativo antes do balanço do ano fechar.</p>
+      <p>Com a Lei Pelé em vigor, três fontes passaram a pesar mais que a bilheteria dos jogos na receita da primeira divisão: contrato de televisionamento, contrato de patrocínio e venda de jogador. As duas primeiras entram todo ano, em valor mais previsível. A terceira entra aos picos, mas costuma ser a que mais movimenta dinheiro de uma vez.</p>
+
+      <h2>2021 &middot; A SAF e o clube como ficha de troca</h2>
+      <p>Em 2021 surgiu a lei da SAF. Passados quatro anos, o Brasil tinha 122 SAFs registradas até setembro de 2025, com projeção de crescimento ainda maior para 2026.</p>
+      <p>Dentro dessas 122 sociedades, um punhado de conglomerados internacionais concentra as peças mais valiosas, e a rotatividade desses donos mostra o quanto o clube virou ficha de troca dentro de um jogo maior. O City Football Group, controlado majoritariamente pelo fundo Abu Dhabi United Group, tem o Manchester City como clube-mãe e o Bahia como filial brasileira.</p>
+      <p>O caso mais didático é o do Botafogo. A Eagle Football Holdings, do empresário americano John Charles Textor, chegou a controlar o clube carioca junto com o Crystal Palace inglês e o Olympique Lyonnais francês, um laboratório de propriedade multiclube. O laboratório quebrou. Ao longo de 2026, endividada, a Eagle Football vendeu o Lyon para a empresária Michele Kang, colocou o RWD Molenbeek belga em processo de liquidação e assinou contrato vinculante para transferir o controle do Botafogo a um novo grupo.</p>
+      <p>É a mesma lógica dos anos 1990 de Parmalat e Hicks Muse, em escala maior e com nome técnico novo: <i>multi-club ownership</i>. A diferença é que agora o comprador não precisa nem torcer para o time. Precisa apenas que ele funcione como fonte de jogadores e de conteúdo para as redes sociais do grupo, até o dia em que deixar de funcionar e for revendido para o próximo fundo.</p>
+
+      <h2>Patrimônio de quem?</h2>
+      <p>Enquanto isso avança, cresce também um discurso paralelo: o de que o futebol e, sobretudo, o ato de torcer são patrimônio cultural imaterial do povo brasileiro. A relação entre torcedor e clube não se explica só pelo balanço financeiro. Torcedor sai de casa, viaja o país inteiro, gasta o próprio dinheiro para acompanhar um time que não lhe paga nada em troca, movido pela paixão.</p>
+      <p>Mas essa &ldquo;patrimonialização&rdquo; nunca virou um registro nacional único, do tipo que o IPHAN concede a uma técnica artesanal ou a uma festa popular. O que existe, segundo pesquisa publicada na revista <i>Em Questão</i>, da UFRGS, é uma proliferação de leis municipais e estaduais avulsas, tombando um clássico aqui, um estádio ali, um gol específico do Zico em outro lugar, numa &ldquo;viralização patrimonial&rdquo; sem critério técnico consolidado. Os próprios pesquisadores descrevem o fenômeno como disputa de poder entre agentes políticos, econômicos e futebolísticos, que manipulam o instrumento do tombamento para prorrogar dívida de clube, valorizar terreno ao redor de estádio e colher voto em ano eleitoral.</p>
+
+      <h2>Hoje &middot; A arena que filtra</h2>
+      <p>A arquitetura conta essa história sem precisar de discurso. A geral, nome que o torcedor brasileiro costuma dar ao setor mais barato do estádio, sem assento numerado, onde se assiste ao jogo de pé, e a arquibancada de 1920 já separavam quem podia pagar chapéu com fita bordada de quem ficava na geral, mas o estádio ainda era um espaço físico único, atravessado pelo mesmo grito. A arena contemporânea segmenta esse espaço em camadas que quase não se cruzam: camarote com ar-condicionado, restaurante que serve durante a partida, corredor de mármore vetado a torcida organizada, tudo desenhado para que o torcedor de posses não precise dividir fila com o herdeiro daquela geral antiga.</p>
+      <p>A exclusão se estende ao relógio, à bandeira e, mais recentemente, ao aplicativo de aposta no bolso do torcedor. O horário do jogo obedece à grade de televisão, não à rotina de quem trabalha. Partidas decisivas do Brasil costumam ser marcadas para as 21h30, horário em que o transporte público das capitais já opera com frota reduzida. Quem mora na periferia e depende de trem ou ônibus para voltar do estádio enfrenta um problema que o torcedor de camarote, que vai embora de aplicativo de carro, não tem.</p>
+      <p>Quem perdeu o acesso ao ingresso não deixou de consumir futebol. Foi empurrado para outro produto. Levantamento do Poder360 mostra que, em março de 2025, 18 dos 20 clubes da Série A tinham casa de apostas esportivas como patrocinadora master: 90% da elite do futebol brasileiro vestindo a marca de uma bet no peito. Os patrocínios master do Brasileirão somaram mais de R$ 1,1 bilhão só em 2025, boa parte desse valor vindo dessas empresas. O torcedor que não pode pagar o ingresso ainda pode abrir o aplicativo, apostar no próprio time e alimentar, com o salário que sobra no fim do mês, o mesmo sistema financeiro que o expulsou da arquibancada.</p>
+
+      <h2>Inclusão subordinada</h2>
+      <p>O fio que atravessa 1907 e 2026 se chama inclusão subordinada. O jogador negro sempre foi bem-vindo como força de trabalho: primeiro tapando buraco na escalação, depois como artilheiro decisivo, hoje como mercadoria de exportação cujo valor de mercado sustenta o balanço do clube. O que nunca acompanhou esse avanço na mesma velocidade foi o acesso à cadeira de dirigente, à sala de conselho, ao camarote com ar-condicionado e, agora, ao estádio em geral.</p>
+      <p>O escritor uruguaio Eduardo Galeano definiu a história do futebol como &ldquo;uma triste viagem do prazer ao dever&rdquo;. Ele via um jogo cada vez mais desenhado em função do intervalo comercial da televisão, do resultado que sustenta contrato de patrocínio, do estilo defensivo que reduz o risco de desvalorizar o elenco — um futebol organizado não para ser jogado, mas para impedir que se jogue por jogar. E mesmo assim insistiu em não entregar o esporte de bandeja ao cinismo: o futebol pode ser um negócio vulgar e comum, escreveu, mas também é a festa dos olhos que o assistem e a alegria do corpo que joga.</p>
+      <p>É nessa fresta que sobrevive, hoje, a dimensão popular e negra do futebol brasileiro. Não porque o mercado tenha aberto espaço para ela, mas porque nem toda alegria cabe dentro de um balanço financeiro. O menino que aprende a driblar na rua de terra continua nascendo.</p>
+
+      <p class="fh-destaque final">O futebol já é mercadoria. Quanto tempo mais o Brasil vai chamar isso de patrimônio do povo sem perguntar ao povo se ele ainda cabe dentro do estádio?</p>
+
+    </div>
+
+    <div class="fh-pe">
+      <p><b>Fontes citadas ao longo do texto:</b> ofício da Liga Metropolitana de Sports Atléticos (1907) &middot; estatuto da Amea (1924) &middot; legislação trabalhista esportiva de 1933 &middot; Lei Zico (1993) &middot; Lei Pelé (1998) &middot; Lei 14.193/2021 (SAF) &middot; levantamento Poder360 sobre patrocínio master da Série A (março de 2025) &middot; pesquisa sobre patrimonialização do futebol publicada na revista <i>Em Questão</i>, UFRGS &middot; Eduardo Galeano, <i>Futebol ao Sol e à Sombra</i>.</p>
+      <button class="fh-volta" data-go="sala">voltar &#224; sala &#8594;</button>
+    </div>
+
+  </div>
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   Do prazer ao dever — a sala e a mesa de consulta
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ═══════════════ o acervo ═══════════════
+     Cada vitrine tem um dossiê de papéis avulsos. O tipo do papel
+     é o que identifica o documento — não há rótulo de interface.  */
+
+  var ACERVO = [
+    {
+      n: '00', era: '1995', titulo: 'Futebol ao Sol e à Sombra',
+      falas: [
+        'Repare que não tem bola aqui dentro. Nem camisa, nem troféu. Só um livro aberto no veludo e a poeira parada dentro da luz.',
+        'As seis caixas que vêm depois não contam a história do jogo. Contam a história do que fizeram com ele. Se você só tiver tempo para uma frase, leve a que está impressa na página aí do lado.'
+      ],
+      papeis: [
+        { t: 'pagina', cabeca: ['Futebol ao Sol e à Sombra', 'Eduardo Galeano'],
+          cita: 'uma triste viagem do prazer ao dever',
+          fonte: 'assim ele resumiu a história do jogo — e é a legenda de tudo o que vem depois.' },
+        { t: 'etiqueta', tombo: '00.1995', campos: [
+          ['material', 'livro, pedestal de veludo'], ['data', '1995'], ['procedência', 'Montevidéu']
+        ]}
+      ]
+    },
+
+    {
+      n: '01', era: '1907', titulo: 'A bola era operária',
+      falas: [
+        'Olhe os dois lados do mesmo vidro. À esquerda, o time da fábrica de tecidos, de chuteira remendada. À direita, o estudante de Direito, engomado, com as luvas dobradas em cima do livro de aula. E ali no canto, sem legenda: um pote de pó de arroz e um espelho de bolso.',
+        'O papel pregado no poste é o ofício que a Liga Metropolitana mandou aos clubes filiados em 1907. Está aberto na mesa, pode ler inteiro. Foi resolvido por unanimidade.',
+        'O Bangu tinha sido fundado por operários da fábrica de tecidos que deu nome ao bairro. Quando a liga decidiu isso, o clube saiu em protesto e foi para a Suburbana, que aceitava time de operário e de negro.',
+        'Mas quem ganhava continuava sendo o time dos acadêmicos. O Flamengo campeão de 1914 e 1915 jogava quase inteiro com estudantes de medicina, e a faculdade remanejava o horário de aula para acomodar o time. Quem era negro ou pobre entrava tapando buraco, quando faltava um titular branco.'
+      ],
+      papeis: [
+        { t: 'oficio',
+          timbre: 'Liga Metropolitana de Sports Atléticos &middot; Rio de Janeiro',
+          p: [
+            'Aos clubes filiados.',
+            'Resolvido, por unanimidade, que não serão registrados como amadores nesta liga as pessoas de cor.'
+          ],
+          assina: 'A directoria &middot; 1907',
+          carimbo: 'liga metropolitana 1907' },
+        { t: 'relatorio', n: '1914 · 1915',
+          txt: 'os dois títulos seguidos do Flamengo, com um elenco quase inteiro de estudantes de medicina, enquanto o time operário treinava no tempo que sobrava do turno.' },
+        { t: 'etiqueta', tombo: '01.1907', campos: [
+          ['material', 'ofício datilografado'], ['data', '1907'], ['procedência', 'Rio de Janeiro']
+        ]}
+      ]
+    },
+
+    {
+      n: '02', era: '1924', titulo: 'A régua da ata',
+      falas: [
+        'Aqui a gente não está mais em campo, está numa reunião de liga vista de cima. Compare a altura das pilhas de ficha de votação: a torre é dos clubes fundadores, a ficha sozinha é do recém-chegado. E o carimbo, viu?, ainda está no ar. Não pousou no papel.',
+        'Em 1923 o Vasco subiu da segunda divisão e foi campeão carioca com um time de negros, mulatos e brancos semianalfabetos. O recorte de jornal na mesa é de como a imprensa chamou aquele elenco.',
+        'No ano seguinte os grandes fundaram uma liga nova, sem o Vasco. Cada modalidade esportiva mantida valia um voto, e os fundadores ganhavam mais cinco. Dava dez votos para o Fluminense e um para o clube pequeno, jogasse bem ou mal.',
+        'E a liga passou a exigir amadorismo puro: renda comprovada, emprego regular. Parece critério neutro no papel. Na prática filtrava exatamente o operário que o Vasco tinha ido buscar fora do círculo da elite. A profissionalização só seria reconhecida em 1933.'
+      ],
+      papeis: [
+        { t: 'recorte', veio: 'imprensa carioca &middot; 1923',
+          manchete: 'Boa mistura portuguesa',
+          p: [
+            'O Vasco da Gama, recém-saído da segunda divisão, é campeão carioca com um time de negros, mulatos e brancos semianalfabetos.',
+            'Pela primeira vez o filho de família boa teve que competir em igualdade de condições com o pé rapado para saber quem jogava melhor. A elite não gostou.'
+          ]},
+        { t: 'relatorio', n: '10 &times; 1',
+          txt: 'votos do Fluminense contra votos de um clube pequeno na Amea, fundada em 1924 sem o Vasco. Um voto por modalidade esportiva mantida, mais cinco extras para os fundadores.' },
+        { t: 'etiqueta', tombo: '02.1924', campos: [
+          ['material', 'fichas de votação, carimbo'], ['data', '1924 – 1933'], ['procedência', 'Amea · Estado Novo']
+        ]}
+      ]
+    },
+
+    {
+      n: '03', era: '1999', titulo: 'O jogador vira ativo',
+      falas: [
+        'Saímos do gramado de vez. Isso aqui é uma mesa de scout: a prancheta com a foto do garoto de dezessete anos, a seta a lápis, o valor em dólar rabiscado do lado. E aquela fita correndo na parede do fundo não é resultado de jogo. É cotação.',
+        'Até aqui valia a lei do passe. O clube negociava, emprestava ou dispensava o jogador sem precisar do consentimento dele. E o jogador, mesmo com o contrato vencido, não trocava de camisa sem autorização e sem que alguém pagasse indenização. A obrigação corria numa direção só.',
+        'Em 1993 a Lei Zico abriu a brecha para empresa entrar como sócia de clube. A Parmalat montou elenco no Palmeiras e depois no Juventude escolhendo não quem ganhava o jogo, mas quem subiria de preço mais rápido para ser revendido.',
+        'Em 1999 um fundo americano pôs no Corinthians o equivalente a trezentos e quinze milhões de reais de hoje. O Vasco fechou acordo parecido com um banco dos Estados Unidos. A conta está na folha de relatório ao lado.'
+      ],
+      papeis: [
+        { t: 'telex', p: 'zagueiro 17a — margem estimada alta — reter até 21a — revenda prevista — valorizar antes do balanço — repetir' },
+        { t: 'relatorio', n: 'R$ 315 mi',
+          txt: 'investidos pelo fundo americano Hicks, Muse, Tate &amp; Furst no Corinthians em 1999, em valores atuais. Comprar barato, expor o ativo na vitrine do Brasileirão, vender caro.' },
+        { t: 'etiqueta', tombo: '03.1999', campos: [
+          ['material', 'prancheta, cabide, fita de cotação'], ['data', '1993 – 1999'], ['procedência', 'Palmeiras · Corinthians · Vasco']
+        ]}
+      ]
+    },
+
+    {
+      n: '04', era: '2021', titulo: 'Contrato, SAF, multipropriedade',
+      falas: [
+        'Sala de reunião. O contrato está aberto e a assinatura ainda não secou. Chegue perto da etiqueta amarrada na maquete do estádio: o nome do dono foi riscado e reescrito mais de uma vez. Os alfinetes no globo ligam Abu Dhabi, Manchester, Salvador, Lyon e Rio.',
+        'A Lei Pelé, de 1998, tinha acabado com a lei do passe: contrato terminou, jogador fica livre. Daí em diante vender cedo virou mais simples e mais racional do que segurar. O zagueiro de dezessete anos deixa de ser lapidado para ganhar o estadual e passa a ser lapidado para sair antes dos vinte e um.',
+        'Em 2021 veio a lei da SAF, cuja ementa está aberta ali, datilografada. Em quatro anos foram cento e vinte e duas sociedades registradas no país.',
+        'O caso mais claro é o do Botafogo. A holding de um empresário americano chegou a controlar o clube junto com um inglês e um francês. Endividada, ao longo de 2026 vendeu o Lyon, pôs o clube belga em liquidação e assinou para passar o Botafogo adiante. O comprador não precisa nem torcer para o time.'
+      ],
+      papeis: [
+        { t: 'oficio',
+          timbre: 'Lei n&ordm; 14.193, de 6 de agosto de 2021 &middot; ementa',
+          p: [
+            'Institui a Sociedade Anônima do Futebol e dispõe sobre normas de constituição, governança, controle e transparência, meios de financiamento da atividade futebolística, tratamento dos passivos das entidades de práticas desportivas e regime tributário específico.'
+          ],
+          assina: 'Diário Oficial da União',
+          carimbo: 'em vigor desde 2021' },
+        { t: 'relatorio', n: '122',
+          txt: 'SAFs registradas no Brasil até setembro de 2025, quatro anos depois da lei, com projeção de crescimento maior para 2026.' },
+        { t: 'etiqueta', tombo: '04.2021', campos: [
+          ['material', 'contrato, maquete, etiqueta'], ['data', '1998 – 2026'], ['procedência', 'Lei 14.193/2021']
+        ]}
+      ]
+    },
+
+    {
+      n: '05', era: '2025', titulo: 'A arena que filtra',
+      falas: [
+        'A vitrine corta a arena ao meio, e a divisão é literal. Deste lado, mármore e taça de espumante. Do outro, a catraca fechada e uma bandeira apreendida dentro de um saco de evidência. Uma coisa só atravessa o vidro: o celular aceso, com a tela verde do aplicativo de aposta.',
+        'A arena separa o que o estádio de 1920 mantinha junto. Já havia geral e arquibancada, mas o espaço era um só, atravessado pelo mesmo grito. Hoje tem camarote com ar-condicionado, restaurante servindo durante a partida e corredor de mármore vetado a torcida organizada.',
+        'A exclusão passou para o relógio também. O horário do jogo obedece à grade de televisão. Quem depende de trem ou de ônibus para voltar para a periferia às onze da noite tem um problema que o torcedor de camarote, que sai de aplicativo de carro, não tem.',
+        'E quem perdeu o ingresso não parou de consumir futebol: abriu o aplicativo. O cupom ali do lado tem os números de 2025.'
+      ],
+      papeis: [
+        { t: 'cupom', topo: 'Série A &middot; 2025',
+          linhas: [
+            ['clubes com bet como patrocinadora master', '18 / 20'],
+            ['participação da elite', '90%'],
+            ['patrocínios master, total no ano', 'R$ 1,1 bi']
+          ],
+          total: ['jogo decisivo', '21h30'],
+          pe: 'levantamento Poder360, março de 2025' },
+        { t: 'relatorio', n: '21h30',
+          txt: 'horário usual das partidas decisivas, definido pela grade de televisão, quando o transporte público das capitais já opera com frota reduzida.' },
+        { t: 'etiqueta', tombo: '05.2025', campos: [
+          ['material', 'catraca, saco de evidência, celular'], ['data', '2025'], ['procedência', 'Série A']
+        ]}
+      ]
+    },
+
+    {
+      n: '06', era: '2026', titulo: 'O menino que continua nascendo',
+      falas: [
+        'Voltamos ao campo de terra da primeira caixa, agora no fim da tarde, com uma lâmpada nua pendurada no fio. Um menino, uma bola de meia, uma sombra comprida. E lá no fundo, o desenho iluminado da arena: pequeno, longe, sem alcançá-lo.',
+        'O fio que atravessa 1907 e 2026 tem nome: inclusão subordinada. O jogador negro sempre foi bem-vindo como força de trabalho — tapando buraco na escalação, depois como artilheiro decisivo, hoje como mercadoria de exportação que sustenta o balanço. O que nunca andou na mesma velocidade foi o acesso à cadeira de dirigente, à sala de conselho, ao camarote. E agora ao estádio em geral.',
+        'Nem toda alegria cabe dentro de um balanço financeiro. O menino que aprende a driblar na rua de terra continua nascendo. O futebol já é mercadoria; falta perguntar ao povo se ele ainda cabe dentro do estádio.'
+      ],
+      papeis: [
+        { t: 'pagina', cabeca: ['Futebol ao Sol e à Sombra', 'a mesma página'],
+          cita: 'festa dos olhos que o olham, alegria do corpo que o joga',
+          fonte: 'Galeano se recusou a entregar o jogo ao cinismo. O livro se fecha onde a sala começou.' },
+        { t: 'etiqueta', tombo: '06.2026', campos: [
+          ['material', 'bola de meia, lâmpada nua'], ['data', 'hoje'], ['procedência', 'rua de terra']
+        ]}
+      ]
+    }
+  ];
+
+  var ROT = [-1.8, 1.3, -1.1, 1.9, -1.4, 1.0, -0.7];
+
+  /* ═══════════════ elementos ═══════════════ */
+  var body    = document.body,
+      sala    = document.getElementById('sala'),
+      svg     = document.getElementById('hallSvg'),
+      scene   = document.getElementById('scene'),
+      mesa    = document.getElementById('mesa'),
+      pilha   = document.getElementById('mesaPapeis'),
+      regua   = document.getElementById('regua'),
+      guia    = document.getElementById('guia'),
+      guiaFala = document.getElementById('guiaFala'),
+      guiaPassos = document.getElementById('guiaPassos'),
+      guiaMais = document.getElementById('guiaMais'),
+      entrada = document.getElementById('entrada'),
+      vitrines = Array.prototype.slice.call(document.querySelectorAll('#hallSvg .vitrine'));
+
+  var VBW = 1500, VBH = 900, ENTRADA_X = -470;
+  var POS = vitrines.map(function (g) {
+    return { x: +g.getAttribute('data-cx'), y: +g.getAttribute('data-cy') };
+  });
+
+  var tx = 0, aberta = null, arrastando = false, ultimoX = 0, andou = 0;
+
+  /* ═══════════════ câmera ═══════════════
+     A viewBox é cortada com xMidYMid slice: a janela visível fica
+     centrada em (750, 450), não na origem. Toda conta parte daí.  */
+  function janela() {
+    var r = svg.getBoundingClientRect();
+    if (!r.width || !r.height) return { w: VBW, h: VBH };
+    var k = Math.max(r.width / VBW, r.height / VBH);
+    return { w: r.width / k, h: r.height / k, k: k };
+  }
+  function estreito() { return window.innerWidth <= 860; }
+  // num celular a janela visível tem ~416 unidades de largura e a parede
+  // de entrada tem 504: sem reduzir a escala, a cena não cabe.
+  function escalaBase() { return estreito() ? 0.62 : 1; }
+
+  // translação que coloca o ponto de cena `px` na fração `f` da janela
+  function enquadrar(px, f, s) {
+    var j = janela();
+    return (VBW / 2 - j.w / 2 + j.w * f) - px * (s || 1);
+  }
+  function enquadrarY(py, f, s) {
+    var j = janela();
+    return (VBH / 2 - j.h / 2 + j.h * f) - py * (s || 1);
+  }
+
+  function aplicar() {
+    var j = janela();
+    if (aberta === null) {
+      var b = escalaBase(), esq = VBW / 2 - j.w / 2, dir = VBW / 2 + j.w / 2;
+      tx = Math.min(Math.max(tx, dir - 3260 * b), esq + 900 * b);
+      scene.setAttribute('transform', 'translate(' + tx.toFixed(1) + ',0) scale(' + b + ')');
+    } else {
+      var p = POS[aberta],
+          s = estreito() ? 0.90 : 1.78,
+          fx = estreito() ? 0.50 : 0.70,
+          fy = estreito() ? 0.17 : 0.50;
+      scene.setAttribute('transform',
+        'translate(' + enquadrar(p.x, fx, s).toFixed(1) + ',' +
+        enquadrarY(p.y, fy, s).toFixed(1) + ') scale(' + s + ')');
+    }
+    vitrines.forEach(function (g, i) {
+      var viva = aberta === null || aberta === i;
+      g.style.opacity = viva ? 1 : 0.08;
+      g.style.pointerEvents = viva ? 'auto' : 'none';
+    });
+    if (entrada) {
+      entrada.style.opacity = aberta === null ? 1 : 0.08;
+      entrada.style.pointerEvents = aberta === null ? 'auto' : 'none';
+    }
+    sala.classList.toggle('aberto', aberta !== null);
+    posicionarGuia();
+    Array.prototype.forEach.call(regua.querySelectorAll('[data-i]'), function (b) {
+      b.setAttribute('aria-current', aberta === +b.getAttribute('data-i') ? 'true' : 'false');
+    });
+  }
+
+  /* ═══════════════ o guia da sala ═══════════════
+     A descrição do que está dentro do vidro é fala, não ficha:
+     sai da boca de alguém parado ao lado da peça.               */
+  function telaDe(p) {
+    var r = svg.getBoundingClientRect(), j = janela(),
+        t = (scene.getAttribute('transform') || '').match(/-?[\d.]+/g).map(Number),
+        s = t[2] || 1;
+    return {
+      x: r.left + (p.x * s + t[0] - VBW / 2) * j.k + r.width / 2,
+      y: r.top + (p.y * s + t[1] - VBH / 2) * j.k + r.height / 2
+    };
+  }
+
+  // no celular não há espaço para o balão flutuar sobre a peça:
+  // ele entra no topo da mesa, ainda como balão, com o rabicho para cima.
+  function acomodarGuia() {
+    var dentro = guia.parentNode === mesa;
+    if (estreito() && !dentro) mesa.insertBefore(guia, pilha);
+    else if (!estreito() && dentro) sala.insertBefore(guia, mesa);
+  }
+
+  function posicionarGuia() {
+    acomodarGuia();
+    if (aberta === null) { guia.classList.remove('on'); guia.setAttribute('aria-hidden', 'true'); return; }
+    if (estreito()) return;
+    var pt = telaDe(POS[aberta]),
+        cx = guia.offsetWidth || 380,
+        cy = guia.offsetHeight || 120,
+        limEsq = (mesa.getBoundingClientRect().right || 0) + 22;
+    var x = pt.x - 54, y = pt.y - cy - 118;
+    x = Math.min(Math.max(x, limEsq), window.innerWidth - cx - 20);
+    y = Math.min(Math.max(y, 20), window.innerHeight - cy - 20);
+    guia.style.left = Math.round(x) + 'px';
+    guia.style.top = Math.round(y) + 'px';
+  }
+
+  var turno = 0;
+
+  function dizer(i, k) {
+    var falas = ACERVO[i].falas;
+    turno = Math.min(Math.max(k, 0), falas.length - 1);
+    guiaFala.textContent = falas[turno];
+    guiaPassos.textContent = '';
+    falas.forEach(function (_, n) {
+      var t = document.createElement('i');
+      if (n <= turno) t.className = 'dito';
+      guiaPassos.appendChild(t);
+    });
+    guiaMais.textContent = turno < falas.length - 1 ? 'continua' : 'é isso';
+    requestAnimationFrame(posicionarGuia);
+  }
+
+  function falar(i) {
+    dizer(i, 0);
+    guia.classList.remove('calado');
+    guia.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { guia.classList.add('on'); }, 260);
+  }
+
+  // clicar no balão faz o guia continuar; no fim, ele se cala
+  document.querySelector('.guia-balao').addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (aberta === null) return;
+    if (turno < ACERVO[aberta].falas.length - 1) dizer(aberta, turno + 1);
+    else { guia.classList.add('calado'); posicionarGuia(); }
+  });
+
+  // o crachá reabre a fala de onde parou
+  document.getElementById('guiaBadge').addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (aberta === null) return;
+    if (guia.classList.contains('calado')) {
+      guia.classList.remove('calado');
+      dizer(aberta, turno === ACERVO[aberta].falas.length - 1 ? 0 : turno);
+    } else {
+      guia.classList.add('calado');
+    }
+    posicionarGuia();
+  });
+
+  /* ═══════════════ construção dos papéis ═══════════════ */
+  function nova(tipo, html) {
+    var art = document.createElement('article');
+    art.className = 'folha f-' + tipo;
+    art.innerHTML = html;
+    return art;
+  }
+  function paras(arr) {
+    return arr.map(function (t) { return '<p>' + t + '</p>'; }).join('');
+  }
+
+  var CONSTRUTOR = {
+    pagina: function (d) {
+      return nova('pagina',
+        '<div class="cabeca"><span>' + d.cabeca[0] + '</span><span>' + d.cabeca[1] + '</span></div>' +
+        '<blockquote>&ldquo;' + d.cita + '&rdquo;</blockquote>' +
+        '<p class="fonte">' + d.fonte + '</p>');
+    },
+    oficio: function (d) {
+      return nova('oficio',
+        '<div class="timbre">' + d.timbre + '</div>' + paras(d.p) +
+        '<div class="assina">' + d.assina + '</div>' +
+        (d.carimbo ? '<div class="carimbo">' + d.carimbo + '</div>' : ''));
+    },
+    recorte: function (d) {
+      return nova('recorte',
+        '<div class="veio">' + d.veio + '</div>' +
+        '<h4>' + d.manchete + '</h4>' +
+        '<div class="colunas">' + paras(d.p) + '</div>');
+    },
+    nota: function (d) {
+      return nova('nota', paras(d.p) + (d.lapis ? '<span class="lapis">' + d.lapis + '</span>' : ''));
+    },
+    relatorio: function (d) {
+      return nova('relatorio', '<strong>' + d.n + '</strong><span>' + d.txt + '</span>');
+    },
+    telex: function (d) {
+      return nova('telex', '<p>' + d.p + '</p>');
+    },
+    cupom: function (d) {
+      var linhas = d.linhas.map(function (l) {
+        return '<p><span>' + l[0] + '</span><b>' + l[1] + '</b></p>';
+      }).join('');
+      return nova('cupom',
+        '<div class="topo">' + d.topo + '</div>' + linhas +
+        '<p class="total"><span>' + d.total[0] + '</span><b>' + d.total[1] + '</b></p>' +
+        '<div class="pe">' + d.pe + '</div>');
+    },
+    etiqueta: function (d) {
+      var campos = d.campos.map(function (c) {
+        return '<dt>' + c[0] + '</dt><dd>' + c[1] + '</dd>';
+      }).join('');
+      return nova('etiqueta', '<div class="tombo">' + d.tombo + '</div><dl>' + campos + '</dl>');
+    }
+  };
+
+  function montar(i) {
+    pilha.textContent = '';
+    ACERVO[i].papeis.forEach(function (d, k) {
+      var folha = CONSTRUTOR[d.t](d);
+      folha.style.setProperty('--r', ROT[k % ROT.length] + 'deg');
+      folha.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var jaAberta = folha.classList.contains('aberta');
+        pilha.querySelectorAll('.folha.aberta').forEach(function (f) { f.classList.remove('aberta'); });
+        if (!jaAberta) {
+          folha.classList.add('aberta');
+          setTimeout(function () {
+            folha.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }, 120);
+        }
+      });
+      pilha.appendChild(folha);
+    });
+    // o primeiro papel já vem levantado, para a pessoa entender que se pega
+    var primeira = pilha.firstElementChild;
+    if (primeira) primeira.classList.add('aberta');
+  }
+
+  function abrir(i) {
+    if (i < 0 || i >= ACERVO.length) return;
+    aberta = i;
+    montar(i);
+    mesa.classList.add('on');
+    mesa.setAttribute('aria-hidden', 'false');
+    mesa.scrollTop = 0;
+    aplicar();
+    falar(i);
+  }
+
+  function fechar() {
+    if (aberta === null) return;
+    tx = enquadrar(POS[aberta].x, 0.5, escalaBase());
+    aberta = null;
+    mesa.classList.remove('on');
+    mesa.setAttribute('aria-hidden', 'true');
+    guia.classList.remove('on');
+    aplicar();
+  }
+
+  function irEntrada() {
+    aberta = null;
+    mesa.classList.remove('on');
+    mesa.setAttribute('aria-hidden', 'true');
+    guia.classList.remove('on');
+    tx = enquadrar(ENTRADA_X, estreito() ? 0.5 : 0.42, escalaBase());
+    aplicar();
+  }
+
+  /* ═══════════════ régua ═══════════════ */
+  (function () {
+    var ent = document.createElement('button');
+    ent.type = 'button';
+    ent.title = 'Voltar à entrada';
+    ent.innerHTML = '<span class="marca"></span><span>ent</span>';
+    ent.addEventListener('click', function (e) { e.stopPropagation(); irEntrada(); });
+    regua.appendChild(ent);
+
+    ACERVO.forEach(function (d, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-i', i);
+      b.setAttribute('aria-current', 'false');
+      b.title = d.titulo;
+      b.innerHTML = '<span class="marca"></span><span>' + d.n + '</span>';
+      b.addEventListener('click', function (e) { e.stopPropagation(); abrir(i); });
+      regua.appendChild(b);
+    });
+  })();
+
+  /* ═══════════════ índice do folheto ═══════════════ */
+  (function () {
+    var ol = document.getElementById('fhIndice');
+    ACERVO.forEach(function (d, i) {
+      var li = document.createElement('li'),
+          b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">' + d.n + '</span><span class="t">' + d.titulo +
+                    '</span><span class="pontos"></span><span class="e">' + d.era + '</span>';
+      b.addEventListener('click', function () { ir('sala', i); });
+      li.appendChild(b);
+      ol.appendChild(li);
+    });
+  })();
+
+  /* ═══════════════ interação na cena ═══════════════ */
+  vitrines.forEach(function (g, i) {
+    g.addEventListener('click', function (e) {
+      if (andou > 6) return;
+      e.stopPropagation();
+      if (aberta === i) fechar(); else abrir(i);
+    });
+  });
+
+  var folhetos = document.getElementById('folhetos');
+  if (folhetos) folhetos.addEventListener('click', function (e) {
+    if (andou > 6) return;
+    e.stopPropagation();
+    ir('folheto');
+  });
+
+  mesa.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.getElementById('mesaDevolver').addEventListener('click', fechar);
+  svg.addEventListener('click', function () { if (aberta !== null) fechar(); });
+
+  svg.addEventListener('wheel', function (e) {
+    if (aberta !== null) return;
+    e.preventDefault();
+    var k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1,
+        dx = e.deltaX * k, dy = e.deltaY * k;
+    svg.classList.add('sem-transicao');
+    tx -= (Math.abs(dx) > Math.abs(dy) ? dx : dy) * 1.1;
+    aplicar();
+  }, { passive: false });
+
+  svg.addEventListener('pointerdown', function (e) {
+    if (aberta !== null) return;
+    arrastando = true; andou = 0; ultimoX = e.clientX;
+    svg.classList.add('arrastando', 'sem-transicao');
+  });
+  svg.addEventListener('pointermove', function (e) {
+    if (!arrastando) return;
+    var d = e.clientX - ultimoX;
+    ultimoX = e.clientX; andou += Math.abs(d);
+    tx += d / (janela().k || 1);
+    aplicar();
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
+    svg.addEventListener(ev, function () {
+      arrastando = false;
+      svg.classList.remove('arrastando');
+      setTimeout(function () { andou = 0; svg.classList.remove('sem-transicao'); }, 40);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (body.dataset.view !== 'sala') return;
+    if (e.key === 'Escape') { fechar(); return; }
+    if (e.key === 'ArrowRight') {
+      if (aberta !== null) abrir(Math.min(aberta + 1, ACERVO.length - 1));
+      else { svg.classList.remove('sem-transicao'); tx -= 340; aplicar(); }
+    }
+    if (e.key === 'ArrowLeft') {
+      if (aberta !== null) abrir(Math.max(aberta - 1, 0));
+      else { svg.classList.remove('sem-transicao'); tx += 340; aplicar(); }
+    }
+  });
+
+  window.addEventListener('resize', aplicar);
+
+  /* ═══════════════ troca de vista ═══════════════ */
+  function ir(vista, vitrine) {
+    ['sala', 'folheto'].forEach(function (v) {
+      document.getElementById(v).hidden = (v !== vista);
+    });
+    body.dataset.view = vista;
+    if (vista === 'folheto') window.scrollTo(0, 0);
+    if (vista === 'sala') {
+      svg.classList.remove('sem-transicao');
+      if (typeof vitrine === 'number') abrir(vitrine);
+      else aplicar();
+    }
+  }
+  document.querySelectorAll('[data-go]').forEach(function (b) {
+    b.addEventListener('click', function () { ir(b.getAttribute('data-go')); });
+  });
+
+  /* a sala abre na parede de entrada */
+  svg.classList.add('sem-transicao');
+  irEntrada();
+  requestAnimationFrame(function () { svg.classList.remove('sem-transicao'); });
+})();
+
+</script>
+</body>
+</html>
