@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O desejo pelo avesso — Atlas dos cartões autônomos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Urbanist:ital,wght@0,500;0,600;1,500&display=swap');
+
+:root{
+  --paper:#f1e7cd;
+  --paper-light:#f8f2e4;
+  --ink:#20252b;
+  --steel:#617e92;
+  --sage:#89906a;
+  --clay:#b84c32;
+  --ochre:#d7a63b;
+  --line:rgba(32,37,43,.22);
+  --accent:var(--ink);
+  --human:#6c7078;
+  --machine:#2f5fa8;
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Epilogue',sans-serif;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.display{font-family:'Urbanist',sans-serif;}
+
+.masthead{
+  max-width:1180px;margin:0 auto;
+  padding:48px 28px 20px;
+  border-bottom:1px solid var(--line);
+}
+.masthead-kicker{
+  font-size:9px;letter-spacing:3px;opacity:.6;margin:0 0 10px;
+}
+.masthead h1{
+  font-family:'Urbanist',sans-serif;
+  font-size:clamp(28px,4.2vw,46px);
+  font-weight:600;
+  margin:0 0 6px;
+  font-style:italic;
+}
+.masthead-sub{
+  margin:0;font-size:13px;letter-spacing:1px;opacity:.65;
+}
+
+.atlas-nav{
+  max-width:1180px;margin:0 auto;
+  padding:18px 28px;
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.atlas-nav button{
+  font-family:'Epilogue',sans-serif;
+  font-size:12.5px;
+  letter-spacing:.3px;
+  background:none;
+  border:1px solid var(--line);
+  border-radius:2px;
+  color:var(--ink);
+  padding:9px 14px;
+  cursor:pointer;
+  transition:background .25s,color .25s,border-color .25s;
+}
+.atlas-nav button:hover{border-color:var(--ink);}
+.atlas-nav button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+.atlas-nav button.is-active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--paper-light);
+}
+
+.atlas-main{
+  max-width:1180px;margin:0 auto;
+  padding:8px 28px 64px;
+  display:block;
+}
+.map-pane{
+  margin-bottom:32px;
+}
+.map-frame{
+  position:relative;
+  border:1px solid var(--line);
+  background:var(--paper-light);
+  overflow:hidden;
+}
+.map-frame svg{display:block;width:100%;height:auto;}
+
+/* Microcenas now render as real SVG inside the map itself — small speech/thought
+   balloons drawn next to the illustrated element they refer to, inside the focused
+   island. Nothing floats on top of the drawing as a panel anymore. */
+#world{transition:transform .7s cubic-bezier(.22,.61,.36,1);}
+[data-layer]{cursor:pointer;}
+.mc-layer{transition:opacity .45s ease .1s;}
+.mc-layer text{font-family:'Epilogue',sans-serif;}
+.mc-bubble .mc-shape{fill:var(--paper-light);stroke:var(--ink);stroke-width:1.3;}
+.mc-bubble.type-thought .mc-shape{fill:var(--paper-light);fill-opacity:.55;stroke-dasharray:2 3;}
+.mc-bubble.type-silence .mc-shape{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:1.5 2.6;}
+.mc-bubble .mc-tail{fill:var(--paper-light);stroke:var(--ink);stroke-width:1.3;stroke-linejoin:round;}
+.mc-bubble.type-thought .mc-tail{display:none;}
+.mc-bubble.type-silence .mc-tail{display:none;}
+.mc-bubble.type-thought .mc-dot-trail circle{fill:var(--paper-light);stroke:var(--ink);stroke-width:1;stroke-dasharray:1.5 2;}
+.mc-bubble.is-human .mc-shape,
+.mc-bubble.is-human .mc-tail{stroke:var(--human);}
+.mc-bubble.is-machine .mc-shape,
+.mc-bubble.is-machine .mc-tail{stroke:var(--machine);}
+.mc-bubble.is-human .mc-dot-trail circle{stroke:var(--human);}
+.mc-bubble.is-machine .mc-dot-trail circle{stroke:var(--machine);}
+.mc-bubble .mc-actor-dot{fill:var(--human);}
+.mc-bubble.is-machine .mc-actor-dot{fill:var(--machine);}
+.mc-bubble .mc-actor-label{font-size:7px;letter-spacing:1px;fill:var(--ink);opacity:.68;}
+.mc-bubble .mc-text{font-size:9.5px;fill:var(--ink);}
+.mc-bubble.type-silence .mc-text{fill:var(--ink);opacity:.52;font-style:italic;}
+.mc-divider-label{font-size:8px;letter-spacing:1.4px;font-weight:600;fill:var(--ink);opacity:.6;}
+.mc-divider-rule{stroke:var(--ink);stroke-width:.7;stroke-dasharray:1 3;opacity:.4;}
+
+.map-caption{
+  border:1px solid var(--line);border-top:none;
+  background:var(--paper-light);
+  padding:9px 14px 10px;
+  font-size:9.5px;line-height:1.4;
+}
+.map-caption-scene{
+  margin:0 0 7px;font-style:italic;opacity:.75;min-height:1.4em;
+}
+.mc-legend{
+  display:flex;flex-wrap:wrap;gap:4px 10px;
+  opacity:.6;
+}
+.mc-legend span{display:inline-flex;align-items:center;gap:4px;}
+.mc-legend .sw{width:12px;height:8px;flex:none;border-radius:2px;box-sizing:border-box;}
+.mc-legend .sw.human{background:var(--human);}
+.mc-legend .sw.machine{background:var(--machine);}
+.mc-legend .sw.speech{background:var(--paper-light);border:1.3px solid var(--ink);}
+.mc-legend .sw.thought{background:var(--paper-light);border:1.3px dashed var(--ink);}
+.mc-legend .sw.silence{background:transparent;border:1px dotted var(--line);}
+.dialogue-pane{padding-top:6px;}
+.dialogue-inner{max-width:62ch;margin:0 auto;}
+.dialogue-kicker{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:2.5px;
+  color:var(--accent);
+  margin:0 0 10px;
+}
+.dialogue-kicker::before{
+  content:"";width:8px;height:8px;background:var(--accent);flex:none;
+}
+.dialogue-inner h2{
+  font-family:'Urbanist',sans-serif;
+  font-size:26px;font-weight:600;
+  margin:0 0 18px;
+}
+.dialogue-inner p{
+  font-size:15.5px;line-height:1.68;
+  margin:0 0 16px;
+}
+.dialogue-inner sup{font-size:10px;opacity:.75;}
+
+.notes{
+  margin-top:28px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+}
+.notes-label{
+  display:block;font-size:9px;letter-spacing:2.5px;opacity:.55;margin-bottom:8px;
+}
+.notes ol{
+  margin:0;padding-left:0;
+  list-style:none;
+}
+.notes li{
+  font-size:12px;line-height:1.55;opacity:.75;margin-bottom:6px;
+}
+.notes a{color:var(--accent);}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(6px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.dialogue-inner.fade-in{animation:fadeIn .45s ease;}
+
+@media (prefers-reduced-motion:reduce){
+  #world{transition:none;}
+  .dialogue-inner.fade-in{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <p class="masthead-kicker">CARTOGRAFIA DA DELEGAÇÃO · 2026</p>
+  <h1>O desejo pelo avesso</h1>
+  <p class="masthead-sub">Atlas dos cartões autônomos</p>
+</header>
+
+<nav class="atlas-nav" aria-label="Navegação do atlas">
+  <button data-target="overview" class="is-active">00 · mapa inteiro</button>
+  <button data-target="dados">01 · centro de cálculo</button>
+  <button data-target="humano">02 · fonte de dados</button>
+  <button data-target="cartoes">03 · atores autônomos</button>
+  <button data-target="erro">04 · desbordamento</button>
+</nav>
+
+<main class="atlas-main">
+  <div class="map-pane">
+  <div class="map-frame">
+<svg id="atlas-svg" viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg" width="1200" height="820"><defs><style>:root{--paper:#f1e7cd;--paper-light:#f8f2e4;--ink:#20252b;--steel:#617e92;--sage:#89906a;--clay:#b84c32;--ochre:#d7a63b;--line:rgba(32,37,43,.22)}text{font-family:'Epilogue',sans-serif}.display{font-family:'Urbanist',sans-serif}</style><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="var(--ink)" stroke-width=".45" opacity=".09"/></pattern><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink)" stroke-width="1" opacity=".12"/></pattern><filter id="paperShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#20252b" flood-opacity=".14"/></filter></defs><rect width="1200" height="820" fill="var(--paper)"/><g><rect width="1200" height="820" fill="url(#grid)"/><path d="M60 92H1140M60 730H1140" stroke="var(--ink)" opacity=".2"/><text x="60" y="75" fill="var(--ink)" font-size="9" letter-spacing="3">CARTOGRAFIA DA DELEGAÇÃO · 2026</text><text x="1035" y="75" fill="var(--ink)" font-size="9" letter-spacing="2">CLIQUE NAS ILHAS</text></g><g id="world" style="transform:translate(0,0) scale(1);transform-origin:0 0"><g fill="none" stroke="var(--clay)" stroke-width="1.2" stroke-dasharray="5 6" opacity=".65"><path d="M450 300C430 370 390 430 320 485"/><path d="M560 322C585 370 610 410 650 456"/><path d="M745 535C820 550 860 570 915 605"/><path d="M348 535C440 550 515 550 565 525"/></g><g data-layer="dados" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M400 260l130 -60l130 60l-130 60z" fill="var(--steel)" opacity=".78" stroke="var(--ink)"/><path d="M400 260v14l130 60v-14z" fill="var(--ink)" opacity=".8"/><path d="M660 260v14l-130 60v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(452 180)"><g transform="translate(0 0)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(48 8)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(96 16)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g></g><path d="M455 250C510 225 555 230 625 265" stroke="var(--ochre)" fill="none" stroke-width="1"/><g><line x1="430" y1="183" x2="430" y2="212" stroke="var(--ink)"/><circle cx="430" cy="170" r="14" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><text x="430" y="174" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">01</text></g><g><text class="display" x="395" y="350" fill="var(--ink)" font-size="16" font-weight="600">Centro de cálculo</text><text x="395" y="367" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">TOKEN · ÍNDICE · LATÊNCIA</text></g></g><g data-layer="humano" style="opacity:1;transition:opacity .45s;cursor:pointer"><g filter="url(#paperShadow)"><path d="M145 520l120 -56l120 56l-120 56z" fill="var(--sage)" opacity=".78" stroke="var(--ink)"/><path d="M145 520v14l120 56v-14z" fill="var(--ink)" opacity=".8"/><path d="M385 520v14l-120 56v-14z" fill="var(--ink)" opacity=".62"/></g><g><path d="M190 510l52-26 84 42-52 26z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M190 510l84 42v12l-84-42z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M274 552l52-26v12l-52 26z" fill="var(--sage)" opacity=".42" stroke="var(--ink)"/><path d="M196 508l18-9 18 9-18 9z" fill="var(--paper)" stroke="var(--ink)"/><circle cx="216" cy="508" r="7" fill="var(--clay)" stroke="var(--ink)" stroke-width=".8"/><path d="M224 512c22 1 44 12 60 22-14 10-36 2-54-16z" fill="var(--steel)" stroke="var(--ink)"/><path d="M224 512c7 6 8 10 6 15" fill="none" stroke="var(--paper-light)" opacity=".7"/><rect x="296" y="528" width="11" height="6" rx="2" fill="var(--ochre)" stroke="var(--ink)"/></g><g><line x1="176" y1="423" x2="176" y2="452" stroke="var(--ink)"/><circle cx="176" cy="410" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="176" y="414" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">02</text></g><g><text class="display" x="145" y="665" fill="var(--ink)" font-size="16" font-weight="600">O humano dorme</text><text x="145" y="682" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">FONTE DE DADOS E LIQUIDEZ</text></g></g><g data-layer="cartoes" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M515 540l150 -70l150 70l-150 70z" fill="var(--ochre)" opacity=".78" stroke="var(--ink)"/><path d="M515 540v14l150 70v-14z" fill="var(--ink)" opacity=".8"/><path d="M815 540v14l-150 70v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(572 440)"><g transform="translate(0 0)"><rect width="94" height="62" rx="3" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><text x="68" y="25" text-anchor="middle" fill="var(--paper-light)" font-size="13" font-weight="600">VISA</text><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(128 22)"><rect width="94" height="62" rx="3" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><g><circle cx="58" cy="23" r="12" fill="var(--ochre)"/><circle cx="72" cy="23" r="12" fill="var(--paper-light)" opacity=".75"/></g><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g></g><g><line x1="625" y1="411" x2="625" y2="440" stroke="var(--ink)"/><circle cx="625" cy="398" r="14" fill="var(--ochre)" stroke="var(--ink)" stroke-width="2"/><text x="625" y="402" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">03</text></g><g><text class="display" x="548" y="680" fill="var(--ink)" font-size="16" font-weight="600">Artefatos em marcha</text><text x="548" y="697" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">SELECIONAR · COMPRAR · QUITAR</text></g></g><g data-layer="erro" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M880 620l95 -46l95 46l-95 46z" fill="var(--clay)" opacity=".78" stroke="var(--ink)"/><path d="M880 620v14l95 46v-14z" fill="var(--ink)" opacity=".8"/><path d="M1070 620v14l-95 46v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(930 490)"><path d="M0 0l90 20-8 158-20-14-18 8-18-16-20 9z" fill="var(--paper-light)" stroke="var(--ink)"/><text x="14" y="36" fill="var(--clay)" font-size="10" font-weight="600">RECIBO / ERRO</text><line x1="14" y1="54" x2="73" y2="67" stroke="var(--ink)"/><line x1="14" y1="70" x2="66" y2="82" stroke="var(--ink)"/><text x="13" y="104" fill="var(--ink)" font-size="8">500 × RAÇÃO</text><text x="13" y="119" fill="var(--ink)" font-size="8">PET: AUSENTE</text></g><g><line x1="1040" y1="503" x2="1040" y2="532" stroke="var(--ink)"/><circle cx="1040" cy="490" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="1040" y="494" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">04</text></g><g><text class="display" x="860" y="730" fill="var(--ink)" font-size="16" font-weight="600">O cálculo transborda</text><text x="860" y="747" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">A CONSEQUÊNCIA VOLTA AO CORPO</text></g></g><g><text class="display" x="790" y="185" fill="var(--ink)" font-size="31" font-style="italic">“Ele nem precisou acordar.”</text><text x="795" y="210" fill="var(--ink)" opacity=".55" font-size="9" letter-spacing="2">DA DECISÃO HUMANA À EXECUÇÃO AUTOMÁTICA</text></g><g class="mc-layer" data-scene="dados" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="humano" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="cartoes" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="erro" style="opacity:0;pointer-events:none"></g></g></svg>
+  </div>
+  <div class="map-caption">
+    <p class="map-caption-scene" id="mapCaptionScene"></p>
+    <p class="mc-legend">
+      <span><i class="sw human"></i>ator humano</span>
+      <span><i class="sw machine"></i>ator não humano (algoritmo, bandeira, sistema)</span>
+      <span><i class="sw speech"></i>fala/decisão real</span>
+      <span><i class="sw thought"></i>pensamento não dito</span>
+      <span><i class="sw silence"></i>o que deveria ter sido perguntado e não foi</span>
+    </p>
+  </div>
+  </div>
+
+  <div class="dialogue-pane">
+    <div class="dialogue-inner" id="dialogue"></div>
+  </div>
+</main>
+
+<script>
+const NOTES = {
+  1: {text:"MASTERCARD; ALCHEMY. Comunicado oficial, 17 set. 2026.", url:"https://prnewswire.com/news-releases/alchemy-unlocks-ai-agent-purchases-anywhere-mastercard-is-accepted-online-via-agentcard-302882149.html"},
+  2: {text:"VISA. Comunicado oficial sobre a parceria com a OpenAI, 10 jun. 2026.", url:"https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.22496.html"},
+  3: {text:"A metáfora da “pedrinha no sapato” e a recuperação do vínculo latino entre cálculo e escrópulo são formuladas por Bruno Latour em An Inquiry into Modes of Existence (2013), ao analisar o papel da hesitação nas decisões de mercado."},
+  4: {text:"CALLON, Michel. The Laws of the Markets. Oxford: Blackwell, 1998. (conceito de dispositivo de mercado / enquadramento)"},
+  5: {text:"ZUBOFF, Shoshana. A Era do Capitalismo de Vigilância. Rio de Janeiro: Intrínseca, 2020, cap. 11. (conceito de “direito ao tempo futuro”)"},
+  6: {text:"ZUBOFF, Shoshana. A Era do Capitalismo de Vigilância. Rio de Janeiro: Intrínseca, 2020. (conceito de “capitalismo de vigilância”)"},
+  7: {text:"Moffatt v. Air Canada, 2024 BCCRT 149.", url:"https://mccarthy.ca/en/insights/blogs/techlex/moffatt-v-air-canada-misrepresentation-ai-chatbot"},
+  8: {text:"LATOUR, Bruno. A esperança de Pandora: ensaios sobre a realidade dos estudos científicos. Trad. Gilson César Cardoso Sousa. Bauru: EDUSC, 2001. (conceito de caixa-preta)"},
+  9: {text:"LEMOS, André. A comunicação precária: erros, falhas e perturbações na cultura digital. Rio de Janeiro: Edições 70/Alta Books, 2026."}
+};
+
+const SECTIONS = {
+  overview:{
+    accent:"var(--ink)", kicker:"CARTOGRAFIA DA DELEGAÇÃO · 2026", title:"O desejo pelo avesso",
+    notes:[], paragraphs:[
+      "Vestir a roupa do avesso, dizem por aí, dá azar. O dia sai errado, as coisas acontecem na ordem trocada... Tem uma versão tecnológica dessa superstição rolando agora, só que ninguém está chamando de azar: são as bandeiras de cartão ensinando o consumo inteiro a funcionar de trás para frente.",
+      "A história do dinheiro é a história da perda gradual de sua carne. Ele já trocou o papel pelo plástico do cartão, o cartão pelo QR code do Pix, tudo isso porque a moeda de prata pesava no bolso; a cédula exigia a dobra do papel, o cartão que se digitasse a senha... Em todos esses estágios, contudo, ainda sobrevivia a quitação, aquele relance ritual de testemunho humano em que o sujeito assina o contrato, sente o tranco do gasto e aceita que está quite com o mundo, mesmo que cada troca dessas estivesse apagando um pedaço do gesto de pagar.",
+      "Reparo, juntando essas quatro peças, que nenhuma delas foi pensada em função de bot de cartão de crédito: a perda do gesto no dinheiro, a vitrine que toda loja monta, a promessa de um tempo futuro, o fechamento clássico da caixa-preta (e a perturbação que nomeia o erro que funciona exatamente como projetado) vêm de décadas antes do agentic commerce pensar em existir. Isso não é coincidência boa nem má. É só sinal de que o problema não nasceu na quinta-feira do dia 19 de setembro. É uma pergunta velha, quanto tempo, e quanto trabalho, deveria separar você da coisa que você quer, reaparecendo com um nome novo a cada máquina nova que aprende a encurtar essa distância sozinha.",
+      "Nada disso exige a recusa da tecnologia ou o desligamento do servidor, isso nunca funcionou com nenhuma máquina antes, e não vai ser diferente agora. Da mesma forma, tampouco convém tratar o problema como um destino inevitável. Nenhum poder, nem o de bandeira de cartão nenhuma, é uma força mágica pairando no ar; é feito de coisa pequena, token, permissão, linha de código, cláusula de contrato que ninguém lê, pequena o bastante pra ser discutida uma por uma, se alguém se der ao trabalho de perguntar. Antes que o próximo token seja debitado no piloto automático, convém garantir que sobre no sistema alguma pedrinha chata, um incômodo capaz de nos fazer parar por um instante diante da urgência do robô. No fim das contas, a disputa gira essencialmente em torno do direito elementar de sentir o desconforto antes, muito além da busca por decisões perfeitas."
+    ]
+  },
+  dados:{
+    accent:"var(--steel)", kicker:"TOKEN · ÍNDICE · LATÊNCIA", title:"Centro de cálculo",
+    scene:[
+      {actor:"AGENTE PREDITIVO", who:"machine", type:"thought", side:"left", text:"Estoque de sabonete: 12%. Preço caiu 8%, às 3h da manhã.", pos:{x:478,y:180}, dir:{dx:-1,dy:-1}},
+      {actor:"AGENTE PREDITIVO", who:"machine", type:"speech", side:"left", text:"Calculando… comprando agora.", pos:{x:585,y:220}, dir:{dx:1,dy:-1}},
+      {type:"label", text:"O QUE NÃO ACONTECE AQUI — a pausa que só existiria sem o agente", pos:{x:700,y:248}},
+      {actor:"VOCÊ, hipoteticamente", who:"human", type:"silence", side:"right", text:"Será que eu preciso mesmo disso?", pos:{x:678,y:300}, dir:{dx:1,dy:1}}
+    ],
+    notes:[3], paragraphs:[
+      "Sem a testemunha humana, a ordem do ato acaba invertida. Enquanto o consumo tradicionalmente respondia a um “eu quero” prévio, a automação preditiva reescreve essa dinâmica pelo final, fazendo a transação anteceder a intenção e impondo à vontade humana um trabalho de acomodação retroativa.",
+      "É importante observar o que exatamente está sendo entregue à máquina nessa troca. A promessa das Big Techs é sempre sedutora: transformar o algoritmo em um assistente pessoal infalível, capaz de monitorar flutuações de mercado, prever o esgotamento de suprimentos e poupar o usuário da administração miúda do cotidiano, uma narrativa que já vimos com os wearables e com a Alexa. No entanto, sob a camada da conveniência e da gestão da rotina, a eficiência cobra uma fatia mais nobre. Muito além do fardo prático de lembrar do abastecimento da casa, entrega-se à máquina a própria hesitação, aquele intervalo de suspensão e dúvida que separa o estímulo da compra.",
+      "A palavra “calcular”, que vem do latim calculus, a pedrinha que se usava pra contar antes de existir número escrito e que, no sapato, dava origem ao escrópulo, o incômodo físico que obriga o sujeito a parar no meio do caminho e reavaliar o percurso. O cálculo humano, portanto, sempre exigiu atrito e hesitação. O que os cartões autônomos propõem é um cálculo desprovido de calculus, uma operação tão perfeitamente automatizada que elimina a pedra do sapato para impedir que o consumidor pare para pensar.<sup>3</sup> No silêncio desse “será que preciso mesmo?”, o desejo perde a função de deliberar e passa a atuar de trás para frente."
+    ]
+  },
+  humano:{
+    accent:"var(--sage)", kicker:"FONTE DE DADOS E LIQUIDEZ", title:"O humano dorme",
+    scene:[
+      {type:"label", text:"ANTES — o ritual da loja, hoje em extinção", pos:{x:80,y:412}, maxWidth:100},
+      {actor:"A LOJA", who:"human", type:"speech", side:"left", text:"Vira de lado, olha no espelho. O que você acha?", pos:{x:214,y:497}, dir:{dx:1,dy:-1}},
+      {actor:"VOCÊ", who:"human", type:"speech", side:"right", text:"Acho que não. Devolvo.", pos:{x:298,y:497}, dir:{dx:1,dy:-1}},
+      {type:"label", text:"AGORA — o bot decide sozinho, sem esse intervalo", pos:{x:16,y:543}, align:"start", maxWidth:118},
+      {actor:"O BOT", who:"machine", type:"speech", side:"left", text:"Comprei a jaqueta. O preço caiu, bateu o padrão do seu histórico.", pos:{x:210,y:568}, dir:{dx:-1,dy:1}},
+      {actor:"VOCÊ, dias depois", who:"human", type:"thought", side:"right", text:"Sempre quis algo nesse estilo…", pos:{x:300,y:568}, dir:{dx:1,dy:1}}
+    ],
+    notes:[4,5,6], paragraphs:[
+      "É nesse intervalo, aliás, que mora um trabalho que a loja sempre fez por você: o instante exato<sup>4</sup> em que um objeto qualquer, ainda solto no mundo, cercado de outras coisas, de outros usos possíveis, é isolado, precificado e colocado na sua frente pronto para ser imaginado como seu. É esse instante que acontece toda vez que você entra numa loja e experimenta um sapato, vira de lado no espelho, pergunta pra alguém “o que você acha?”. A loja inteira existe pra fabricar esse momento: a vitrine, a luz, o provador, o vendedor te dizendo que ficou bom, é o merchandising. Um trabalho de encenação, feito antes da compra, para que a compra pareça sua escolha e não um acidente. Esse trabalho também te dá a chance de dizer não: você experimenta o sapato, decide que não gostou, tira e devolve pro cabide, sai da loja de mãos vazias. Dizer não e dizer sim nascem do mesmo gesto de confronto direto com o objeto.",
+      "O bot atropela todo esse ritual. Ele não te leva ao provador, não te vira de lado no espelho, não espera você imaginar nada, e também não te dá a chance de recusar. Ele simplesmente decide que a queda de preço bateu, ou que o clima esfriou, ou que algum padrão no seu histórico apontou pra uma jaqueta, e compra. A caixa chega. Nos dias seguintes, você se pega procurando um motivo pra gostar dela, inventando uma ocasião pra usar, convencendo a si mesma de que sempre quis algo naquele estilo. Trata-se do próprio desejo operando de trás para frente, assumindo a posteriori o trabalho de encenação que a loja costumava fazer antes. Mais uma camada de atrito que desaparece do caminho.",
+      "Sem esse intervalo, erosiona-se o direito ao tempo futuro,<sup>5</sup> essa capacidade humana elementar de nutrir “a vontade de ter vontade” e prometer algo para si mesma. É na espera que a intenção ganha corpo até se consolidar como escolha. O bot de compra por antecipação corta esse tempo de maturação pela raiz. O que viabiliza essa operação é o encurtamento bruto da distância entre o rastro comportamental e a conversão comercial, contornando a hesitação em nome da eficiência cujo fim real é a previsibilidade do mercado.",
+      "Há também uma explicação bem prática pra empresas quererem exatamente esse arranjo. Prever o que você vai comprar já dá dinheiro. Garantir a compra, agindo antes mesmo de a vontade se formar, dá mais: é o motor do capitalismo de vigilância.<sup>6</sup>"
+    ]
+  },
+  cartoes:{
+    accent:"var(--ochre)", kicker:"SELECIONAR · COMPRAR · QUITAR", title:"Artefatos em marcha",
+    scene:[
+      {actor:"AGENTE IA", who:"machine", type:"thought", side:"left", text:"Protetor solar abaixo do limite de estoque. R$42, dentro da regra de até R$800.", pos:{x:600,y:432}, dir:{dx:-1,dy:-1}},
+      {actor:"BANDEIRA", who:"machine", type:"speech", side:"right", text:"Autorizado. Sem necessidade de confirmação.", pos:{x:780,y:454}, dir:{dx:1,dy:-1}},
+      {actor:"LOJA", who:"machine", type:"speech", side:"left", text:"Pedido processado. Entrega em 2 dias.", pos:{x:600,y:542}, dir:{dx:-1,dy:1}},
+      {actor:"VOCÊ", who:"human", type:"silence", side:"right", text:"(ausente da própria compra)", pos:{x:780,y:562}, dir:{dx:1,dy:1}}
+    ],
+    notes:[1,2], paragraphs:[
+      "O anúncio da Mastercard com a startup Alchemy, no dia 17/09,<sup>1</sup> é só o corte mais recente dessa sequência: um cartão virtual entregue direto a um bot de inteligência artificial, que compra sozinho dentro de um limite pré-definido, sem pedir confirmação a cada transação. A Visa prepara a sua própria versão, batizada de Visa Intelligent Commerce, já em teste com parceiros como a OpenAI.<sup>2</sup> Dessa vez, o corte ultrapassa o papel e o plástico, atingindo o gesto por inteiro. Ao dispensar o clique, a digital e a olhada no celular, o processo se reduz a máquinas conversando entre si. Superadas a fricção da matéria e a rotina da senha (que o cartão e o Pix haviam reduzido a microgestos), o atrito que sai de cena é a própria necessidade da presença humana.",
+      "Vale ser precisa aqui, porque o próprio desenho técnico prevê mais de um caminho. Em um deles, você escreve a lista antes: “quero um fone de ouvido, marca X, até R$ 800, compre se o preço cair.” Nesse caminho o desejo ainda vem primeiro; só a espera é que é terceirizada. É no outro caminho que a inversão acontece de verdade, onde o agente percebe sozinho que o protetor solar está acabando, encontra a oferta, e compra sem que você tenha pedido nada, desde que caiba dentro de um limite de gasto e de categoria definido lá atrás. É desse segundo caminho que este texto fala. Pela própria arquitetura descrita, há uma tela de confirmação, mas ela só aparece quando a compra foge da regra. Quanto mais larga a regra que você aceitou uma vez, por exemplo “pode gastar até R$ 800 em qualquer coisa que achar que eu preciso”, menos vezes essa tela aparece. O consentimento, então, muda de lugar. Em vez de acontecer a cada compra, acontece uma vez, no dia em que você configura o agente, e é convocado a valer por todas as compras que ainda não existem.",
+      "Isso também deverá virar do avesso o papel de quem vende. Propaganda sempre existiu pra fabricar vontade antes da compra, plantar a ideia de que falta alguma coisa, para que, na hora certa, a decisão pareça sua. Quando o bot pula direto pra compra, essa fabricação muda de lugar. A venda do desejo antecipado dá lugar à oferta de uma justificativa retroativa onde o discurso migra do imperativo “você precisa disso” para a constatação “veja como você sempre quis isso”."
+    ]
+  },
+  erro:{
+    accent:"var(--clay)", kicker:"A CONSEQUÊNCIA VOLTA AO CORPO", title:"O cálculo transborda",
+    scene:[
+      {type:"label", text:"A COMPRA — decidida e aprovada sem checar nada com você", pos:{x:960,y:368}},
+      {actor:"AGENTE", who:"machine", type:"thought", side:"left", text:"Padrão de recompra detectado: ração de pet. Comprando 500 unidades.", pos:{x:955,y:486}, dir:{dx:-1,dy:-1}},
+      {actor:"SISTEMA", who:"machine", type:"speech", side:"right", text:"Transação aprovada.", pos:{x:1010,y:486}, dir:{dx:1,dy:-1}},
+      {type:"label", text:"DIAS DEPOIS — quando finalmente alguém vê o resultado", pos:{x:800,y:502}},
+      {actor:"VOCÊ, abrindo a caixa", who:"human", type:"speech", side:"left", text:"Eu não tenho pet.", pos:{x:905,y:565}, dir:{dx:-1,dy:0}},
+      {actor:"CAIXA-PRETA", who:"machine", type:"thought", side:"right", text:"Se eu checasse isso antes, o erro nem teria acontecido.", pos:{x:1030,y:585}, dir:{dx:1,dy:0}},
+      {type:"label", text:"DEPOIS DA DESCOBERTA — tentando desfazer o que a máquina decidiu sozinha", pos:{x:770,y:618}},
+      {actor:"VOCÊ", who:"human", type:"speech", side:"left", text:"Quero devolver. Isso nunca foi meu.", pos:{x:905,y:665}, dir:{dx:-1,dy:1}},
+      {actor:"SISTEMA", who:"machine", type:"speech", side:"right", text:"Prazo de devolução: 7 dias. Reembolso sujeito a análise.", pos:{x:1035,y:685}, dir:{dx:1,dy:1}}
+    ],
+    notes:[7,8,9], paragraphs:[
+      "Quando ninguém mais precisa perguntar “você quer isso mesmo?”, a gente não perde só o direito ao tempo futuro. Perde também o direito de mudar de ideia depois, inclusive quando o sistema simplesmente erra. E ele erra.<sup>7</sup> Quando o bot alucina, o desejo pelo avesso encontrará abrigo exclusivamente na ficção de uma escolha feita. E mesmo assim, quem paga a conta continua sendo você.",
+      "E quando essa infraestrutura se consolidar e a encomenda surgir na porta, uma última peça entrará em ação, essa ainda mais antiga: à medida que um arranjo técnico se estabiliza e atinge o sucesso, deixamos de questionar sua engenharia interna e passamos a aceitar apenas o resultado como um fato dado. É o processo clássico de fechamento da caixa-preta.<sup>8</sup> Ninguém investiga a infraestrutura por trás da água quente do chuveiro; só notamos que ela existe se a torneira falhar. Com os bots de IA, no instante em que o pacote for entregue e aberto, todo o agenciamento sócio-técnico que viabilizou aquela transação, a extração comportamental, as chamadas de API, os tokens de segurança, já se terá tornado invisível. O produto será integrado à rotina como fato consumado, e a janela para perguntar “eu realmente escolhi isso?” tenderá a se fechar antes mesmo de ser aberta. Outra pedrinha a menos.",
+      "Esse é um deslocamento fundamental. Vale lembrar que estamos aqui no campo da reflexão prospectiva: nenhuma dessas caixas encomendadas por robôs autônomos ainda chegou às nossas portas(!). Contudo, projetado esse cenário, o dilema iminente ultrapassa o mero erro das alucinações algorítmicas<sup>9</sup> de dados inventados, desenhando-se antes como uma perturbação. Nesse horizonte que se desenha, o robô vai errar de outros jeitos também, isso é quase certo, só não sei dizer quais. O problema central reside justamente na eficácia do dispositivo, que cumpre com precisão cega exatamente aquilo que projetou estatisticamente. E é justamente ao funcionar conforme projetado que o sistema tensionará nossas dimensões éticas, políticas e existenciais. Quando essas caixas começarem a chegar e forem abertas, haverá dias em que nenhuma história dará conta do produto ali dentro: a cor errada, o tamanho que jamais serviria, um objeto sem lugar algum na sua vida, por mais que você o gire nas mãos procurando um motivo. Quando o “desejo retroativo” não alcança a compra, sobra só a compra, nua, sem disfarce de escolha, e aí, por um instante, dá para ver o quanto do resto também era assim, só que bem-sucedido demais para se notar. Reclamar, devolver ou cancelar a assinatura continuam sendo opções viáveis, mas exigem reconhecer em voz alta que aquilo nunca foi seu, o que é mais difícil do que parece depois de dias inteiros tentando se convencer do contrário."
+    ]
+  }
+};
+
+const CENTERS = {
+  dados:{cx:525, cy:270},
+  humano:{cx:265, cy:520},
+  cartoes:{cx:665, cy:545},
+  erro:{cx:965, cy:610}
+};
+
+const world = document.getElementById('world');
+const atlasSvg = document.getElementById('atlas-svg');
+const layers = document.querySelectorAll('[data-layer]');
+const navButtons = document.querySelectorAll('.atlas-nav button');
+const dialogue = document.getElementById('dialogue');
+const mapCaptionScene = document.getElementById('mapCaptionScene');
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/* ---------- SVG text measuring + wrapping ---------------------------------
+   Real balloons drawn as SVG (no foreignObject, no HTML panel). A hidden
+   <text> node measures each candidate line with getComputedTextLength(),
+   words are packed against a max width, and only then do we know how many
+   lines there are — so the rect/tail is sized exactly to the text, never
+   guessed by hand and never overflowed. Runs fresh every render. */
+const measurer = document.createElementNS(SVG_NS,'text');
+measurer.setAttribute('font-size','9.5');
+measurer.style.fontFamily = "'Epilogue',sans-serif";
+measurer.style.visibility = 'hidden';
+atlasSvg.appendChild(measurer);
+
+function textWidth(str, fontSize, opts){
+  measurer.setAttribute('font-size', fontSize);
+  measurer.style.letterSpacing = (opts && opts.letterSpacing) || 'normal';
+  measurer.style.fontWeight = (opts && opts.fontWeight) || 'normal';
+  measurer.textContent = str;
+  return measurer.getComputedTextLength();
+}
+
+function wrapWords(str, maxWidth, fontSize, opts){
+  const words = str.split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = '';
+  words.forEach(w=>{
+    const test = current ? current + ' ' + w : w;
+    if(current && textWidth(test, fontSize, opts) > maxWidth){
+      lines.push(current);
+      current = w;
+    }else{
+      current = test;
+    }
+  });
+  if(current) lines.push(current);
+  return lines;
+}
+
+/* ---------- balloon geometry ------------------------------------------- */
+const MC_FONT = 9.5, MC_LINE_H = 12, MC_MAXW = 132, MC_PAD_X = 9, MC_PAD_TOP = 8, MC_PAD_BOT = 8, MC_GAP = 15;
+
+function el(tag, attrs){
+  const n = document.createElementNS(SVG_NS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+}
+
+function bubbleGeometry(turn, extraGap){
+  const gap = MC_GAP + (extraGap||0);
+  const lines = wrapWords(turn.text, MC_MAXW, MC_FONT);
+  const widest = Math.max(...lines.map(l=>textWidth(l, MC_FONT)));
+  const boxW = Math.min(MC_MAXW, widest) + MC_PAD_X*2;
+  const headerH = turn.actor ? 12 : 2;
+  const boxH = headerH + lines.length*MC_LINE_H + MC_PAD_TOP + MC_PAD_BOT - (turn.actor?0:4);
+  const {x:ax, y:ay} = turn.pos;
+  const dir = turn.dir || {dx:0,dy:-1};
+  const bx = dir.dx < 0 ? ax - gap - boxW : (dir.dx > 0 ? ax + gap : ax - boxW/2);
+  const by = dir.dy < 0 ? ay - gap - boxH : (dir.dy > 0 ? ay + gap : ay - boxH/2);
+  return {lines, boxW, boxH, bx, by, ax, ay, dir};
+}
+
+/* extraGap: distância extra empurrando o balão pra longe do âncora, usada pra
+   resolver sobreposições entre balões vizinhos (ver resolveSceneLayout). */
+function buildBubble(turn, extraGap){
+  const {lines, boxW, boxH, bx, by, ax, ay, dir} = bubbleGeometry(turn, extraGap);
+
+  const g = el('g', {class:`mc-bubble is-${turn.who||'human'} type-${turn.type}`});
+
+  // tail: small triangle from the box edge nearest the anchor, to the anchor point
+  if(turn.type === 'speech'){
+    const tailBaseX = dir.dx < 0 ? bx + boxW - Math.min(22, boxW*0.35) : bx + Math.min(22, boxW*0.35);
+    const tailBaseY = dir.dy < 0 ? by + boxH : by;
+    const tailTipY  = dir.dy < 0 ? by + boxH + 9 : by - 9;
+    const tail = el('path', {
+      class:'mc-tail',
+      d:`M${tailBaseX-6},${tailBaseY} L${ax},${dir.dy<0?Math.min(ay,tailTipY+6):Math.max(ay,tailTipY-6)} L${tailBaseX+7},${tailBaseY} Z`
+    });
+    g.appendChild(tail);
+  }
+
+  const rect = el('rect', {
+    class:'mc-shape', x:bx, y:by, width:boxW, height:boxH,
+    rx: turn.type==='speech' ? 9 : 11
+  });
+  g.appendChild(rect);
+
+  // thin connector for thought / silence turns (no bold tail — a trailing hint)
+  if(turn.type !== 'speech'){
+    const nearX = dir.dx < 0 ? bx + boxW : (dir.dx > 0 ? bx : bx + boxW/2);
+    const nearY = dir.dy < 0 ? by + boxH : (dir.dy > 0 ? by : by + boxH/2);
+    const trail = el('g', {class:'mc-dot-trail'});
+    const steps = 3;
+    for(let i=1;i<=steps;i++){
+      const t = i/(steps+1);
+      trail.appendChild(el('circle', {
+        cx: nearX + (ax-nearX)*t, cy: nearY + (ay-nearY)*t, r: 2.6 - i*0.5
+      }));
+    }
+    g.appendChild(trail);
+  }
+
+  let ty = by + MC_PAD_TOP;
+  if(turn.actor){
+    g.appendChild(el('circle', {class:'mc-actor-dot', cx:bx+MC_PAD_X+2, cy:by+8.5, r:2.4}));
+    const actorText = el('text', {class:'mc-actor-label', x:bx+MC_PAD_X+8, y:by+11});
+    actorText.textContent = turn.actor.toUpperCase();
+    g.appendChild(actorText);
+    ty += 9;
+  }else{
+    ty -= 3;
+  }
+
+  const textEl = el('text', {class:'mc-text', x:bx+MC_PAD_X});
+  lines.forEach((line,i)=>{
+    const tspan = el('tspan', {x:bx+MC_PAD_X, y: ty + i*MC_LINE_H + MC_FONT*0.82});
+    tspan.textContent = line;
+    textEl.appendChild(tspan);
+  });
+  g.appendChild(textEl);
+
+  return g;
+}
+
+/* Espelha o CSS de .mc-divider-label (negrito + letter-spacing), pra medir
+   a largura do texto do jeito que ele realmente vai ser desenhado. */
+const DIVIDER_TEXT_OPTS = {letterSpacing:'1.4px', fontWeight:'600'};
+
+function buildDivider(turn){
+  const lines = wrapWords(turn.text, turn.maxWidth || 150, 8, DIVIDER_TEXT_OPTS);
+  const g = el('g', {class:'mc-divider'});
+  lines.forEach((line,i)=>{
+    const t = el('text', {class:'mc-divider-label', x:turn.pos.x, y:turn.pos.y + i*10, 'text-anchor':turn.align || 'middle'});
+    t.textContent = line;
+    g.appendChild(t);
+  });
+  return g;
+}
+
+/* ---------- anti-sobreposição -------------------------------------------
+   Empurra balões que colidiriam com outro balão, com o divisor de cena
+   (label) ou com o marcador numerado / título da própria ilha, para que o
+   texto de um nunca cubra o de outro. Só afasta ao longo da direção que o
+   próprio balão já usava (dir), então a composição original é preservada;
+   ela só ganha mais espaço quando dois textos ficariam colados. */
+function dividerRect(turn){
+  const lines = wrapWords(turn.text, turn.maxWidth || 150, 8, DIVIDER_TEXT_OPTS);
+  const widest = lines.length ? Math.max(...lines.map(l=>textWidth(l, 8, DIVIDER_TEXT_OPTS))) : 0;
+  const w = widest + 6;
+  const align = turn.align || 'middle';
+  const x = align === 'end' ? turn.pos.x - w : (align === 'start' ? turn.pos.x : turn.pos.x - w/2);
+  const h = lines.length*10 + 4;
+  return {x, y: turn.pos.y - 8, w, h};
+}
+
+/* Retângulos aproximados do marcador numerado e do título/legenda de cada
+   ilha (elementos fixos do mapa, fora do grupo mc-layer). */
+const SCENE_OBSTACLES = {
+  dados:  [{x:414,y:154,w:32,h:32}, {x:393,y:330,w:170,h:26}, {x:393,y:356,w:150,h:14}],
+  humano: [{x:160,y:394,w:32,h:32}, {x:143,y:645,w:175,h:26}, {x:143,y:671,w:185,h:14}],
+  cartoes:[{x:609,y:382,w:32,h:32}, {x:546,y:660,w:195,h:26}, {x:546,y:686,w:225,h:14}],
+  erro:   [{x:1024,y:474,w:32,h:32},{x:858,y:710,w:195,h:26}, {x:858,y:736,w:235,h:14}]
+};
+
+function rectsOverlap(a, b, margin){
+  margin = margin || 0;
+  return !(a.x + a.w + margin < b.x || b.x + b.w + margin < a.x ||
+           a.y + a.h + margin < b.y || b.y + b.h + margin < a.y);
+}
+
+function resolveSceneLayout(key, scene){
+  const bubbleIdxs = [];
+  scene.forEach((t,i)=>{ if(t.type !== 'label') bubbleIdxs.push(i); });
+  const extra = {};
+  bubbleIdxs.forEach(i=>{ extra[i] = 0; });
+
+  const fixed = (SCENE_OBSTACLES[key] || []).slice();
+  scene.forEach(t=>{ if(t.type === 'label') fixed.push(dividerRect(t)); });
+
+  const STEP = 6, MAX_ITER = 60;
+  for(let iter=0; iter<MAX_ITER; iter++){
+    const rects = {};
+    bubbleIdxs.forEach(i=>{
+      const g = bubbleGeometry(scene[i], extra[i]);
+      rects[i] = {x:g.bx, y:g.by, w:g.boxW, h:g.boxH};
+    });
+    let moved = false;
+    bubbleIdxs.forEach(i=>{
+      fixed.forEach(fr=>{
+        if(rectsOverlap(rects[i], fr, 3)){ extra[i] += STEP; moved = true; }
+      });
+    });
+    for(let a=0; a<bubbleIdxs.length; a++){
+      for(let b=a+1; b<bubbleIdxs.length; b++){
+        const i = bubbleIdxs[a], j = bubbleIdxs[b];
+        if(rectsOverlap(rects[i], rects[j], 3)){ extra[j] += STEP; moved = true; }
+      }
+    }
+    if(!moved) break;
+  }
+  return extra;
+}
+
+/* Build every island's balloons once, into its <g class="mc-layer"> — so
+   switching islands just toggles opacity, no rebuilding mid-interaction. */
+function buildAllMicrocenas(){
+  document.querySelectorAll('.mc-layer').forEach(layer=>{
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    const key = layer.dataset.scene;
+    const scene = SECTIONS[key] && SECTIONS[key].scene;
+    if(!scene) return;
+    const extra = resolveSceneLayout(key, scene);
+    scene.forEach((turn,i)=>{
+      layer.appendChild(turn.type === 'label' ? buildDivider(turn) : buildBubble(turn, extra[i]));
+    });
+  });
+}
+
+/* ---------- text column + caption strip --------------------------------- */
+function renderSection(key){
+  const s = SECTIONS[key];
+  document.documentElement.style.setProperty('--accent', s.accent);
+  const notesHtml = s.notes.length ? `<div class="notes"><span class="notes-label">NOTAS</span><ol class="notes-list">${
+    s.notes.map(n=>{
+      const note = NOTES[n];
+      const link = note.url ? ` <a href="${note.url}" target="_blank" rel="noopener">↗</a>` : '';
+      return `<li>${n}. ${note.text}${link}</li>`;
+    }).join('')
+  }</ol></div>` : '';
+
+  dialogue.innerHTML = `<p class="dialogue-kicker">${s.kicker}</p><h2>${s.title}</h2>${
+    s.paragraphs.map(p=>`<p>${p}</p>`).join('')
+  }${notesHtml}`;
+
+  dialogue.classList.remove('fade-in');
+  void dialogue.offsetWidth;
+  dialogue.classList.add('fade-in');
+
+  mapCaptionScene.textContent = (key !== 'overview' && s.scene && s.scene.length)
+    ? 'Cena hipotética — como esse trecho pode acontecer na prática, em diálogo entre os atores da rede, desenhada dentro da própria ilha ao lado.'
+    : 'Clique numa ilha para focar nela e revelar sua microcena.';
+}
+
+function setActive(key){
+  layers.forEach(g=>{
+    const layerKey = g.getAttribute('data-layer');
+    g.style.opacity = (key === 'overview' || layerKey === key) ? '1' : '.22';
+  });
+
+  if(key === 'overview'){
+    world.style.transform = 'translate(0px,0px) scale(1)';
+  }else{
+    const c = CENTERS[key];
+    const scale = 1.65;
+    const tx = 600 - c.cx * scale;
+    const ty = 410 - c.cy * scale;
+    world.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+  }
+
+  navButtons.forEach(b=>b.classList.toggle('is-active', b.dataset.target === key));
+  document.querySelectorAll('.mc-layer').forEach(el=>{
+    const visible = key === el.dataset.scene;
+    el.style.opacity = visible ? '1' : '0';
+    el.style.pointerEvents = visible ? 'auto' : 'none';
+  });
+  renderSection(key);
+}
+
+navButtons.forEach(b=>b.addEventListener('click', ()=>setActive(b.dataset.target)));
+layers.forEach(g=>g.addEventListener('click', ()=>setActive(g.getAttribute('data-layer'))));
+
+buildAllMicrocenas();
+setActive('overview');
+// Google Fonts loads async; once it's actually in, remeasure and rebuild so
+// balloon sizes match the real glyph widths, not the fallback font's.
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(buildAllMicrocenas);
+}
+</script>
+</body>
+</html>
