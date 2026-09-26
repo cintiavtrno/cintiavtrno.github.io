@@ -5,20 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>O desejo pelo avesso — Atlas dos cartões autônomos</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Urbanist:ital,wght@0,500;0,600;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root{
-  --paper:#f1e7cd;
-  --paper-light:#f8f2e4;
-  --ink:#20252b;
-  --steel:#617e92;
-  --sage:#89906a;
-  --clay:#b84c32;
-  --ochre:#d7a63b;
-  --line:rgba(32,37,43,.22);
+  /* madrugada: o fundo vira noite, o desenho vira linha clara.
+     as quatro ilhas mantêm matizes distintos para continuarem
+     conversando entre si em vez de virarem uma mancha só. */
+  --paper:#0e1620;          /* o chão da noite */
+  --paper-light:#17222e;    /* face clara dos objetos, agora painel escuro */
+  --shade:#080e15;          /* face lateral das ilhas: sombra */
+  --ink:#e4eae4;            /* a linha e o texto */
+  --steel:#7fa8c9;
+  --sage:#a3b47a;
+  --clay:#e0674a;
+  --ochre:#e0b354;
+  --line:rgba(228,234,228,.2);
+  --rule:rgba(126,170,140,.17);  /* pauta de papel de contabilidade, invertida */
   --accent:var(--ink);
-  --human:#6c7078;
-  --machine:#2f5fa8;
+  --human:#c9d2da;
+  --machine:#5b9bd5;
+  --serif:'Spectral',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box;}
 html{scroll-padding-top:env(safe-area-inset-top,0px);}
@@ -26,11 +33,11 @@ body{
   margin:0;
   background:var(--paper);
   color:var(--ink);
-  font-family:'Epilogue',sans-serif;
+  font-family:var(--serif);
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-.display{font-family:'Urbanist',sans-serif;}
+.display{font-family:var(--serif);}
 
 .masthead{
   max-width:1180px;margin:0 auto;
@@ -38,17 +45,19 @@ body{
   border-bottom:1px solid var(--line);
 }
 .masthead-kicker{
+  font-family:var(--mono);
   font-size:9px;letter-spacing:3px;opacity:.6;margin:0 0 10px;
 }
 .masthead h1{
-  font-family:'Urbanist',sans-serif;
+  font-family:var(--serif);
   font-size:clamp(28px,4.2vw,46px);
   font-weight:600;
   margin:0 0 6px;
   font-style:italic;
 }
 .masthead-sub{
-  margin:0;font-size:13px;letter-spacing:1px;opacity:.65;
+  font-family:var(--mono);
+  margin:0;font-size:12px;letter-spacing:1px;opacity:.65;
 }
 
 .atlas-nav{
@@ -57,7 +66,7 @@ body{
   display:flex;flex-wrap:wrap;gap:8px;
 }
 .atlas-nav button{
-  font-family:'Epilogue',sans-serif;
+  font-family:var(--mono);
   font-size:12.5px;
   letter-spacing:.3px;
   background:none;
@@ -98,7 +107,7 @@ body{
 #world{transition:transform .7s cubic-bezier(.22,.61,.36,1);}
 [data-layer]{cursor:pointer;}
 .mc-layer{transition:opacity .45s ease .1s;}
-.mc-layer text{font-family:'Epilogue',sans-serif;}
+.mc-layer text{font-family:var(--mono);}
 .mc-bubble .mc-shape{fill:var(--paper-light);stroke:var(--ink);stroke-width:1.3;}
 .mc-bubble.type-thought .mc-shape{fill:var(--paper-light);fill-opacity:.55;stroke-dasharray:2 3;}
 .mc-bubble.type-silence .mc-shape{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:1.5 2.6;}
@@ -116,11 +125,15 @@ body{
 .mc-bubble.is-machine .mc-actor-dot{fill:var(--machine);}
 .mc-bubble .mc-actor-label{font-size:7px;letter-spacing:1px;fill:var(--ink);opacity:.68;}
 .mc-bubble .mc-text{font-size:9.5px;fill:var(--ink);}
+/* a oposição humano/máquina também na letra, não só na cor */
+.mc-bubble.is-human .mc-text{font-family:var(--serif);}
+.mc-bubble.is-machine .mc-text{font-family:var(--mono);}
 .mc-bubble.type-silence .mc-text{fill:var(--ink);opacity:.52;font-style:italic;}
 .mc-divider-label{font-size:8px;letter-spacing:1.4px;font-weight:600;fill:var(--ink);opacity:.6;}
 .mc-divider-rule{stroke:var(--ink);stroke-width:.7;stroke-dasharray:1 3;opacity:.4;}
 
 .map-caption{
+  font-family:var(--mono);
   border:1px solid var(--line);border-top:none;
   background:var(--paper-light);
   padding:9px 14px 10px;
@@ -143,6 +156,7 @@ body{
 .dialogue-pane{padding-top:6px;}
 .dialogue-inner{max-width:62ch;margin:0 auto;}
 .dialogue-kicker{
+  font-family:var(--mono);
   display:flex;align-items:center;gap:8px;
   font-size:10px;letter-spacing:2.5px;
   color:var(--accent);
@@ -152,7 +166,7 @@ body{
   content:"";width:8px;height:8px;background:var(--accent);flex:none;
 }
 .dialogue-inner h2{
-  font-family:'Urbanist',sans-serif;
+  font-family:var(--serif);
   font-size:26px;font-weight:600;
   margin:0 0 18px;
 }
@@ -162,12 +176,30 @@ body{
 }
 .dialogue-inner sup{font-size:10px;opacity:.75;}
 
+.metodo{
+  margin-top:30px;
+  border:1px solid var(--line);
+  border-left:2px solid var(--clay);
+  background:rgba(224,103,74,.05);
+  padding:14px 16px 15px;
+}
+.metodo-label{
+  display:block;font-family:var(--mono);
+  font-size:8.5px;letter-spacing:2.4px;
+  color:var(--clay);opacity:.9;margin-bottom:8px;
+}
+.metodo p{
+  font-size:13px !important;line-height:1.65 !important;
+  margin:0 !important;opacity:.78;
+}
+
 .notes{
   margin-top:28px;
   padding-top:16px;
   border-top:1px solid var(--line);
 }
 .notes-label{
+  font-family:var(--mono);
   display:block;font-size:9px;letter-spacing:2.5px;opacity:.55;margin-bottom:8px;
 }
 .notes ol{
@@ -175,7 +207,8 @@ body{
   list-style:none;
 }
 .notes li{
-  font-size:12px;line-height:1.55;opacity:.75;margin-bottom:6px;
+  font-family:var(--mono);
+  font-size:11px;line-height:1.55;opacity:.75;margin-bottom:6px;
 }
 .notes a{color:var(--accent);}
 
@@ -188,6 +221,22 @@ body{
 @media (prefers-reduced-motion:reduce){
   #world{transition:none;}
   .dialogue-inner.fade-in{animation:none;}
+}
+
+/* ── celular ───────────────────────────────────────────────────────────
+   O mapa inteiro numa tela de 375px joga a letra do balão para ~2,5px.
+   Aqui o quadro vira quadrado, o viewBox enquadra uma ilha por vez e a
+   navegação que já existia passa a ser o zoom.                        */
+@media (max-width:760px){
+  .masthead{padding:30px 18px 16px;}
+  .atlas-nav{padding:14px 18px;gap:6px;}
+  .atlas-nav button{font-size:11.5px;padding:8px 11px;flex:1 1 auto;}
+  .atlas-main{padding:6px 18px 48px;}
+  .map-frame{aspect-ratio:4/5;}
+  .map-frame svg{height:100%;width:100%;}
+  .map-caption{font-size:9px;}
+  .dialogue-inner p{font-size:16px;}
+  #atlas-svg{touch-action:pan-y;}
 }
 </style>
 </head>
@@ -210,7 +259,46 @@ body{
 <main class="atlas-main">
   <div class="map-pane">
   <div class="map-frame">
-<svg id="atlas-svg" viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg" width="1200" height="820"><defs><style>:root{--paper:#f1e7cd;--paper-light:#f8f2e4;--ink:#20252b;--steel:#617e92;--sage:#89906a;--clay:#b84c32;--ochre:#d7a63b;--line:rgba(32,37,43,.22)}text{font-family:'Epilogue',sans-serif}.display{font-family:'Urbanist',sans-serif}</style><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="var(--ink)" stroke-width=".45" opacity=".09"/></pattern><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink)" stroke-width="1" opacity=".12"/></pattern><filter id="paperShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#20252b" flood-opacity=".14"/></filter></defs><rect width="1200" height="820" fill="var(--paper)"/><g><rect width="1200" height="820" fill="url(#grid)"/><path d="M60 92H1140M60 730H1140" stroke="var(--ink)" opacity=".2"/><text x="60" y="75" fill="var(--ink)" font-size="9" letter-spacing="3">CARTOGRAFIA DA DELEGAÇÃO · 2026</text><text x="1035" y="75" fill="var(--ink)" font-size="9" letter-spacing="2">CLIQUE NAS ILHAS</text></g><g id="world" style="transform:translate(0,0) scale(1);transform-origin:0 0"><g fill="none" stroke="var(--clay)" stroke-width="1.2" stroke-dasharray="5 6" opacity=".65"><path d="M450 300C430 370 390 430 320 485"/><path d="M560 322C585 370 610 410 650 456"/><path d="M745 535C820 550 860 570 915 605"/><path d="M348 535C440 550 515 550 565 525"/></g><g data-layer="dados" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M400 260l130 -60l130 60l-130 60z" fill="var(--steel)" opacity=".78" stroke="var(--ink)"/><path d="M400 260v14l130 60v-14z" fill="var(--ink)" opacity=".8"/><path d="M660 260v14l-130 60v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(452 180)"><g transform="translate(0 0)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(48 8)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(96 16)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--ink)" opacity=".8"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g></g><path d="M455 250C510 225 555 230 625 265" stroke="var(--ochre)" fill="none" stroke-width="1"/><g><line x1="430" y1="183" x2="430" y2="212" stroke="var(--ink)"/><circle cx="430" cy="170" r="14" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><text x="430" y="174" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">01</text></g><g><text class="display" x="395" y="350" fill="var(--ink)" font-size="16" font-weight="600">Centro de cálculo</text><text x="395" y="367" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">TOKEN · ÍNDICE · LATÊNCIA</text></g></g><g data-layer="humano" style="opacity:1;transition:opacity .45s;cursor:pointer"><g filter="url(#paperShadow)"><path d="M145 520l120 -56l120 56l-120 56z" fill="var(--sage)" opacity=".78" stroke="var(--ink)"/><path d="M145 520v14l120 56v-14z" fill="var(--ink)" opacity=".8"/><path d="M385 520v14l-120 56v-14z" fill="var(--ink)" opacity=".62"/></g><g><path d="M190 510l52-26 84 42-52 26z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M190 510l84 42v12l-84-42z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M274 552l52-26v12l-52 26z" fill="var(--sage)" opacity=".42" stroke="var(--ink)"/><path d="M196 508l18-9 18 9-18 9z" fill="var(--paper)" stroke="var(--ink)"/><circle cx="216" cy="508" r="7" fill="var(--clay)" stroke="var(--ink)" stroke-width=".8"/><path d="M224 512c22 1 44 12 60 22-14 10-36 2-54-16z" fill="var(--steel)" stroke="var(--ink)"/><path d="M224 512c7 6 8 10 6 15" fill="none" stroke="var(--paper-light)" opacity=".7"/><rect x="296" y="528" width="11" height="6" rx="2" fill="var(--ochre)" stroke="var(--ink)"/></g><g><line x1="176" y1="423" x2="176" y2="452" stroke="var(--ink)"/><circle cx="176" cy="410" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="176" y="414" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">02</text></g><g><text class="display" x="145" y="665" fill="var(--ink)" font-size="16" font-weight="600">O humano dorme</text><text x="145" y="682" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">FONTE DE DADOS E LIQUIDEZ</text></g></g><g data-layer="cartoes" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M515 540l150 -70l150 70l-150 70z" fill="var(--ochre)" opacity=".78" stroke="var(--ink)"/><path d="M515 540v14l150 70v-14z" fill="var(--ink)" opacity=".8"/><path d="M815 540v14l-150 70v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(572 440)"><g transform="translate(0 0)"><rect width="94" height="62" rx="3" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><text x="68" y="25" text-anchor="middle" fill="var(--paper-light)" font-size="13" font-weight="600">VISA</text><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(128 22)"><rect width="94" height="62" rx="3" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><g><circle cx="58" cy="23" r="12" fill="var(--ochre)"/><circle cx="72" cy="23" r="12" fill="var(--paper-light)" opacity=".75"/></g><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g></g><g><line x1="625" y1="411" x2="625" y2="440" stroke="var(--ink)"/><circle cx="625" cy="398" r="14" fill="var(--ochre)" stroke="var(--ink)" stroke-width="2"/><text x="625" y="402" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">03</text></g><g><text class="display" x="548" y="680" fill="var(--ink)" font-size="16" font-weight="600">Artefatos em marcha</text><text x="548" y="697" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">SELECIONAR · COMPRAR · QUITAR</text></g></g><g data-layer="erro" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M880 620l95 -46l95 46l-95 46z" fill="var(--clay)" opacity=".78" stroke="var(--ink)"/><path d="M880 620v14l95 46v-14z" fill="var(--ink)" opacity=".8"/><path d="M1070 620v14l-95 46v-14z" fill="var(--ink)" opacity=".62"/></g><g transform="translate(930 490)"><path d="M0 0l90 20-8 158-20-14-18 8-18-16-20 9z" fill="var(--paper-light)" stroke="var(--ink)"/><text x="14" y="36" fill="var(--clay)" font-size="10" font-weight="600">RECIBO / ERRO</text><line x1="14" y1="54" x2="73" y2="67" stroke="var(--ink)"/><line x1="14" y1="70" x2="66" y2="82" stroke="var(--ink)"/><text x="13" y="104" fill="var(--ink)" font-size="8">500 × RAÇÃO</text><text x="13" y="119" fill="var(--ink)" font-size="8">PET: AUSENTE</text></g><g><line x1="1040" y1="503" x2="1040" y2="532" stroke="var(--ink)"/><circle cx="1040" cy="490" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="1040" y="494" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">04</text></g><g><text class="display" x="860" y="730" fill="var(--ink)" font-size="16" font-weight="600">O cálculo transborda</text><text x="860" y="747" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">A CONSEQUÊNCIA VOLTA AO CORPO</text></g></g><g><text class="display" x="790" y="185" fill="var(--ink)" font-size="31" font-style="italic">“Ele nem precisou acordar.”</text><text x="795" y="210" fill="var(--ink)" opacity=".55" font-size="9" letter-spacing="2">DA DECISÃO HUMANA À EXECUÇÃO AUTOMÁTICA</text></g><g class="mc-layer" data-scene="dados" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="humano" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="cartoes" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="erro" style="opacity:0;pointer-events:none"></g></g></svg>
+<svg id="atlas-svg" viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><style>:root{--paper:#0e1620;--paper-light:#17222e;--shade:#080e15;--ink:#e4eae4;--steel:#7fa8c9;--sage:#a3b47a;--clay:#e0674a;--ochre:#e0b354;--line:rgba(228,234,228,.2);--rule:rgba(126,170,140,.17)}text{font-family:'IBM Plex Mono',monospace}.display{font-family:'Spectral',Georgia,serif}</style><pattern id="grid" width="130" height="26" patternUnits="userSpaceOnUse"><line x1="0" y1="25.5" x2="130" y2="25.5" stroke="var(--rule)" stroke-width=".7"/><line x1="129.5" y1="0" x2="129.5" y2="26" stroke="var(--rule)" stroke-width=".5" opacity=".55"/></pattern><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--ink)" stroke-width="1" opacity=".12"/></pattern><filter id="paperShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#03070c" flood-opacity=".7"/></filter></defs><rect x="-400" y="-300" width="2000" height="1500" fill="var(--paper)"/><g><rect x="-400" y="-300" width="2000" height="1500" fill="url(#grid)"/><text x="60" y="75" fill="var(--ink)" font-size="9" letter-spacing="3">CARTOGRAFIA DA DELEGAÇÃO · 2026</text><text x="1035" y="75" fill="var(--ink)" font-size="9" letter-spacing="2">CLIQUE NAS ILHAS</text></g><g id="world" style="transform:translate(0,0) scale(1);transform-origin:0 0"><g id="eixos" aria-hidden="true">
+  <!-- X: o tempo da transação, das marcas do próprio texto (3h, entrega, prazo de 7 dias) -->
+  <line x1="60" y1="752" x2="1150" y2="752" stroke="var(--ink)" stroke-width=".8" opacity=".3"/>
+  <text x="60" y="792" font-size="8" letter-spacing="2.2" fill="var(--ink)" opacity=".45">TEMPO &#183; DA DECIS&#195;O DA M&#193;QUINA AT&#201; A CONSEQU&#202;NCIA CHEGAR AO CORPO</text>
+  <!-- Y: o que ainda dá para desfazer; é a ordem em que as ilhas já estavam -->
+  <line x1="60" y1="120" x2="60" y2="752" stroke="var(--ink)" stroke-width=".8" opacity=".3"/>
+  <text transform="translate(30,436) rotate(-90)" text-anchor="middle" font-size="8" letter-spacing="2.2" fill="var(--ink)" opacity=".45">O QUE AINDA D&#193; PARA DESFAZER</text>
+  <text x="68" y="134" font-size="7.5" letter-spacing="1.2" fill="var(--ink)" opacity=".4">ainda revers&#237;vel</text>
+  <text x="68" y="744" font-size="7.5" letter-spacing="1.2" fill="var(--ink)" opacity=".4">prazo vencido</text>
+  <!-- a janela que se fecha: da compra autorizada ao fim do prazo de devolução -->
+  <rect x="665" y="120" width="300" height="632" fill="var(--clay)" opacity=".055"/>
+  <line x1="665" y1="120" x2="665" y2="752" stroke="var(--clay)" stroke-width=".7" stroke-dasharray="3 5" opacity=".28"/>
+  <line x1="965" y1="120" x2="965" y2="752" stroke="var(--clay)" stroke-width=".7" stroke-dasharray="3 5" opacity=".28"/>
+  <text x="815" y="138" text-anchor="middle" font-size="7.5" letter-spacing="1.6" fill="var(--clay)" opacity=".75">JANELA DE DEVOLU&#199;&#195;O &#183; 7 DIAS</text>
+  <g opacity=".85">
+    <line x1="265" y1="520" x2="265" y2="752" stroke="var(--sage)" stroke-width=".8" stroke-dasharray="2 5" opacity=".3"/>
+    <line x1="60" y1="520" x2="265" y2="520" stroke="var(--sage)" stroke-width=".8" stroke-dasharray="2 5" opacity=".18"/>
+    <circle cx="265" cy="752" r="2.6" fill="var(--sage)"/>
+    <text x="265" y="770" text-anchor="middle" font-size="8" letter-spacing="1.3" fill="var(--sage)" opacity=".8">A NOITE</text>
+  </g>
+  <g opacity=".85">
+    <line x1="525" y1="270" x2="525" y2="752" stroke="var(--steel)" stroke-width=".8" stroke-dasharray="2 5" opacity=".3"/>
+    <line x1="60" y1="270" x2="525" y2="270" stroke="var(--steel)" stroke-width=".8" stroke-dasharray="2 5" opacity=".18"/>
+    <circle cx="525" cy="752" r="2.6" fill="var(--steel)"/>
+    <text x="525" y="770" text-anchor="middle" font-size="8" letter-spacing="1.3" fill="var(--steel)" opacity=".8">03H</text>
+  </g>
+  <g opacity=".85">
+    <line x1="665" y1="545" x2="665" y2="752" stroke="var(--ochre)" stroke-width=".8" stroke-dasharray="2 5" opacity=".3"/>
+    <line x1="60" y1="545" x2="665" y2="545" stroke="var(--ochre)" stroke-width=".8" stroke-dasharray="2 5" opacity=".18"/>
+    <circle cx="665" cy="752" r="2.6" fill="var(--ochre)"/>
+    <text x="665" y="770" text-anchor="middle" font-size="8" letter-spacing="1.3" fill="var(--ochre)" opacity=".8">+ MINUTOS</text>
+  </g>
+  <g opacity=".85">
+    <line x1="965" y1="610" x2="965" y2="752" stroke="var(--clay)" stroke-width=".8" stroke-dasharray="2 5" opacity=".3"/>
+    <line x1="60" y1="610" x2="965" y2="610" stroke="var(--clay)" stroke-width=".8" stroke-dasharray="2 5" opacity=".18"/>
+    <circle cx="965" cy="752" r="2.6" fill="var(--clay)"/>
+    <text x="965" y="770" text-anchor="middle" font-size="8" letter-spacing="1.3" fill="var(--clay)" opacity=".8">+ 7 DIAS</text>
+  </g>
+</g>
+<g fill="none" stroke="var(--clay)" stroke-width="1.2" stroke-dasharray="5 6" opacity=".65"><path d="M450 300C430 370 390 430 320 485"/><path d="M560 322C585 370 610 410 650 456"/><path d="M745 535C820 550 860 570 915 605"/><path d="M348 535C440 550 515 550 565 525"/></g><g data-layer="dados" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M400 260l130 -60l130 60l-130 60z" fill="var(--steel)" opacity=".78" stroke="var(--ink)"/><path d="M400 260v14l130 60v-14z" fill="var(--shade)"/><path d="M660 260v14l-130 60v-14z" fill="var(--shade)" opacity=".85"/></g><g transform="translate(452 180)"><g transform="translate(0 0)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--shade)"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(48 8)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--shade)"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g><g transform="translate(96 16)"><path d="M0 30l22-11 26 13-22 11z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M0 30v78l26 13V43z" fill="var(--steel)" stroke="var(--ink)"/><path d="M26 43l22-11v77l-22 12z" fill="var(--shade)"/><line x1="7" y1="48" x2="20" y2="55" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="63" x2="20" y2="70" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="78" x2="20" y2="85" stroke="var(--paper-light)" stroke-width="3"/><line x1="7" y1="93" x2="20" y2="100" stroke="var(--paper-light)" stroke-width="3"/></g></g><path d="M455 250C510 225 555 230 625 265" stroke="var(--ochre)" fill="none" stroke-width="1"/><g><line x1="430" y1="183" x2="430" y2="212" stroke="var(--ink)"/><circle cx="430" cy="170" r="14" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><text x="430" y="174" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">01</text></g><g><text class="display" x="395" y="350" fill="var(--ink)" font-size="16" font-weight="600">Centro de cálculo</text><text x="395" y="367" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">TOKEN · ÍNDICE · LATÊNCIA</text></g></g><g data-layer="humano" style="opacity:1;transition:opacity .45s;cursor:pointer"><g filter="url(#paperShadow)"><path d="M145 520l120 -56l120 56l-120 56z" fill="var(--sage)" opacity=".78" stroke="var(--ink)"/><path d="M145 520v14l120 56v-14z" fill="var(--shade)"/><path d="M385 520v14l-120 56v-14z" fill="var(--shade)" opacity=".85"/></g><g><path d="M190 510l52-26 84 42-52 26z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M190 510l84 42v12l-84-42z" fill="var(--paper-light)" stroke="var(--ink)"/><path d="M274 552l52-26v12l-52 26z" fill="var(--sage)" opacity=".42" stroke="var(--ink)"/><path d="M196 508l18-9 18 9-18 9z" fill="var(--paper)" stroke="var(--ink)"/><circle cx="216" cy="508" r="7" fill="var(--clay)" stroke="var(--ink)" stroke-width=".8"/><path d="M224 512c22 1 44 12 60 22-14 10-36 2-54-16z" fill="var(--steel)" stroke="var(--ink)"/><path d="M224 512c7 6 8 10 6 15" fill="none" stroke="var(--paper-light)" opacity=".7"/><rect x="296" y="528" width="11" height="6" rx="2" fill="var(--ochre)" stroke="var(--ink)"/></g><g><line x1="176" y1="423" x2="176" y2="452" stroke="var(--ink)"/><circle cx="176" cy="410" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="176" y="414" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">02</text></g><g><text class="display" x="145" y="665" fill="var(--ink)" font-size="16" font-weight="600">O humano dorme</text><text x="145" y="682" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">FONTE DE DADOS E LIQUIDEZ</text></g></g><g data-layer="cartoes" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M515 540l150 -70l150 70l-150 70z" fill="var(--ochre)" opacity=".78" stroke="var(--ink)"/><path d="M515 540v14l150 70v-14z" fill="var(--shade)"/><path d="M815 540v14l-150 70v-14z" fill="var(--shade)" opacity=".85"/></g><g transform="translate(572 440)"><g transform="translate(0 0)"><rect width="94" height="62" rx="3" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><text x="68" y="25" text-anchor="middle" fill="var(--paper-light)" font-size="13" font-weight="600">VISA</text><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(128 22)"><rect width="94" height="62" rx="3" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><rect x="12" y="15" width="19" height="14" fill="var(--ochre)" stroke="var(--ink)"/><g><circle cx="58" cy="23" r="12" fill="var(--ochre)"/><circle cx="72" cy="23" r="12" fill="var(--paper-light)" opacity=".75"/></g><circle cx="40" cy="42" r="2.5" fill="var(--ink)"/><circle cx="56" cy="42" r="2.5" fill="var(--ink)"/><path d="M42 50q7 6 14 0" fill="none" stroke="var(--ink)"/><path d="M18 62l-12 25m70-25 17 24M0 34l-20 18m114-18 18-16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g></g><g><line x1="625" y1="411" x2="625" y2="440" stroke="var(--ink)"/><circle cx="625" cy="398" r="14" fill="var(--ochre)" stroke="var(--ink)" stroke-width="2"/><text x="625" y="402" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">03</text></g><g><text class="display" x="548" y="680" fill="var(--ink)" font-size="16" font-weight="600">Artefatos em marcha</text><text x="548" y="697" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">SELECIONAR · COMPRAR · QUITAR</text></g></g><g data-layer="erro" style="opacity:1;transition:opacity .45s;cursor:pointer;"><g filter="url(#paperShadow)"><path d="M880 620l95 -46l95 46l-95 46z" fill="var(--clay)" opacity=".78" stroke="var(--ink)"/><path d="M880 620v14l95 46v-14z" fill="var(--shade)"/><path d="M1070 620v14l-95 46v-14z" fill="var(--shade)" opacity=".85"/></g><g transform="translate(930 490)"><path d="M0 0l90 20-8 158-20-14-18 8-18-16-20 9z" fill="var(--paper-light)" stroke="var(--ink)"/><text x="14" y="36" fill="var(--clay)" font-size="10" font-weight="600">RECIBO / ERRO</text><line x1="14" y1="54" x2="73" y2="67" stroke="var(--ink)"/><line x1="14" y1="70" x2="66" y2="82" stroke="var(--ink)"/><text x="13" y="104" fill="var(--ink)" font-size="8">500 × RAÇÃO</text><text x="13" y="119" fill="var(--ink)" font-size="8">PET: AUSENTE</text></g><g><line x1="1040" y1="503" x2="1040" y2="532" stroke="var(--ink)"/><circle cx="1040" cy="490" r="14" fill="var(--clay)" stroke="var(--ink)" stroke-width="2"/><text x="1040" y="494" text-anchor="middle" fill="var(--paper-light)" font-size="10" font-weight="600">04</text></g><g><text class="display" x="860" y="730" fill="var(--ink)" font-size="16" font-weight="600">O cálculo transborda</text><text x="860" y="747" fill="var(--ink)" opacity=".55" font-size="8" letter-spacing="1.5">A CONSEQUÊNCIA VOLTA AO CORPO</text></g></g><g><text class="display" x="790" y="185" fill="var(--ink)" font-size="31" font-style="italic">“Ele nem precisou acordar.”</text><text x="795" y="210" fill="var(--ink)" opacity=".55" font-size="9" letter-spacing="2">DA DECISÃO HUMANA À EXECUÇÃO AUTOMÁTICA</text></g><g class="mc-layer" data-scene="dados" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="humano" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="cartoes" style="opacity:0;pointer-events:none"></g><g class="mc-layer" data-scene="erro" style="opacity:0;pointer-events:none"></g></g></svg>
   </div>
   <div class="map-caption">
     <p class="map-caption-scene" id="mapCaptionScene"></p>
@@ -245,7 +333,9 @@ const NOTES = {
 const SECTIONS = {
   overview:{
     accent:"var(--ink)", kicker:"CARTOGRAFIA DA DELEGAÇÃO · 2026", title:"O desejo pelo avesso",
-    notes:[], paragraphs:[
+    notes:[],
+    metodologia:"As cenas deste ensaio, o agente que percebe a queda no estoque de protetor solar, o bot que escolhe a jaqueta sozinho, o recibo com quinhentas unidades de ração de pet, são diálogos de natureza prospectiva. Não realizei um levantamento empírico sobre o funcionamento desses sistemas, e não sei se os erros, falhas e perturbações vão se manifestar exatamente dessa forma. O que sustenta essa imaginação são os autores citados ao longo do texto, Callon, Zuboff, Latour e Lemos, e os anúncios já publicados pela Mastercard e pela Visa. A partir desse chão real, o ensaio especula sobre como a experiência cotidiana pode se transformar, sem pretender descrever um fato já ocorrido.",
+    paragraphs:[
       "Vestir a roupa do avesso, dizem por aí, dá azar. O dia sai errado, as coisas acontecem na ordem trocada... Tem uma versão tecnológica dessa superstição rolando agora, só que ninguém está chamando de azar: são as bandeiras de cartão ensinando o consumo inteiro a funcionar de trás para frente.",
       "A história do dinheiro é a história da perda gradual de sua carne. Ele já trocou o papel pelo plástico do cartão, o cartão pelo QR code do Pix, tudo isso porque a moeda de prata pesava no bolso; a cédula exigia a dobra do papel, o cartão que se digitasse a senha... Em todos esses estágios, contudo, ainda sobrevivia a quitação, aquele relance ritual de testemunho humano em que o sujeito assina o contrato, sente o tranco do gasto e aceita que está quite com o mundo, mesmo que cada troca dessas estivesse apagando um pedaço do gesto de pagar.",
       "Reparo, juntando essas quatro peças, que nenhuma delas foi pensada em função de bot de cartão de crédito: a perda do gesto no dinheiro, a vitrine que toda loja monta, a promessa de um tempo futuro, o fechamento clássico da caixa-preta (e a perturbação que nomeia o erro que funciona exatamente como projetado) vêm de décadas antes do agentic commerce pensar em existir. Isso não é coincidência boa nem má. É só sinal de que o problema não nasceu na quinta-feira do dia 19 de setembro. É uma pergunta velha, quanto tempo, e quanto trabalho, deveria separar você da coisa que você quer, reaparecendo com um nome novo a cada máquina nova que aprende a encurtar essa distância sozinha.",
@@ -341,7 +431,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
    guessed by hand and never overflowed. Runs fresh every render. */
 const measurer = document.createElementNS(SVG_NS,'text');
 measurer.setAttribute('font-size','9.5');
-measurer.style.fontFamily = "'Epilogue',sans-serif";
+measurer.style.fontFamily = "'IBM Plex Mono',monospace";
 measurer.style.visibility = 'hidden';
 atlasSvg.appendChild(measurer);
 
@@ -349,6 +439,7 @@ function textWidth(str, fontSize, opts){
   measurer.setAttribute('font-size', fontSize);
   measurer.style.letterSpacing = (opts && opts.letterSpacing) || 'normal';
   measurer.style.fontWeight = (opts && opts.fontWeight) || 'normal';
+  measurer.style.fontFamily = (opts && opts.fontFamily) || FAMILIA.machine;
   measurer.textContent = str;
   return measurer.getComputedTextLength();
 }
@@ -371,7 +462,21 @@ function wrapWords(str, maxWidth, fontSize, opts){
 }
 
 /* ---------- balloon geometry ------------------------------------------- */
-const MC_FONT = 9.5, MC_LINE_H = 12, MC_MAXW = 132, MC_PAD_X = 9, MC_PAD_TOP = 8, MC_PAD_BOT = 8, MC_GAP = 15;
+let MC_FONT = 9.5, MC_LINE_H = 12, MC_MAXW = 132;
+const MC_PAD_X = 9, MC_PAD_TOP = 8, MC_PAD_BOT = 8, MC_GAP = 15;
+
+const ehCelular = () => window.matchMedia('(max-width:760px)').matches;
+
+/* No celular o mapa inteiro cabe na largura, mas o texto do balão cai para
+   ~2,5px. Em vez de encolher tudo, cada ilha passa a ser enquadrada sozinha
+   pelo viewBox e a letra cresce. */
+function ajustarMedidas(){
+  if(ehCelular()){ MC_FONT = 17; MC_LINE_H = 21; MC_MAXW = 145; }
+  else { MC_FONT = 9.5; MC_LINE_H = 12; MC_MAXW = 132; }
+}
+ajustarMedidas();
+
+const FAMILIA = {human:"'Spectral',Georgia,serif", machine:"'IBM Plex Mono',monospace"};
 
 function el(tag, attrs){
   const n = document.createElementNS(SVG_NS, tag);
@@ -381,8 +486,9 @@ function el(tag, attrs){
 
 function bubbleGeometry(turn, extraGap){
   const gap = MC_GAP + (extraGap||0);
-  const lines = wrapWords(turn.text, MC_MAXW, MC_FONT);
-  const widest = Math.max(...lines.map(l=>textWidth(l, MC_FONT)));
+  const opts = {fontFamily: FAMILIA[turn.who] || FAMILIA.human};
+  const lines = wrapWords(turn.text, MC_MAXW, MC_FONT, opts);
+  const widest = Math.max(...lines.map(l=>textWidth(l, MC_FONT, opts)));
   const boxW = Math.min(MC_MAXW, widest) + MC_PAD_X*2;
   const headerH = turn.actor ? 12 : 2;
   const boxH = headerH + lines.length*MC_LINE_H + MC_PAD_TOP + MC_PAD_BOT - (turn.actor?0:4);
@@ -444,7 +550,7 @@ function buildBubble(turn, extraGap){
     ty -= 3;
   }
 
-  const textEl = el('text', {class:'mc-text', x:bx+MC_PAD_X});
+  const textEl = el('text', {class:'mc-text', x:bx+MC_PAD_X, 'font-size':MC_FONT});
   lines.forEach((line,i)=>{
     const tspan = el('tspan', {x:bx+MC_PAD_X, y: ty + i*MC_LINE_H + MC_FONT*0.82});
     tspan.textContent = line;
@@ -561,9 +667,13 @@ function renderSection(key){
     }).join('')
   }</ol></div>` : '';
 
+  const metodoHtml = s.metodologia
+    ? `<aside class="metodo"><span class="metodo-label">NOTA METODOLÓGICA</span><p>${s.metodologia}</p></aside>`
+    : '';
+
   dialogue.innerHTML = `<p class="dialogue-kicker">${s.kicker}</p><h2>${s.title}</h2>${
     s.paragraphs.map(p=>`<p>${p}</p>`).join('')
-  }${notesHtml}`;
+  }${metodoHtml}${notesHtml}`;
 
   dialogue.classList.remove('fade-in');
   void dialogue.offsetWidth;
@@ -574,21 +684,64 @@ function renderSection(key){
     : 'Clique numa ilha para focar nela e revelar sua microcena.';
 }
 
-function setActive(key){
-  layers.forEach(g=>{
-    const layerKey = g.getAttribute('data-layer');
-    g.style.opacity = (key === 'overview' || layerKey === key) ? '1' : '.22';
-  });
+/* Caixa real de uma ilha: união do desenho com os balões dela, medida no
+   próprio SVG. Assim o enquadramento nunca sai de números chutados à mão e
+   continua certo se algum balão mudar de tamanho. */
+function caixaDaIlha(key){
+  const ilha = document.querySelector(`[data-layer="${key}"]`);
+  const cena = document.querySelector(`.mc-layer[data-scene="${key}"]`);
+  if(!ilha) return null;
+  const a = ilha.getBBox();
+  let x1 = a.x, y1 = a.y, x2 = a.x + a.width, y2 = a.y + a.height;
+  if(cena && cena.childNodes.length){
+    const b = cena.getBBox();
+    x1 = Math.min(x1, b.x); y1 = Math.min(y1, b.y);
+    x2 = Math.max(x2, b.x + b.width); y2 = Math.max(y2, b.y + b.height);
+  }
+  const pad = ehCelular() ? 12 : 22;
+  let x = x1 - pad, y = y1 - pad, w = (x2 - x1) + pad*2, h = (y2 - y1) + pad*2;
+  // encaixa na proporção do quadro, crescendo o lado que falta
+  const frame = document.querySelector('.map-frame').getBoundingClientRect();
+  const alvo = frame.height ? frame.width / frame.height : 1;
+  if(w / h < alvo){ const nw = h * alvo; x -= (nw - w)/2; w = nw; }
+  else { const nh = w / alvo; y -= (nh - h)/2; h = nh; }
+  return {x, y, w, h};
+}
 
+function enquadrar(key){
+  const frame = document.querySelector('.map-frame');
+  if(ehCelular()){
+    // retrato para ilha, paisagem para o mapa inteiro: num quadro quadrado
+    // a altura sobrava e a largura, que é o gargalo, ficava desperdiçada
+    frame.style.aspectRatio = (key === 'overview') ? '3 / 2' : '4 / 5';
+    world.style.transform = 'translate(0px,0px) scale(1)';
+    if(key === 'overview'){
+      atlasSvg.setAttribute('viewBox', '0 0 1200 820');
+    }else{
+      const c = caixaDaIlha(key);
+      if(c) atlasSvg.setAttribute('viewBox', `${c.x.toFixed(1)} ${c.y.toFixed(1)} ${c.w.toFixed(1)} ${c.h.toFixed(1)}`);
+    }
+    return;
+  }
+  frame.style.aspectRatio = '';
+  atlasSvg.setAttribute('viewBox', '0 0 1200 820');
   if(key === 'overview'){
     world.style.transform = 'translate(0px,0px) scale(1)';
   }else{
     const c = CENTERS[key];
     const scale = 1.65;
-    const tx = 600 - c.cx * scale;
-    const ty = 410 - c.cy * scale;
-    world.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+    world.style.transform = `translate(${600 - c.cx*scale}px,${410 - c.cy*scale}px) scale(${scale})`;
   }
+}
+
+let secaoAtual = 'overview';
+
+function setActive(key){
+  secaoAtual = key;
+  layers.forEach(g=>{
+    const layerKey = g.getAttribute('data-layer');
+    g.style.opacity = (key === 'overview' || layerKey === key) ? '1' : '.22';
+  });
 
   navButtons.forEach(b=>b.classList.toggle('is-active', b.dataset.target === key));
   document.querySelectorAll('.mc-layer').forEach(el=>{
@@ -596,8 +749,22 @@ function setActive(key){
     el.style.opacity = visible ? '1' : '0';
     el.style.pointerEvents = visible ? 'auto' : 'none';
   });
+  enquadrar(key);
   renderSection(key);
 }
+
+/* Ao cruzar a quebra do celular, o tamanho do texto muda: remonta os balões
+   e reenquadra, senão a caixa medida antes fica errada. */
+let larguraAnterior = window.innerWidth;
+window.addEventListener('resize', ()=>{
+  const eraCelular = larguraAnterior <= 760, agoraCelular = ehCelular();
+  larguraAnterior = window.innerWidth;
+  if(eraCelular !== agoraCelular){
+    ajustarMedidas();
+    buildAllMicrocenas();
+  }
+  enquadrar(secaoAtual);
+});
 
 navButtons.forEach(b=>b.addEventListener('click', ()=>setActive(b.dataset.target)));
 layers.forEach(g=>g.addEventListener('click', ()=>setActive(g.getAttribute('data-layer'))));
