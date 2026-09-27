@@ -422,7 +422,7 @@ i,em{font-style:italic}
   font-size:clamp(3rem,11vw,7.2rem);line-height:.84;letter-spacing:-.045em;
   margin-bottom:1.1rem;
 }
-.fh-titulo i{font-weight:700;font-style:italic;color:#7c3a24}
+.fh-titulo i{font-weight:700;font-style:italic}
 .fh-sub{
   font-family:var(--serif);font-size:clamp(1.02rem,1.9vw,1.28rem);line-height:1.45;
   max-width:30em;color:rgba(34,32,42,.76);margin-bottom:clamp(26px,4vw,42px);
@@ -441,7 +441,8 @@ i,em{font-style:italic}
   padding:.62rem 0;text-align:left;
 }
 .fh-indice .n{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#7c3a24;flex:none;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  color:rgba(34,32,42,.55);flex:none;
 }
 .fh-indice .t{font-family:var(--serif);font-size:15.5px;color:#22202a}
 .fh-indice .pontos{
@@ -450,7 +451,7 @@ i,em{font-style:italic}
 .fh-indice .e{
   font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:rgba(34,32,42,.5);flex:none;
 }
-.fh-indice button:hover .t{color:#7c3a24}
+.fh-indice button:hover .t{text-decoration:underline;text-underline-offset:3px}
 
 /* corpo do folheto em duas colunas, como material impresso */
 .fh-colunas{columns:2;column-gap:clamp(28px,4vw,56px);column-rule:1px solid rgba(34,32,42,.16)}
@@ -485,7 +486,7 @@ i,em{font-style:italic}
   border-top:2px solid #22202a;border-bottom:2px solid #22202a;
   padding:.75em 0 !important;margin:1.4em 0 1.6em !important;break-inside:avoid;
 }
-.fh-destaque.final{color:#7c3a24}
+.fh-destaque.final{border-bottom-width:3px}
 
 .fh-pe{border-top:2px solid #22202a;margin-top:clamp(28px,4vw,48px);padding-top:16px}
 .fh-pe p{

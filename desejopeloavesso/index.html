@@ -131,12 +131,13 @@ body{
 .mc-divider-label{font-size:8px;letter-spacing:1.4px;font-weight:600;fill:var(--ink);opacity:.6;}
 .mc-divider-rule{stroke:var(--ink);stroke-width:.7;stroke-dasharray:1 3;opacity:.4;}
 
+/* A legenda deixa de ser faixa com fundo e moldura presa ao quadro:
+   fica solta embaixo do desenho, como legenda de figura impressa. */
 .map-caption{
   font-family:var(--mono);
-  border:1px solid var(--line);border-top:none;
-  background:var(--paper-light);
-  padding:9px 14px 10px;
-  font-size:9.5px;line-height:1.4;
+  border:none;background:none;
+  padding:10px 1px 0;
+  font-size:9.5px;line-height:1.5;
 }
 .map-caption-scene{
   margin:0 0 7px;font-style:italic;opacity:.75;min-height:1.4em;
