@@ -401,7 +401,7 @@ i,em{font-style:italic}
 
 .folha-impressa{
   max-width:1080px;margin:0 auto;
-  background:#efe9dc;color:#22202a;
+  background:#e2e0d7;color:#22202a;
   padding:clamp(28px,4vw,54px) clamp(24px,4.5vw,64px) clamp(40px,5vw,66px);
   box-shadow:0 30px 70px rgba(0,0,0,.55);
   background-image:linear-gradient(90deg,transparent calc(50% - 1px),rgba(34,32,42,.09) 50%,transparent calc(50% + 1px));
@@ -459,14 +459,23 @@ i,em{font-style:italic}
   font-family:var(--serif);font-size:1.02rem;line-height:1.58;margin-bottom:.95em;
   text-align:justify;hyphens:auto;text-wrap:pretty;
 }
+/* Abertura sem barra lateral colorida: quem marca o comeco e a propria
+   composicao, corpo maior e primeiras palavras em versalete. */
 .fh-abre{
-  font-size:1.18rem !important;line-height:1.45 !important;text-align:left !important;
-  border-left:3px solid #7c3a24;padding-left:1rem;margin-bottom:1.6em !important;
+  font-size:1.2rem !important;line-height:1.5 !important;text-align:left !important;
+  margin-bottom:1.7em !important;
 }
+.fh-abre::first-line{
+  font-variant-caps:all-small-caps;letter-spacing:.07em;
+}
+/* Entretitulo: sem cor de destaque e sem caixa alta em mono. E a serifa
+   do proprio texto, em versalete, sobre um filete. */
 .fh-colunas h2{
-  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.24em;
-  text-transform:uppercase;color:#7c3a24;
-  margin:1.9em 0 .8em;padding-top:.7em;border-top:1px solid rgba(34,32,42,.3);
+  font-family:var(--serif);font-size:.95rem;font-weight:400;
+  font-variant-caps:all-small-caps;letter-spacing:.12em;
+  color:#22202a;
+  margin:2em 0 .75em;padding-top:.6em;
+  border-top:1px solid rgba(34,32,42,.45);
   break-after:avoid;
 }
 .fh-destaque{
