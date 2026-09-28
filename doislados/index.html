@@ -1550,7 +1550,7 @@ function medir(str, size, fam, ls){
     // getComputedTextLength() devolve 0 dentro delas — foi assim que o
     // texto do encontro saiu sem quebra na primeira versão.
     var cx = svgEl('svg',{width:10,height:10});
-    cx.setAttribute('style','position:fixed;left:-9999px;top:0;overflow:visible;pointer-events:none');
+    cx.setAttribute('style','position:fixed;left:-9999px;top:0;overflow:hidden;pointer-events:none;visibility:hidden');
     document.body.appendChild(cx);
     MED = svgEl('text',{x:0,y:0});
     cx.appendChild(MED);
@@ -1706,9 +1706,18 @@ function renderPinos(lado){
     p.appendChild(rot);
 
     p.addEventListener('click', function(){ abrir(lado, e.id); });
+    p.addEventListener('mouseenter', function(){
+      DICA().textContent = e.sigla;
+      DICA().classList.add('on');
+    });
+    p.addEventListener('mousemove', function(ev){
+      var d = DICA();
+      d.style.left = (ev.clientX + 14) + 'px';
+      d.style.top  = (ev.clientY + 14) + 'px';
+    });
+    p.addEventListener('mouseleave', esconderDica);
     g.appendChild(p);
   });
-  ligarDicas();
 }
 
 function renderRodape(){
@@ -1732,20 +1741,16 @@ function renderRodape(){
   document.getElementById('pe-conta').textContent = ESTADO.lidas.size + '/' + total;
 }
 
-function ligarDicas(){
-  var dica = document.getElementById('dica');
-  document.querySelectorAll('.pino').forEach(function(p){
-    p.addEventListener('mouseenter', function(){
-      dica.textContent = p.getAttribute('data-nome');
-      dica.classList.add('on');
-    });
-    p.addEventListener('mousemove', function(ev){
-      dica.style.left = (ev.clientX + 14) + 'px';
-      dica.style.top  = (ev.clientY + 14) + 'px';
-    });
-    p.addEventListener('mouseleave', function(){ dica.classList.remove('on'); });
-  });
+/* A dica e position:fixed. Se a folha vira display:none debaixo do
+   cursor, ou se o pino e recriado por um render, o mouseleave nunca
+   dispara e ela fica colada na viewport, rolando junto com a pagina.
+   Entao todo caminho que troca o que esta na tela a apaga na mao. */
+var _dica = null;
+function DICA(){
+  if (!_dica) _dica = document.getElementById('dica');
+  return _dica;
 }
+function esconderDica(){ DICA().classList.remove('on'); }
 
 /* ═══════════════════════════════════════════════════════════════
    TROCA DE LADO E DE CAMADA
@@ -1757,6 +1762,7 @@ var CABECA = {
 };
 
 function trocarLado(l){
+  esconderDica();
   ESTADO.lado = l;
   if (l === 'c') montarEncontro();
 
@@ -1805,6 +1811,7 @@ function aplicarCamada(lado, nome){
 function abrir(lado, id){
   var e = dados(lado).find(function(x){ return x.id === id; });
   if (!e) return;
+  esconderDica();
   ESTADO.lidas.add(chave(lado, id));
 
   var n = document.getElementById('vin-n');
@@ -1843,7 +1850,7 @@ function abrir(lado, id){
   renderPinos(lado);
   renderRodape();
 }
-function fechar(){ document.getElementById('vinheta').classList.remove('on'); }
+function fechar(){ esconderDica(); document.getElementById('vinheta').classList.remove('on'); }
 
 /* ═══ painéis ═════════════════════════════════════════════════ */
 function montarPaineis(){
@@ -1855,6 +1862,7 @@ function montarPaineis(){
     }).join('');
 }
 function alternarPainel(id){
+  esconderDica();
   document.querySelectorAll('.painel').forEach(function(p){
     if (p.id !== id) p.classList.remove('on');
   });
@@ -1922,8 +1930,13 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
+  window.addEventListener('scroll', esconderDica, {passive:true});
+  window.addEventListener('blur', esconderDica);
+  document.querySelector('.prancha').addEventListener('mouseleave', esconderDica);
+
   document.addEventListener('keydown', function(ev){
     if (ev.key === 'Escape'){
+      esconderDica();
       fechar();
       document.querySelectorAll('.painel').forEach(function(p){ p.classList.remove('on'); });
     }
