@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Prancha de leitura do artigo The Black City: Modernisation and fugitivities in Salvador, Bahia, Brazil. ARQC19 — Estudos Socioeconômicos e Ambientais, profa. Letícia Durlo.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOIS LADOS · Pelourinho e Subúrbio · prancha de leitura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,700;1,400&family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   A LINHA · Calçada–Paripe · 1860–2026
+   Prancha ferroviária: planta de traçado + perfil longitudinal.
+
+   Herda da prancha da cidade inteligente o que nela é autoral:
+   Archivo Black com tracking largo, Space Mono na anotação técnica,
+   sombra dura sem blur, hachuras, cartouche, rosa dos ventos.
+   Não herda o creme quente nem as caixas com barra lateral colorida.
+═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* papel vegetal, não creme: substrato de desenho técnico */
+  --vegetal:#d6dad2;
+  --vegetal-claro:#e3e6df;
+  --vegetal-escuro:#c3c8be;
+  --tinta:#17191a;
+  --tinta-fraca:rgba(23,25,26,.55);
+  --linha:rgba(23,25,26,.22);
+
+  /* água e terra */
+  --baia:#8fa3a8;
+  --baia-fundo:#7c9095;
+  --mata:#6d7d5a;
+
+  /* os três projetos para os mesmos 43 km */
+  --trem:#8a4a28;      /* 1860–2021 · ferrugem */
+  --mono:#3d6b8c;      /* 2019–2023 · azul corporativo */
+  --vlt:#4a6b3a;       /* 2024–2026 · verde */
+  --onibus:#b0402a;    /* o hiato · R$ 4,90 */
+  --fuga:#c08a2a;      /* fugitividade · ocre */
+
+  --black:'Archivo Black',sans-serif;
+  --sans:'Archivo',sans-serif;
+  --mono-f:'Space Mono',monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  background:var(--vegetal);
+  color:var(--tinta);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.oculto{display:none !important;}
+
+/* ═══ FOLHA DE ROSTO ═══════════════════════════════════════════ */
+#rosto{
+  position:fixed;inset:0;z-index:900;
+  background:var(--vegetal);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;overflow-y:auto;
+}
+.rosto-malha{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(23,25,26,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(23,25,26,.055) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+.rosto-folha{
+  position:relative;z-index:1;
+  background:var(--vegetal-claro);
+  border:2px solid var(--tinta);
+  box-shadow:12px 12px 0 var(--tinta);
+  max-width:880px;width:100%;
+  padding:34px 40px 30px;
+  margin:auto 0;
+}
+.rosto-carimbo{
+  font-family:var(--black);font-size:9px;letter-spacing:3px;
+  color:var(--trem);border:1.5px solid var(--trem);
+  display:inline-block;padding:5px 12px;margin-bottom:20px;
+}
+.rosto-titulo{
+  font-family:var(--black);
+  font-size:clamp(30px,6.2vw,60px);letter-spacing:4px;line-height:.98;
+  margin-bottom:10px;
+}
+.rosto-sub{
+  font-family:var(--mono-f);font-size:11px;letter-spacing:2.4px;
+  color:var(--tinta-fraca);text-transform:uppercase;margin-bottom:24px;
+}
+.rosto-corpo{font-size:13.5px;line-height:1.7;max-width:62ch;}
+.rosto-corpo p{margin-bottom:12px;}
+.rosto-corpo b{font-weight:700;}
+.rosto-regua{height:1px;background:var(--linha);margin:22px 0;}
+
+/* nota de margem: rótulo pendurado, sem caixa nem barra lateral */
+.nota-margem{
+  display:grid;grid-template-columns:118px 1fr;gap:0 18px;
+  padding-top:11px;border-top:1px solid var(--linha);
+  margin-bottom:16px;
+}
+.nota-margem-rot{
+  font-family:var(--mono-f);font-size:8.5px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--tinta-fraca);
+  text-align:right;line-height:1.85;
+}
+.nota-margem-txt{font-size:12px;line-height:1.65;}
+.nota-margem-txt b{font-family:var(--black);font-size:11px;letter-spacing:.5px;}
+
+.rosto-pe{
+  border-top:2px solid var(--tinta);padding-top:16px;margin-top:20px;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:16px;flex-wrap:wrap;
+}
+.rosto-ref{
+  font-family:var(--mono-f);font-size:9px;line-height:1.7;
+  color:var(--tinta-fraca);max-width:460px;
+}
+.btn-entrar{
+  font-family:var(--black);font-size:11px;letter-spacing:3px;
+  padding:13px 24px;background:var(--tinta);color:var(--vegetal-claro);
+  border:2px solid var(--tinta);cursor:pointer;
+  transition:background .18s,color .18s;
+}
+.btn-entrar:hover{background:var(--trem);border-color:var(--trem);}
+
+/* ═══ CABEÇALHO DA PRANCHA ════════════════════════════════════ */
+header{
+  background:var(--vegetal-claro);
+  border-bottom:2px solid var(--tinta);
+  padding:9px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:60;
+}
+.hd-id{display:flex;align-items:center;gap:12px;}
+.hd-marca{
+  width:42px;height:42px;background:var(--trem);
+  border:2px solid var(--tinta);
+  display:grid;place-items:center;
+}
+.hd-marca svg{width:26px;height:26px;display:block;}
+.hd-tit{font-family:var(--black);font-size:14px;letter-spacing:3px;line-height:1.05;}
+.hd-sub{
+  font-family:var(--mono-f);font-size:8.5px;letter-spacing:1.8px;
+  color:var(--tinta-fraca);margin-top:3px;text-transform:uppercase;
+}
+.hd-dir{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+
+/* lados = as duas obras, com o mesmo peso */
+.lados{
+  display:flex;gap:0;border:2px solid var(--tinta);
+  background:var(--vegetal-claro);
+}
+.lado-btn{
+  font-family:var(--black);font-size:9px;letter-spacing:1.6px;
+  padding:9px 14px;background:none;border:none;cursor:pointer;
+  color:var(--tinta);transition:background .15s,color .15s;
+  border-right:2px solid var(--tinta);
+}
+.lado-btn:last-child{border-right:none;}
+.lado-btn:hover{background:var(--vegetal-escuro);}
+.lado-btn.on{background:var(--tinta);color:var(--vegetal-claro);}
+.pino-num{font-size:10.5px !important;letter-spacing:.4px;}
+
+/* camadas = os três projetos */
+.camadas{
+  display:flex;gap:3px;background:var(--vegetal-escuro);
+  border:1.5px solid var(--tinta);padding:3px;
+}
+.camada-btn{
+  font-family:var(--black);font-size:8.5px;letter-spacing:1.4px;
+  padding:7px 11px;background:none;border:none;cursor:pointer;
+  color:var(--tinta);transition:background .15s,color .15s;
+  display:flex;align-items:center;gap:6px;
+}
+.camada-btn i{
+  width:16px;height:3px;display:block;flex:none;
+}
+.camada-btn:hover{background:var(--vegetal-claro);}
+.camada-btn.on{background:var(--tinta);color:var(--vegetal-claro);}
+.hd-btn{
+  font-family:var(--black);font-size:8.5px;letter-spacing:1.8px;
+  padding:8px 12px;border:1.5px solid var(--tinta);background:none;
+  cursor:pointer;color:var(--tinta);transition:background .15s;
+}
+.hd-btn:hover{background:var(--vegetal-escuro);}
+
+/* ═══ A PRANCHA ═══════════════════════════════════════════════ */
+main{position:relative;background:var(--vegetal);}
+.prancha{position:relative;width:100%;}
+#prancha-a,#prancha-svg,#prancha-c{width:100%;height:auto;display:block;}
+
+.coord{
+  position:absolute;bottom:10px;right:14px;
+  font-family:var(--mono-f);font-size:8.5px;letter-spacing:1px;
+  color:var(--tinta-fraca);pointer-events:none;
+}
+
+/* pinos */
+.pino{cursor:pointer;}
+.pino-num{
+  font-family:var(--black);font-size:12px;fill:var(--vegetal-claro);
+  pointer-events:none;user-select:none;
+}
+.pino.visto .pino-num{fill:var(--tinta);}
+.dica{
+  position:fixed;z-index:70;pointer-events:none;
+  background:var(--tinta);color:var(--vegetal-claro);
+  padding:6px 10px;font-family:var(--black);
+  font-size:8.5px;letter-spacing:1.5px;white-space:nowrap;
+  border:1.5px solid var(--fuga);opacity:0;transition:opacity .14s;
+}
+.dica.on{opacity:1;}
+
+/* ═══ RODAPÉ · ÍNDICE ════════════════════════════════════════ */
+footer{
+  background:var(--vegetal-escuro);
+  border-top:2px solid var(--tinta);
+  padding:9px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.pe-rot{font-family:var(--black);font-size:8.5px;letter-spacing:2.4px;}
+.pe-lista{display:flex;gap:4px;flex-wrap:wrap;}
+.pe-item{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 9px;border:1.5px solid var(--tinta);background:none;
+  cursor:pointer;font-family:inherit;opacity:.5;
+  transition:opacity .2s,background .15s;
+}
+.pe-item.visto{opacity:1;background:var(--tinta);}
+.pe-item.visto .pe-n,.pe-item.visto .pe-nome{color:var(--vegetal-claro);}
+.pe-n{font-family:var(--black);font-size:8.5px;}
+.pe-nome{
+  font-family:var(--mono-f);font-size:7.5px;letter-spacing:.4px;
+  max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.pe-conta{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.pe-conta-rot{font-family:var(--mono-f);font-size:8px;letter-spacing:1.4px;color:var(--tinta-fraca);}
+.pe-conta-n{font-family:var(--black);font-size:13px;}
+
+/* ═══ VINHETA (sobreposição) ══════════════════════════════════ */
+#vinheta{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(23,25,26,.72);
+  align-items:center;justify-content:center;padding:16px;
+}
+#vinheta.on{display:flex;}
+.vin-folha{
+  background:var(--vegetal-claro);
+  border:2px solid var(--tinta);
+  box-shadow:12px 12px 0 var(--tinta);
+  width:100%;max-width:820px;max-height:92vh;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.vin-topo{
+  background:var(--tinta);color:var(--vegetal-claro);
+  padding:13px 20px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;flex-shrink:0;
+}
+.vin-topo-id{display:flex;align-items:center;gap:12px;}
+.vin-n{
+  width:36px;height:36px;flex:none;
+  display:grid;place-items:center;
+  font-family:var(--black);font-size:15px;color:var(--tinta);
+}
+.vin-tit{font-family:var(--black);font-size:13px;letter-spacing:2.4px;line-height:1.1;}
+.vin-sub{font-family:var(--mono-f);font-size:8.5px;letter-spacing:1.4px;opacity:.75;margin-top:3px;}
+.vin-x{
+  background:var(--vegetal-claro);color:var(--tinta);border:none;
+  width:31px;height:31px;font-family:var(--black);font-size:15px;
+  cursor:pointer;transition:transform .15s;flex:none;
+}
+.vin-x:hover{transform:rotate(90deg);}
+
+.vin-abas{
+  display:flex;background:var(--vegetal-escuro);
+  border-bottom:1.5px solid var(--tinta);flex-shrink:0;
+}
+.aba{
+  flex:1;font-family:var(--black);font-size:8.5px;letter-spacing:1.4px;
+  padding:11px 8px;background:none;border:none;
+  border-right:1px solid rgba(23,25,26,.16);
+  cursor:pointer;color:var(--tinta);transition:background .15s;
+}
+.aba:last-child{border-right:none;}
+.aba:hover{background:var(--vegetal-claro);}
+.aba.on{background:var(--vegetal-claro);border-bottom:2px solid var(--trem);}
+
+.vin-corpo{flex:1;overflow-y:auto;padding:22px 26px 26px;}
+.pag{display:none;}
+.pag.on{display:block;}
+
+/* ─── aba: a cena ─── */
+.cena-lugar{
+  font-family:var(--mono-f);font-size:9px;letter-spacing:2.4px;
+  color:var(--tinta-fraca);text-transform:uppercase;margin-bottom:10px;
+}
+.cena-frase{
+  font-family:var(--black);font-size:clamp(17px,2.6vw,23px);
+  line-height:1.2;letter-spacing:-.2px;margin-bottom:18px;
+  padding-bottom:14px;border-bottom:2px solid var(--tinta);
+}
+.cena-corpo p{font-size:13.5px;line-height:1.75;margin-bottom:13px;}
+.cena-corpo p:last-child{margin-bottom:0;}
+
+/* citação: sem barra lateral, filete curto acima */
+.citacao{
+  position:relative;padding-top:15px;margin:20px 0;
+  font-size:15px;line-height:1.6;font-style:italic;
+}
+.citacao::before{
+  content:"";position:absolute;top:0;left:0;
+  width:54px;height:2px;background:var(--trem);
+}
+.citacao cite{
+  display:block;margin-top:9px;font-style:normal;
+  font-family:var(--mono-f);font-size:9px;letter-spacing:1.2px;
+  color:var(--tinta-fraca);text-transform:uppercase;
+}
+
+/* ─── aba: os números ─── */
+.dado{
+  display:grid;grid-template-columns:auto 1fr;gap:4px 18px;
+  align-items:baseline;
+  padding:13px 0;border-top:1px solid var(--linha);
+}
+.dado:last-of-type{border-bottom:1px solid var(--linha);}
+.dado-n{
+  font-family:var(--black);font-size:clamp(26px,4.4vw,38px);
+  line-height:.95;letter-spacing:-1px;white-space:nowrap;
+}
+.dado-txt{font-family:var(--mono-f);font-size:10px;line-height:1.7;color:var(--tinta-fraca);}
+.dado-txt b{color:var(--tinta);font-family:var(--black);letter-spacing:.4px;}
+
+/* ─── aba: o argumento ─── */
+.arg-passo{
+  display:grid;grid-template-columns:30px 1fr;gap:0 14px;
+  padding:13px 0;border-top:1px solid var(--linha);
+}
+.arg-n{font-family:var(--black);font-size:13px;color:var(--trem);}
+.arg-t{font-family:var(--black);font-size:10px;letter-spacing:1.4px;margin-bottom:5px;}
+.arg-d{font-size:12.5px;line-height:1.65;}
+
+/* ─── aba: fonte ─── */
+.fonte-sel{
+  font-family:var(--black);font-size:8.5px;letter-spacing:2.4px;
+  color:var(--vegetal-claro);background:var(--mata);
+  display:inline-block;padding:4px 11px;margin-bottom:13px;
+}
+.fonte-ref{
+  font-family:var(--mono-f);font-size:10px;line-height:1.75;
+  color:var(--tinta-fraca);
+}
+.fonte-ref b{color:var(--tinta);}
+
+/* ═══ PAINEL LATERAL (fugitividade / epílogo) ════════════════ */
+.painel{
+  position:fixed;top:0;right:0;bottom:0;z-index:300;
+  width:min(420px,94vw);background:var(--vegetal-claro);
+  border-left:2px solid var(--tinta);
+  transform:translateX(100%);transition:transform .34s ease;
+  overflow-y:auto;
+}
+.painel.on{transform:none;}
+.painel-topo{
+  background:var(--tinta);color:var(--vegetal-claro);
+  padding:13px 18px;display:flex;justify-content:space-between;
+  align-items:center;position:sticky;top:0;z-index:1;
+}
+.painel-tit{font-family:var(--black);font-size:10.5px;letter-spacing:2.6px;}
+.painel-x{
+  width:27px;height:27px;background:var(--vegetal-claro);color:var(--tinta);
+  border:none;font-family:var(--black);font-size:14px;cursor:pointer;
+}
+.painel-corpo{padding:20px 20px 40px;}
+.painel-corpo h4{
+  font-family:var(--black);font-size:10px;letter-spacing:2px;
+  margin:22px 0 9px;padding-top:12px;border-top:1px solid var(--linha);
+}
+.painel-corpo h4:first-child{margin-top:0;padding-top:0;border-top:none;}
+.painel-corpo p{font-size:12.5px;line-height:1.72;margin-bottom:11px;}
+.painel-corpo .marca-tempo{
+  font-family:var(--mono-f);font-size:9px;letter-spacing:1.6px;
+  color:var(--trem);text-transform:uppercase;margin-bottom:4px;
+}
+
+/* crédito da disciplina, no rodapé da prancha */
+.pe-credito + .pe-conta{margin-left:18px;}
+.pe-credito{
+  margin-left:auto;font-family:var(--mono-f);font-size:8px;
+  letter-spacing:1.3px;color:var(--tinta-fraca);opacity:.8;
+}
+
+/* ═══ CELULAR ════════════════════════════════════════════════ */
+@media (max-width:820px){
+  .rosto-folha{padding:22px 18px;box-shadow:7px 7px 0 var(--tinta);}
+  .nota-margem{grid-template-columns:1fr;gap:6px;}
+  .nota-margem-rot{text-align:left;line-height:1.5;}
+  header{padding:8px 12px;}
+  .hd-tit{font-size:12px;letter-spacing:2px;}
+  .lados{order:2;width:100%;}
+  .lado-btn{flex:1;font-size:8px;letter-spacing:1px;padding:8px 4px;}
+  .camadas{order:3;width:100%;}
+  .camada-btn{flex:1;justify-content:center;font-size:8px;padding:7px 5px;}
+  .vin-folha{max-height:95vh;box-shadow:6px 6px 0 var(--tinta);}
+  .vin-corpo{padding:16px 17px 20px;}
+  .vin-abas{flex-wrap:wrap;}
+  .aba{flex:1 1 50%;border-bottom:1px solid rgba(23,25,26,.16);}
+  .dica{display:none !important;}
+  .pe-credito{margin-left:0;flex:1 1 100%;order:9;}
+  /* a prancha rola na horizontal em vez de encolher até ilegível */
+  .prancha{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+  #prancha-a,#prancha-svg,#prancha-c{min-width:1080px;}
+  .dado{grid-template-columns:1fr;gap:3px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ FOLHA DE ROSTO ═══════════════ -->
+<section id="rosto">
+  <div class="rosto-malha"></div>
+  <div class="rosto-folha">
+    <div class="rosto-carimbo">ARQC19 &middot; ESTUDOS SOCIOECONÔMICOS E AMBIENTAIS</div>
+    <h1 class="rosto-titulo">DOIS LADOS</h1>
+    <p class="rosto-sub">Pelourinho 1991 &middot; Subúrbio 2019 &middot; duas obras do governo do estado, dois projetos políticos opostos, o mesmo mecanismo</p>
+
+    <div class="rosto-corpo">
+      <p>O texto que esta prancha lê não trata de um caso. Trata de <b>dois</b>, e o argumento está exatamente no que eles têm em comum. No Centro Histórico, a partir de 1991, o Programa de Recuperação converteu um bairro de uso misto e população majoritariamente negra em produto turístico, removendo mais de quatro mil moradores. No Subúrbio Ferroviário, a partir de 2019, a modernização do trem virou uma PPP com monotrilho elevado e o modal barato foi desativado sem substituto.</p>
+      <p>Um foi conduzido pelo governo do estado sob o <b>carlismo</b>, nos anos 1990. O outro, pelo governo do estado sob o <b>PT</b>, na lógica do neodesenvolvimentismo. São projetos políticos opostos que chegaram ao mesmo lugar quando o assunto foi modernizar território negro. É por isso que a crítica do texto não é partidária: é estrutural.</p>
+      <p>A prancha tem, portanto, <b>lado A e lado B</b>, com o mesmo peso e o mesmo desenho. E uma terceira folha em que os dois se encontram.</p>
+    </div>
+
+    <div class="rosto-regua"></div>
+
+    <div class="nota-margem">
+      <div class="nota-margem-rot">lado a<br>o centro</div>
+      <div class="nota-margem-txt">Planta das <b>etapas do Programa de Recuperação</b> e corte do casarão. As três camadas do corte são três tempos de uso do mesmo prédio: o solar da elite até 1930, o cortiço de uso misto entre 1930 e 1991, e o esvaziamento depois de 1992. É a estratigrafia de quem morou ali.</div>
+    </div>
+
+    <div class="nota-margem">
+      <div class="nota-margem-rot">lado b<br>o subúrbio</div>
+      <div class="nota-margem-txt">Planta de traçado e <b>perfil longitudinal</b> dos 43 km entre Calçada e Paripe. As três camadas são três projetos para a mesma faixa de terra: o trem de 1860 no chão, o monotrilho da BYD sobre viga de concreto, e o VLT de volta ao nível. Entre o segundo e o terceiro há um vão de cinco anos.</div>
+    </div>
+
+    <div class="nota-margem">
+      <div class="nota-margem-rot">o<br>encontro</div>
+      <div class="nota-margem-txt">A terceira folha põe as duas linhas do tempo lado a lado e nomeia o que elas partilham &mdash; inclusive a <b>Parceria Público-Privada</b>, instrumento adotado e bem-visto pelos dois lados do espectro político.</div>
+    </div>
+
+    <div class="nota-margem">
+      <div class="nota-margem-rot">a<br>disciplina</div>
+      <div class="nota-margem-txt">Prancha desenvolvida a partir do artigo <i>The Black City: Modernisation and fugitivities in Salvador, Bahia, Brazil</i>, de Glória Cecília dos Santos Figueiredo, Brais Estévez e Thaís Troncon Rosa, para a disciplina <b>ARQC19 &mdash; Estudos Socioeconômicos e Ambientais</b>, ministrada pela professora <b>Letícia Durlo</b>.</div>
+    </div>
+
+    <div class="rosto-pe">
+      <div class="rosto-ref">
+        FIGUEIREDO, Glória Cecília dos Santos; ESTÉVEZ, Brais; ROSA, Thaís Troncon. <i>The Black city: Modernisation and fugitivities in Salvador, Bahia, Brazil.</i> Radical Housing Journal, v. 2, n. 2, p. 55&ndash;82, dez. 2020.<br>
+        Complementos: MOREIRA, Tomás (2009) sobre o Programa de Recuperação e a AMACH &middot; AMADO, Jorge, como repertório documental do Centro Histórico &middot; pesquisa própria sobre o VLT do Subúrbio, neodesenvolvimentismo e PPP.
+      </div>
+      <button class="btn-entrar" id="btn-entrar">&rarr; ABRIR A PRANCHA</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRANCHA ═══════════════ -->
+<div id="app" class="oculto">
+
+<header>
+  <div class="hd-id">
+    <div class="hd-marca">
+      <svg viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="4" y="6" width="18" height="11" rx="1.5" fill="none" stroke="#e3e6df" stroke-width="1.6"/>
+        <rect x="7" y="9" width="5" height="4" fill="#e3e6df"/>
+        <rect x="14" y="9" width="5" height="4" fill="#e3e6df"/>
+        <circle cx="9" cy="19" r="2" fill="none" stroke="#e3e6df" stroke-width="1.4"/>
+        <circle cx="17" cy="19" r="2" fill="none" stroke="#e3e6df" stroke-width="1.4"/>
+        <line x1="2" y1="22.5" x2="24" y2="22.5" stroke="#e3e6df" stroke-width="1.4"/>
+      </svg>
+    </div>
+    <div>
+      <div class="hd-tit" id="hd-tit">LADO A &middot; CENTRO HISTÓRICO</div>
+      <div class="hd-sub" id="hd-sub">planta das etapas + corte do casarão &middot; 1991&ndash;hoje</div>
+    </div>
+  </div>
+
+  <div class="hd-dir">
+    <div class="lados" id="lados">
+      <button class="lado-btn on" data-lado="a">LADO A &middot; O CENTRO</button>
+      <button class="lado-btn" data-lado="b">LADO B &middot; O SUBÚRBIO</button>
+      <button class="lado-btn" data-lado="c">O ENCONTRO</button>
+    </div>
+    <div class="camadas" id="camadas-a">
+      <button class="camada-btn on" data-camada="solar"><i style="background:#3d6b8c"></i>ATÉ 1930 O SOLAR</button>
+      <button class="camada-btn" data-camada="cortico"><i style="background:#8a4a28"></i>1930&ndash;1991 O USO MISTO</button>
+      <button class="camada-btn" data-camada="vazio"><i style="background:#b0402a"></i>DEPOIS DE 1992 O VAZIO</button>
+    </div>
+    <div class="camadas oculto" id="camadas-b">
+      <button class="camada-btn on" data-camada="trem"><i style="background:#8a4a28"></i>1860&ndash;2021 O TREM</button>
+      <button class="camada-btn" data-camada="mono"><i style="background:#3d6b8c"></i>2019&ndash;2023 O MONOTRILHO</button>
+      <button class="camada-btn" data-camada="vlt"><i style="background:#4a6b3a"></i>2024&ndash;2026 O VLT</button>
+    </div>
+    <button class="hd-btn" id="btn-fuga">FUGITIVIDADE</button>
+    <button class="hd-btn" id="btn-epilogo">DEPOIS DO ARTIGO</button>
+  </div>
+</header>
+
+<main>
+  <div class="prancha">
+
+  <!-- ══════════════════════════════════════════════════════════
+       LADO A · CENTRO HISTÓRICO
+  ══════════════════════════════════════════════════════════ -->
+  <svg id="prancha-a" class="folha" viewBox="0 0 1400 860" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <pattern id="malha-a" patternUnits="userSpaceOnUse" width="26" height="26">
+        <path d="M26 0H0V26" fill="none" stroke="#17191a" stroke-width=".3" opacity=".09"/>
+      </pattern>
+      <pattern id="agua-a" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(14)">
+        <line x1="0" y1="0" x2="0" y2="9" stroke="#3d6b8c" stroke-width=".55" opacity=".4"/>
+      </pattern>
+      <pattern id="escarpa-a" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#17191a" stroke-width=".7" opacity=".3"/>
+      </pattern>
+      <pattern id="remov" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="#b0402a" stroke-width=".9" opacity=".45"/>
+      </pattern>
+      <pattern id="mora" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="#4a6b3a" stroke-width=".9" opacity=".5"/>
+      </pattern>
+      <!-- caminho da mudança: a saída para a periferia -->
+      <path id="via-mudanca" d="M 300 828 L 1360 828" fill="none"/>
+    </defs>
+
+    <rect width="1400" height="860" fill="#d6dad2"/>
+    <rect width="1400" height="860" fill="url(#malha-a)"/>
+
+    <g transform="translate(22 30)">
+      <text font-family="'Archivo Black',sans-serif" font-size="11" fill="#17191a" letter-spacing="3">CENTRO HISTÓRICO DE SALVADOR &middot; PELOURINHO</text>
+      <text y="14" font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".55" letter-spacing="1.8">LADO A &middot; PLANTA DAS ETAPAS E CORTE DO CASARÃO &middot; GOVERNO DO ESTADO &middot; CARLISMO &middot; 1991&ndash;</text>
+    </g>
+    <text x="1378" y="34" text-anchor="end" font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".5" letter-spacing="1.6">CLIQUE NUM PONTO</text>
+
+    <!-- ═══ PLANTA ═══ -->
+    <text x="22" y="72" font-family="'Archivo Black',sans-serif" font-size="8.5" fill="#17191a" opacity=".55" letter-spacing="2.6">PLANTA</text>
+    <line x1="72" y1="68" x2="1378" y2="68" stroke="#17191a" opacity=".2"/>
+
+    <!-- a Baía, lá embaixo · a Cidade Baixa -->
+    <path d="M 0 82 L 1400 82 L 1400 138 Q 1000 148 600 140 Q 260 133 0 142 Z" fill="#8fa3a8" opacity=".5"/>
+    <path d="M 0 82 L 1400 82 L 1400 138 Q 1000 148 600 140 Q 260 133 0 142 Z" fill="url(#agua-a)"/>
+    <text x="700" y="110" text-anchor="middle" font-family="'Archivo Black',sans-serif" font-size="9.5" fill="#17191a" opacity=".34" letter-spacing="5">BAÍA DE TODOS OS SANTOS &middot; CIDADE BAIXA</text>
+
+    <!-- a escarpa: o Centro Histórico está sobre um platô -->
+    <path d="M 0 142 Q 260 133 600 140 Q 1000 148 1400 138 L 1400 186 Q 1000 196 600 188 Q 260 181 0 190 Z" fill="#c3c8be" stroke="#17191a" stroke-width=".8"/>
+    <path d="M 0 142 Q 260 133 600 140 Q 1000 148 1400 138 L 1400 186 Q 1000 196 600 188 Q 260 181 0 190 Z" fill="url(#escarpa-a)"/>
+    <text x="1378" y="180" text-anchor="end" font-family="'Space Mono',monospace" font-size="6.5" fill="#17191a" opacity=".6" letter-spacing="1.2">ESCARPA &middot; +60 m</text>
+
+    <!-- o platô -->
+    <path d="M 0 190 Q 260 181 600 188 Q 1000 196 1400 186 L 1400 410 L 0 410 Z" fill="#d6dad2" stroke="#17191a" stroke-width="1.1"/>
+
+    <!-- zonas de etapa: geradas por JS -->
+    <g id="a-zonas"></g>
+    <!-- quarteirões -->
+    <g id="a-quadras"></g>
+
+    <!-- a rua, espinha do lado A -->
+    <line x1="170" y1="250" x2="1290" y2="250" stroke="#17191a" stroke-width="2.4"/>
+    <g stroke="#17191a" stroke-width=".9" opacity=".4" id="a-calcada"></g>
+    <text x="1296" y="247" font-family="'Space Mono',monospace" font-size="7" fill="#17191a" opacity=".6" letter-spacing="1">EIXO DE INTERVENÇÃO</text>
+
+    <!-- rosa dos ventos -->
+    <g transform="translate(1330 372)" opacity=".62">
+      <circle r="18" fill="none" stroke="#17191a" stroke-width=".8"/>
+      <line x1="0" y1="-18" x2="0" y2="18" stroke="#17191a" stroke-width=".55"/>
+      <line x1="-18" y1="0" x2="18" y2="0" stroke="#17191a" stroke-width=".55"/>
+      <polygon points="0,-18 -3.2,-3.2 0,0 3.2,-3.2" fill="#8a4a28"/>
+      <text x="0" y="-22" text-anchor="middle" font-family="'Archivo Black',sans-serif" font-size="7" fill="#17191a">N</text>
+    </g>
+
+    <!-- ═══ CORTE ═══ -->
+    <text x="22" y="470" font-family="'Archivo Black',sans-serif" font-size="8.5" fill="#17191a" opacity=".55" letter-spacing="2.6">CORTE</text>
+    <line x1="72" y1="466" x2="1378" y2="466" stroke="#17191a" opacity=".2"/>
+    <text x="1378" y="470" text-anchor="end" font-family="'Space Mono',monospace" font-size="7" fill="#17191a" opacity=".5" letter-spacing="1.2">O MESMO CASARÃO, TRÊS VEZES</text>
+
+    <!-- terreno -->
+    <line x1="120" y1="790" x2="1300" y2="790" stroke="#17191a" stroke-width="1.4"/>
+    <g id="a-terreno"></g>
+
+    <!-- cotas de pavimento -->
+    <g id="a-cotas"></g>
+    <!-- os casarões, por camada -->
+    <g id="a-corte"></g>
+    <!-- a mudança saindo (só na camada 3) -->
+    <g id="a-mudanca" opacity="0"></g>
+
+    <g id="a-pinos"></g>
+  </svg>
+
+  <!-- ══════════════════════════════════════════════════════════
+       LADO B · SUBÚRBIO FERROVIÁRIO
+  ══════════════════════════════════════════════════════════ -->
+  <svg id="prancha-svg" class="folha oculto" viewBox="0 0 1400 860" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <pattern id="malha" patternUnits="userSpaceOnUse" width="26" height="26">
+        <path d="M26 0H0V26" fill="none" stroke="#17191a" stroke-width=".3" opacity=".09"/>
+      </pattern>
+      <pattern id="agua" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(14)">
+        <line x1="0" y1="0" x2="0" y2="9" stroke="#3d6b8c" stroke-width=".55" opacity=".4"/>
+      </pattern>
+      <pattern id="encosta" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#17191a" stroke-width=".7" opacity=".3"/>
+      </pattern>
+      <pattern id="mata-h" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(-38)">
+        <line x1="0" y1="0" x2="0" y2="9" stroke="#6d7d5a" stroke-width="1" opacity=".5"/>
+      </pattern>
+
+      <path id="via-chao" d="M 168 722 L 1248 722" fill="none"/>
+      <path id="via-alta" d="M 168 612 L 1248 612" fill="none"/>
+      <path id="via-asfalto" d="M 140 774 Q 420 764 700 770 Q 990 762 1290 772" fill="none"/>
+    </defs>
+
+    <rect width="1400" height="860" fill="#d6dad2"/>
+    <rect width="1400" height="860" fill="url(#malha)"/>
+
+    <g transform="translate(22 30)">
+      <text font-family="'Archivo Black',sans-serif" font-size="11" fill="#17191a" letter-spacing="3">SUBÚRBIO FERROVIÁRIO DE SALVADOR</text>
+      <text y="14" font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".55" letter-spacing="1.8">LADO B &middot; PLANTA DE TRAÇADO E PERFIL LONGITUDINAL &middot; GOVERNO DO ESTADO &middot; PT &middot; NEODESENVOLVIMENTISMO</text>
+    </g>
+    <text x="1378" y="34" text-anchor="end" font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".5" letter-spacing="1.6">CLIQUE NUMA ESTAÇÃO</text>
+
+    <text x="22" y="72" font-family="'Archivo Black',sans-serif" font-size="8.5" fill="#17191a" opacity=".55" letter-spacing="2.6">PLANTA</text>
+    <line x1="72" y1="68" x2="1378" y2="68" stroke="#17191a" opacity=".2"/>
+
+    <path d="M 0 82 L 1400 82 L 1400 196 Q 1200 208 1000 200 Q 800 190 600 202 Q 400 212 200 200 Q 90 192 0 200 Z" fill="#8fa3a8" opacity=".55"/>
+    <path d="M 0 82 L 1400 82 L 1400 196 Q 1200 208 1000 200 Q 800 190 600 202 Q 400 212 200 200 Q 90 192 0 200 Z" fill="url(#agua)"/>
+    <text x="700" y="124" text-anchor="middle" font-family="'Archivo Black',sans-serif" font-size="11" fill="#17191a" opacity=".38" letter-spacing="5">BAÍA DE TODOS OS SANTOS</text>
+
+    <ellipse cx="640" cy="152" rx="46" ry="17" fill="#6d7d5a" opacity=".42"/>
+    <ellipse cx="640" cy="152" rx="46" ry="17" fill="url(#mata-h)" opacity=".5"/>
+    <text x="640" y="155" text-anchor="middle" font-family="'Space Mono',monospace" font-size="6.5" fill="#17191a" opacity=".62" letter-spacing="1">ILHA DE MARÉ</text>
+
+    <path d="M 0 200 Q 90 192 200 200 Q 400 212 600 202 Q 800 190 1000 200 Q 1200 208 1400 196 L 1400 400 L 0 400 Z" fill="#d6dad2" stroke="#17191a" stroke-width="1.1"/>
+
+    <path d="M 60 296 Q 120 276 196 288 Q 250 300 262 330 L 250 372 Q 160 384 82 368 Q 50 336 60 296 Z" fill="#c3c8be" stroke="#17191a" stroke-width=".8"/>
+    <path d="M 60 296 Q 120 276 196 288 Q 250 300 262 330 L 250 372 Q 160 384 82 368 Q 50 336 60 296 Z" fill="url(#encosta)"/>
+    <text x="158" y="392" text-anchor="middle" font-family="'Space Mono',monospace" font-size="6.5" fill="#17191a" opacity=".6" letter-spacing="1.2">ESCARPA &middot; CIDADE ALTA</text>
+
+    <!-- o lado A fica aqui em cima: a referência cruzada -->
+    <g id="b-remete" style="cursor:pointer">
+      <path d="M 170 250 Q 150 288 146 330" stroke="#8a4a28" stroke-width="1.4" fill="none" stroke-dasharray="5 4"/>
+      <circle cx="146" cy="330" r="9" fill="#8a4a28" stroke="#17191a" stroke-width="1.6"/>
+      <text x="146" y="333.5" text-anchor="middle" font-family="'Archivo Black',sans-serif" font-size="9" fill="#e3e6df">A</text>
+      <text x="196" y="300" font-family="'Space Mono',monospace" font-size="6.5" fill="#8a4a28" opacity=".9" letter-spacing="1">SOBE A ESCARPA</text>
+      <text x="196" y="311" font-family="'Space Mono',monospace" font-size="6.5" fill="#8a4a28" opacity=".9" letter-spacing="1">→ IR PARA O LADO A</text>
+    </g>
+
+    <path d="M 170 250 L 1245 250" stroke="#17191a" stroke-width="2.4" fill="none"/>
+    <g stroke="#17191a" stroke-width="1" opacity=".75">
+      <line x1="190" y1="243" x2="190" y2="257"/><line x1="240" y1="243" x2="240" y2="257"/>
+      <line x1="290" y1="243" x2="290" y2="257"/><line x1="340" y1="243" x2="340" y2="257"/>
+      <line x1="430" y1="243" x2="430" y2="257"/><line x1="480" y1="243" x2="480" y2="257"/>
+      <line x1="620" y1="243" x2="620" y2="257"/><line x1="670" y1="243" x2="670" y2="257"/>
+      <line x1="800" y1="243" x2="800" y2="257"/><line x1="850" y1="243" x2="850" y2="257"/>
+      <line x1="990" y1="243" x2="990" y2="257"/><line x1="1040" y1="243" x2="1040" y2="257"/>
+      <line x1="1140" y1="243" x2="1140" y2="257"/><line x1="1190" y1="243" x2="1190" y2="257"/>
+    </g>
+
+    <g fill="#d6dad2" stroke="#17191a" stroke-width="1.4">
+      <circle cx="740" cy="250" r="4.5"/>
+      <circle cx="1080" cy="250" r="4.5"/>
+    </g>
+    <g font-family="'Space Mono',monospace" font-size="7" fill="#17191a" opacity=".62" letter-spacing=".8" text-anchor="middle">
+      <text x="740" y="238">PRAIA GRANDE</text>
+      <text x="1080" y="238">COUTOS</text>
+    </g>
+
+    <g font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".72" letter-spacing=".9">
+      <text x="300" y="316">&middot; ITAPAGIPE</text>
+      <text x="470" y="330">&middot; ALTO DO CABRITO</text>
+      <text x="690" y="318">&middot; ESCADA</text>
+      <text x="900" y="332">&middot; PERIPERI</text>
+      <text x="1120" y="318">&middot; TEMPO NOVO</text>
+    </g>
+
+    <g transform="translate(1320 348)" opacity=".62">
+      <circle r="19" fill="none" stroke="#17191a" stroke-width=".8"/>
+      <line x1="0" y1="-19" x2="0" y2="19" stroke="#17191a" stroke-width=".55"/>
+      <line x1="-19" y1="0" x2="19" y2="0" stroke="#17191a" stroke-width=".55"/>
+      <polygon points="0,-19 -3.4,-3.4 0,0 3.4,-3.4" fill="#8a4a28"/>
+      <text x="0" y="-23" text-anchor="middle" font-family="'Archivo Black',sans-serif" font-size="7" fill="#17191a">N</text>
+    </g>
+
+    <g stroke="#17191a" stroke-width=".6" opacity=".3" stroke-dasharray="3 5" id="chamadas"></g>
+
+    <text x="22" y="470" font-family="'Archivo Black',sans-serif" font-size="8.5" fill="#17191a" opacity=".55" letter-spacing="2.6">PERFIL</text>
+    <line x1="72" y1="466" x2="1378" y2="466" stroke="#17191a" opacity=".2"/>
+
+    <g font-family="'Space Mono',monospace" font-size="6.5" fill="#17191a" opacity=".5" letter-spacing=".6">
+      <line x1="112" y1="612" x2="1270" y2="612" stroke="#17191a" stroke-width=".4" opacity=".28" stroke-dasharray="2 6"/>
+      <text x="106" y="615" text-anchor="end">+9,0 m</text>
+      <line x1="112" y1="722" x2="1270" y2="722" stroke="#17191a" stroke-width=".4" opacity=".28" stroke-dasharray="2 6"/>
+      <text x="106" y="725" text-anchor="end">0,00 &middot; NÍVEL</text>
+    </g>
+
+    <path d="M 120 762 Q 250 738 380 748 Q 520 704 660 730 Q 800 694 940 722 Q 1080 702 1290 744 L 1290 812 L 120 812 Z"
+          fill="#c3c8be" stroke="#17191a" stroke-width="1"/>
+    <path d="M 120 762 Q 250 738 380 748 Q 520 704 660 730 Q 800 694 940 722 Q 1080 702 1290 744 L 1290 812 L 120 812 Z"
+          fill="url(#encosta)" opacity=".55"/>
+    <text x="1284" y="806" text-anchor="end" font-family="'Space Mono',monospace" font-size="6.5" fill="#17191a" opacity=".5" letter-spacing="1">TERRENO NATURAL</text>
+
+    <g id="cam-trem">
+      <line x1="168" y1="722" x2="1248" y2="722" stroke="#8a4a28" stroke-width="3"/>
+      <g stroke="#8a4a28" stroke-width=".9" opacity=".55" id="dormentes"></g>
+      <text x="1252" y="718" font-family="'Space Mono',monospace" font-size="7" fill="#8a4a28" letter-spacing="1">VIA PERMANENTE &middot; 1860</text>
+      <g id="trem-comp">
+        <g transform="translate(-30 -17)">
+          <rect x="0" y="0" width="30" height="15" rx="2" fill="#8a4a28" stroke="#17191a" stroke-width="1"/>
+          <rect x="4" y="3" width="5" height="5" fill="#e3e6df"/>
+          <rect x="12" y="3" width="5" height="5" fill="#e3e6df"/>
+          <rect x="20" y="3" width="5" height="5" fill="#e3e6df"/>
+          <circle cx="8" cy="17" r="2.6" fill="none" stroke="#17191a" stroke-width="1.1"/>
+          <circle cx="22" cy="17" r="2.6" fill="none" stroke="#17191a" stroke-width="1.1"/>
+          <rect x="-26" y="0" width="22" height="15" rx="2" fill="#8a4a28" opacity=".8" stroke="#17191a" stroke-width="1"/>
+          <circle cx="-20" cy="17" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="-9" cy="17" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <rect x="-52" y="0" width="22" height="15" rx="2" fill="#8a4a28" opacity=".62" stroke="#17191a" stroke-width="1"/>
+          <circle cx="-46" cy="17" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="-35" cy="17" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <text x="15" y="-4" text-anchor="middle" font-family="'Space Mono',monospace" font-size="7" fill="#8a4a28" font-weight="700">R$ 0,50</text>
+        </g>
+        <animateMotion dur="26s" repeatCount="indefinite" rotate="0">
+          <mpath href="#via-chao"/>
+        </animateMotion>
+      </g>
+    </g>
+
+    <g id="cam-mono" opacity="0">
+      <g id="pilares" stroke="#3d6b8c" stroke-width="7" opacity=".55"></g>
+      <rect x="168" y="604" width="1080" height="14" fill="#3d6b8c" opacity=".3"/>
+      <line x1="168" y1="612" x2="1248" y2="612" stroke="#3d6b8c" stroke-width="3"/>
+      <text x="1252" y="608" font-family="'Space Mono',monospace" font-size="7" fill="#3d6b8c" letter-spacing="1">VIGA DE CONCRETO &middot; BYD</text>
+      <g id="mono-comp">
+        <g transform="translate(-26 -12)">
+          <rect x="-30" y="0" width="64" height="17" rx="8" fill="#3d6b8c" stroke="#17191a" stroke-width="1"/>
+          <rect x="-24" y="4" width="10" height="7" rx="1.5" fill="#e3e6df" opacity=".85"/>
+          <rect x="-10" y="4" width="10" height="7" rx="1.5" fill="#e3e6df" opacity=".85"/>
+          <rect x="4" y="4" width="10" height="7" rx="1.5" fill="#e3e6df" opacity=".85"/>
+          <rect x="18" y="4" width="10" height="7" rx="1.5" fill="#e3e6df" opacity=".85"/>
+          <text x="2" y="-5" text-anchor="middle" font-family="'Space Mono',monospace" font-size="7" fill="#3d6b8c" font-weight="700">R$ 5,2 bi</text>
+        </g>
+        <animateMotion dur="15s" repeatCount="indefinite" rotate="0">
+          <mpath href="#via-alta"/>
+        </animateMotion>
+      </g>
+    </g>
+
+    <g id="cam-vlt" opacity="0">
+      <line x1="168" y1="722" x2="1248" y2="722" stroke="#4a6b3a" stroke-width="3"/>
+      <g stroke="#4a6b3a" stroke-width=".9" opacity=".5" id="dormentes-vlt"></g>
+      <text x="1252" y="718" font-family="'Space Mono',monospace" font-size="7" fill="#4a6b3a" letter-spacing="1">VLT EM NÍVEL &middot; 2026</text>
+      <g id="vlt-comp">
+        <g transform="translate(-28 -18)">
+          <rect x="-34" y="0" width="70" height="16" rx="4" fill="#4a6b3a" stroke="#17191a" stroke-width="1"/>
+          <rect x="-29" y="3.5" width="9" height="7" rx="1" fill="#e3e6df" opacity=".9"/>
+          <rect x="-17" y="3.5" width="9" height="7" rx="1" fill="#e3e6df" opacity=".9"/>
+          <rect x="-5" y="3.5" width="9" height="7" rx="1" fill="#e3e6df" opacity=".9"/>
+          <rect x="7" y="3.5" width="9" height="7" rx="1" fill="#e3e6df" opacity=".9"/>
+          <rect x="19" y="3.5" width="9" height="7" rx="1" fill="#e3e6df" opacity=".9"/>
+          <circle cx="-22" cy="18" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="-6" cy="18" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="12" cy="18" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="26" cy="18" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+        </g>
+        <animateMotion dur="19s" repeatCount="indefinite" rotate="0">
+          <mpath href="#via-chao"/>
+        </animateMotion>
+      </g>
+    </g>
+
+    <g id="cam-onibus">
+      <path d="M 140 774 Q 420 764 700 770 Q 990 762 1290 772" stroke="#17191a" stroke-width="2.4" fill="none" opacity=".5"/>
+      <text x="1284" y="790" text-anchor="end" font-family="'Space Mono',monospace" font-size="7" fill="#b0402a" letter-spacing="1">AV. AFRÂNIO PEIXOTO &middot; O VÃO DE 5 ANOS</text>
+      <g id="onibus-comp">
+        <g transform="translate(-20 -16)">
+          <rect x="0" y="0" width="40" height="14" rx="2.5" fill="#b0402a" stroke="#17191a" stroke-width="1"/>
+          <rect x="3" y="3" width="7" height="6" fill="#e3e6df" opacity=".9"/>
+          <rect x="13" y="3" width="7" height="6" fill="#e3e6df" opacity=".9"/>
+          <rect x="23" y="3" width="7" height="6" fill="#e3e6df" opacity=".9"/>
+          <circle cx="9" cy="16" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <circle cx="31" cy="16" r="2.4" fill="none" stroke="#17191a" stroke-width="1"/>
+          <text x="20" y="-4" text-anchor="middle" font-family="'Space Mono',monospace" font-size="7" fill="#b0402a" font-weight="700">R$ 4,90</text>
+        </g>
+        <animateMotion dur="34s" repeatCount="indefinite" rotate="auto">
+          <mpath href="#via-asfalto"/>
+        </animateMotion>
+      </g>
+    </g>
+
+    <g id="cam-estacoes"></g>
+    <g id="cam-pinos"></g>
+  </svg>
+
+  <!-- ══════════════════════════════════════════════════════════
+       O ENCONTRO
+  ══════════════════════════════════════════════════════════ -->
+  <svg id="prancha-c" class="folha oculto" viewBox="0 0 1400 860" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <pattern id="malha-c" patternUnits="userSpaceOnUse" width="26" height="26">
+        <path d="M26 0H0V26" fill="none" stroke="#17191a" stroke-width=".3" opacity=".09"/>
+      </pattern>
+    </defs>
+    <rect width="1400" height="860" fill="#d6dad2"/>
+    <rect width="1400" height="860" fill="url(#malha-c)"/>
+
+    <g transform="translate(22 30)">
+      <text font-family="'Archivo Black',sans-serif" font-size="11" fill="#17191a" letter-spacing="3">O ENCONTRO</text>
+      <text y="14" font-family="'Space Mono',monospace" font-size="7.5" fill="#17191a" opacity=".55" letter-spacing="1.8">DOIS PROJETOS POLÍTICOS OPOSTOS &middot; O MESMO MECANISMO</text>
+    </g>
+
+    <g id="c-conteudo"></g>
+  </svg>
+
+    <div class="coord" id="coord">12°53'S &middot; 38°29'O &middot; ESC. INDETERMINADA</div>
+  </div>
+</main>
+
+<footer>
+  <div class="pe-rot" id="pe-rot">PONTOS &middot; LADO A</div>
+  <div class="pe-lista" id="pe-lista"></div>
+  <div class="pe-credito">ARQC19 &middot; ESTUDOS SOCIOECONÔMICOS E AMBIENTAIS &middot; PROFA. LETÍCIA DURLO</div>
+  <div class="pe-conta">
+    <span class="pe-conta-rot">LIDAS</span>
+    <span class="pe-conta-n" id="pe-conta">0/9</span>
+  </div>
+</footer>
+</div>
+
+<!-- ═══════════════ VINHETA ═══════════════ -->
+<div id="vinheta">
+  <div class="vin-folha">
+    <div class="vin-topo">
+      <div class="vin-topo-id">
+        <div class="vin-n" id="vin-n">—</div>
+        <div>
+          <div class="vin-tit" id="vin-tit">—</div>
+          <div class="vin-sub" id="vin-sub">—</div>
+        </div>
+      </div>
+      <button class="vin-x" id="vin-x">&times;</button>
+    </div>
+    <div class="vin-abas">
+      <button class="aba on" data-pag="cena">A CENA</button>
+      <button class="aba" data-pag="dados">OS NÚMEROS</button>
+      <button class="aba" data-pag="arg">O ARGUMENTO</button>
+      <button class="aba" data-pag="fonte">A FONTE</button>
+    </div>
+    <div class="vin-corpo">
+      <div class="pag on" id="pag-cena"></div>
+      <div class="pag" id="pag-dados"></div>
+      <div class="pag" id="pag-arg"></div>
+      <div class="pag" id="pag-fonte"></div>
+    </div>
+  </div>
+</div>
+
+<aside class="painel" id="painel-fuga">
+  <div class="painel-topo">
+    <div class="painel-tit">FUGITIVIDADE</div>
+    <button class="painel-x" data-fecha="painel-fuga">&times;</button>
+  </div>
+  <div class="painel-corpo" id="corpo-fuga"></div>
+</aside>
+
+<aside class="painel" id="painel-epilogo">
+  <div class="painel-topo">
+    <div class="painel-tit">DEPOIS DO ARTIGO &middot; 2021&ndash;2026</div>
+    <button class="painel-x" data-fecha="painel-epilogo">&times;</button>
+  </div>
+  <div class="painel-corpo" id="corpo-epilogo"></div>
+</aside>
+
+<div class="dica" id="dica"></div>
+
+<script>
+
+/* ═══════════════════════════════════════════════════════════════
+   A LINHA · dados e comportamento
+   Conteúdo ancorado em: Figueiredo, Estévez & Rosa (2020);
+   Moreira (2009); pesquisa própria sobre o VLT do Subúrbio.
+═══════════════════════════════════════════════════════════════ */
+
+var ESTACOES = [
+  {
+    id:1, sigla:'CALÇADA', ano:'1860', cor:'#8a4a28',
+    x:170, ramal:false,
+    titulo:'A FERROVIA DO AÇÚCAR',
+    sub:'Calçada · marco zero da linha · 28 de junho de 1860',
+    cena:{
+      lugar:'CALÇADA · CIDADE BAIXA',
+      frase:'A ferrovia não foi feita para levar gente.',
+      texto:[
+        'A Bahia and São Francisco Railway Company, companhia inglesa, inaugurou em 28 de junho de 1860 a estrada de ferro entre a Calçada e Paripe. O traçado existia para escoar açúcar e fumo do Recôncavo até o porto de Salvador, a pedido de uma elite agrária que tinha dinheiro para bancar o projeto e influência para fazer o governo aprová-lo.',
+        'O transporte de passageiros veio depois, quase como efeito colateral. E é nesse efeito colateral que mora a história inteira do Subúrbio: um projeto de infraestrutura comercial que virou, na prática cotidiana, corredor de migração e de vida popular, com bairros se formando ao redor de cada parada ao longo de mais de um século.',
+        'Essa origem já separa o Subúrbio do resto da cidade. As áreas nobres da Orla Atlântica cresceram por loteamento planejado, com capital incorporador desenhando quadra por quadra desde o início. O Subúrbio cresceu como cordão de comunidades pesqueiras e de veraneio ao longo da Baía, primeiro puxado pela ferrovia, depois pela Avenida Afrânio Peixoto, sem planejamento territorial nenhum.'
+      ]
+    },
+    dados:[
+      ['1860','Inauguração da <b>Estrada de Ferro da Bahia ao São Francisco</b>, por companhia inglesa, entre a Calçada e Paripe.'],
+      ['43 km','Extensão do corredor que estrutura o Subúrbio Ferroviário até hoje.'],
+      ['0','Planejamento territorial prévio. O bairro se formou <b>em torno das paradas</b>, não o contrário.']
+    ],
+    arg:[
+      ['01','A INFRAESTRUTURA É UMA DECISÃO DE CLASSE','Antes de ser serviço público, a linha foi meio de escoamento de mercadoria para quem podia pagá-la e tinha acesso ao governo. A necessidade de deslocamento da população não entrou na conta original.'],
+      ['02','O USO POPULAR NASCE COMO EXCEDENTE','O passageiro apareceu como subproduto de uma infraestrutura pensada para carga. Um século e meio depois, é esse uso não previsto que sustenta a vida de um território inteiro.'],
+      ['03','DOIS MODOS DE FAZER CIDADE, NA MESMA CIDADE','A Orla Atlântica foi desenhada quadra a quadra por capital incorporador. O Subúrbio foi sendo feito por quem chegava. A diferença não é de época: é de quem tinha direito a projeto.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), seção <b>“Temos uma relação com o lugar que o capital e a modernidade não consideram”</b>, pp. 72–76, sobre a formação do Subúrbio a partir da ferrovia de 1860.<br><br>Complemento: pesquisa própria sobre o VLT do Subúrbio, p. 1, sobre a origem comercial do traçado e o contraste com a Orla Atlântica.'
+    }
+  },
+
+  {
+    id:2, sigla:'LOBATO', ano:'1939', cor:'#8a4a28',
+    x:380, ramal:false,
+    titulo:'O PETRÓLEO E O ADENSAMENTO',
+    sub:'Lobato · onde o Subúrbio vira território de trabalho',
+    cena:{
+      lugar:'LOBATO · SUBÚRBIO FERROVIÁRIO',
+      frase:'A casa construída com a própria mão é o maior patrimônio da família.',
+      texto:[
+        'A ocupação urbana mais marcada começa com a ferrovia, mas adensa a partir dos anos 1940, quando a atividade industrial se instala na região. O marco é 1939, com a descoberta de petróleo no atual bairro do Lobato.',
+        'Soma-se a isso o fato de o Subúrbio ter se tornado um dos destinos das populações majoritariamente negras deslocadas à força de outras partes da cidade. O território cresce por autoconstrução: casa feita aos poucos, pela própria família, ao longo de décadas.',
+        'Os autores são precisos nesse ponto. Esses moradores têm nas suas casas autoconstruídas o seu maior patrimônio, e o legado de lutas familiares misturado à produção da própria paisagem local. Não se trata de moradia precária à espera de solução: trata-se de uma obra coletiva de décadas, feita sem projeto e sem crédito.'
+      ]
+    },
+    dados:[
+      ['1939','Descoberta de petróleo no Lobato. A industrialização puxa o adensamento do Subúrbio.'],
+      ['anos 1940','Década em que a população cresce de forma acelerada, ligada à ferrovia e à indústria.'],
+      ['autoconstrução','O modo de produção do território: a casa como <b>patrimônio e como registro de luta familiar</b>.']
+    ],
+    arg:[
+      ['01','O TERRITÓRIO NEGRO NÃO É AUSÊNCIA','A análise urbana convencional oscila entre ver a periferia negra pela ótica da falta ou pela celebração exótica da resistência. Nenhuma das duas enxerga a infraestrutura social que de fato existe ali.'],
+      ['02','AUTOCONSTRUÇÃO É PRODUÇÃO DE PAISAGEM','A casa feita em etapas não é rascunho de casa. É o resultado material de uma trajetória familiar, e destruí-la apaga um arquivo que não está em lugar nenhum.'],
+      ['03','A RAÇA ESTRUTURA O ESPAÇO','O artigo critica a tradição dos estudos urbanos do Sudeste por subsumir raça em classe e tomar o trabalhador como um corpo branco universal. No Subúrbio, quem foi deslocado para ali foi deslocado por ser negro.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 72–76, sobre a formação do Subúrbio; e pp. 57–59, <b>Blackness and urban studies in Brazil</b>, sobre a crítica à tradição do eixo Rio–São Paulo (Kowarick, Maricato, Valladares).'
+    }
+  },
+
+  {
+    id:3, sigla:'PLATAFORMA', ano:'hoje', cor:'#8a4a28',
+    x:560, ramal:false,
+    titulo:'DEZ MIL POR DIA, COM BALAIO',
+    sub:'Plataforma · quem de fato usa a linha',
+    cena:{
+      lugar:'PLATAFORMA · ESTAÇÃO',
+      frase:'“Temos uma relação com o lugar que o capital e a modernidade não consideram.”',
+      texto:[
+        'Cerca de dez mil pessoas usavam a ferrovia todos os dias: vendedores ambulantes, trabalhadores autônomos, pescadores, marisqueiras, catadores de recicláveis e estudantes. Não é um fluxo genérico de passageiros — é uma economia inteira que depende daquele modal específico.',
+        'O detalhe decisivo está na carga. Marisqueira e pescador precisam levar mercadoria, balaio, caixa, entre o Subúrbio, a Calçada e a Feira de São Joaquim. O trem permitia. O ônibus convencional proíbe. Trocar o modal, nesse caso, não é mudar o conforto da viagem: é decidir se aquela renda continua existindo.',
+        'A frase de Gilson, morador do Subúrbio, que dá título à seção do artigo, resume a distância entre os dois vocabulários. O projeto fala em capacidade, tempo de percurso e modernização. O morador fala de uma relação com o lugar que esses termos não conseguem medir.'
+      ]
+    },
+    dados:[
+      ['10.000','Pessoas por dia usando a ferrovia, segundo levantamento citado no artigo.'],
+      ['R$ 0,50','Tarifa do trem. Cobria a dimensão do preço num território estruturalmente excluído.'],
+      ['o balaio','A carga que o trem aceitava e o ônibus proíbe. <b>É a diferença entre ter e não ter renda.</b>']
+    ],
+    arg:[
+      ['01','MOBILIDADE É DIREITO OU PRÊMIO?','Milton Santos pergunta se a mobilidade das pessoas é uma prerrogativa permanente ou uma benesse ocasional, e descreve como morar na periferia condena a transportes caros e ruins. Ele chama isso de cidadania mutilada.'],
+      ['02','O MODAL DEFINE A ECONOMIA','Um sistema que não transporta pequena carga elimina o circuito da sardinha e do marisco. A escolha técnica do veículo é, na prática, uma política de renda.'],
+      ['03','O QUE O PROJETO NÃO MEDE','Capacidade e tempo de percurso são mensuráveis. Vínculo com o território, rede de vizinhança e economia de subsistência não entram na planilha — e por isso desaparecem da decisão.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 72–76. A estimativa de <b>10 mil usuários diários</b> é atribuída pelos autores ao Acervo da Laje e outros (2020). A fala de <b>Gilson</b> dá título à seção.<br><br>Complemento: SANTOS, Milton, sobre <b>cidadania mutilada</b> e o transporte na periferia.'
+    }
+  },
+
+  {
+    id:4, sigla:'PERIPERI', ano:'2019', cor:'#3d6b8c',
+    x:930, ramal:false,
+    titulo:'A CLÁUSULA QUE ABRIU A PORTA',
+    sub:'Periperi · a PPP, a BYD e a troca de projeto',
+    cena:{
+      lugar:'PERIPERI · TRECHO MÉDIO',
+      frase:'“Um VLT ou outro modal equivalente sobre trilho ou guia.”',
+      texto:[
+        'Em 2016 o Governo do Estado apresentou em audiência pública um projeto de VLT operando <b>em nível, no chão</b>, usando a faixa de terra já consolidada do antigo trem. Por usar o traçado existente, exigiria pouquíssima desapropriação, evitaria a remoção forçada de centenas de famílias e preservaria terreiros de candomblé e vegetação sagrada.',
+        'A mudança aconteceu na licitação da Parceria Público-Privada. Para dar segurança jurídica e atrair investidor, o contrato do Estado previu uma cláusula genérica: a implantação de um VLT <b>ou outro modal equivalente sobre trilho ou guia</b>. A BYD, pelo Consórcio Skyrail Bahia, venceu e usou essa brecha para impor sua própria tecnologia, o monotrilho elevado sobre viga de concreto.',
+        'O Estado aceitou a mudança para viabilizar o negócio. O resultado prático foi pesado: trilho e estação histórica seriam arrancados e destruídos, e o orçamento saltou de R$ 2,5 bilhões para R$ 5,2 bilhões.',
+        'Por que o Estado não fez a modernização por conta própria? Entre 2015 e 2022 houve crise econômica severa e desestruturação do pacto federativo, com corte sistemático de repasse da União a estado governado pela oposição. Sem recurso público para tocar a obra, o Estado recorreu ao capital privado internacional.',
+        'O modelo que organiza essa decisão tem nome: <b>neodesenvolvimentismo</b>, característico dos governos do PT. O Estado volta a atuar como indutor do crescimento e da modernização da infraestrutura, mas não faz sozinho: articula orçamento público com capital privado, expande crédito e insere grandes empresas e fundos financeiros dentro da obra pública. É um desenho diferente do desenvolvimentismo estatal clássico do século XX, que executava por conta própria.',
+      ]
+    },
+    dados:[
+      ['R$ 2,5 → 5,2 bi','Salto do orçamento quando o VLT em nível virou monotrilho elevado.'],
+      ['740%','Aumento tarifário provável estimado no artigo como resultado da troca de modal.'],
+      ['2016','Ano do projeto original: <b>VLT no chão, no traçado existente</b>, com pouca desapropriação.']
+    ],
+    arg:[
+      ['01','A BRECHA FOI DESENHADA, NÃO DESCOBERTA','A cláusula genérica existia para reduzir risco do parceiro privado e tornar o negócio atraente. Ela não é falha de redação: é a engenharia contratual que permitiu a troca.'],
+      ['02','O ESTADO PODERIA TER DITO NÃO','A Bahia tem uma das estruturas de PPP mais robustas do país, com fundo garantidor bilionário. Não é governo fraco diante de multinacional: é decisão política de aceitar a tecnologia que gerava apelo visual de modernidade.'],
+      ['03','FETICHE DE INFRAESTRUTURA','O monotrilho elevado foi vendido como símbolo futurista de cidade inteligente. Uma solução enlatada que ignorou um tecido social dependente de tarifa de cinquenta centavos e de trem em nível capaz de escoar mercadoria.'],
+      ['04','A PPP É BEM-VISTA DOS DOIS LADOS','A Parceria Público-Privada não é marca de um partido: é o formato do período. Ela permite anunciar obra grande sem desembolsar todo o orçamento na construção, contorna limite de endividamento e projeta imagem de gestão moderna. Por isso atravessa o espectro político — e por isso o Pelourinho dos anos 1990, sob o carlismo, e o Subúrbio dos anos 2010, sob o PT, chegam ao mesmo lugar.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 72–76, sobre a PPP com a BYD e a estimativa de <b>740%</b> de aumento tarifário.<br><br>Complemento: pesquisa própria sobre o VLT do Subúrbio, pp. 3–4, sobre a cláusula do edital, o projeto de 2016 e o contexto de asfixia federal entre 2015 e 2022.'
+    }
+  },
+
+  {
+    id:5, sigla:'PARIPE', ano:'2021', cor:'#b0402a',
+    x:1245, ramal:false,
+    titulo:'FIM DA LINHA',
+    sub:'Paripe · fevereiro de 2021 · a desativação',
+    cena:{
+      lugar:'PARIPE · TERMINAL NORTE',
+      frase:'A promessa era um ano de interrupção.',
+      texto:[
+        'A infraestrutura foi sendo sucateada ao longo de décadas, com o trecho operacional encolhendo até restar apenas Calçada–Paripe. Em fevereiro de 2021 o trem foi desativado para dar lugar ao novo projeto. A promessa inicial era de um ano de interrupção.',
+        'Se a mobilidade barata foi uma das poucas âncoras de cidadania efetiva que o Subúrbio teve, e essa âncora foi sucateada, o que resta como reivindicação ultrapassa o pedido de devolução do trem e chega ao pedido de permanência: ficar ali, nas condições que tornam aquela vida possível.',
+        'Milton Santos chama isso de <b>direito ao entorno</b> — o direito de não ser expulso ou desenraizado pelas mudanças na paisagem e no ambiente construído. Direito que ele descreve como existente nos livros e nos discursos oficiais, mas muito longe de qualquer implementação real.',
+        'A pressão imobiliária sobre a orla da Baía, historicamente vista como área de baixo valor por abrigar população pobre, tende a se inverter conforme a cidade se expande e aquela paisagem passa a interessar ao mercado.'
+      ]
+    },
+    dados:[
+      ['fev/2021','Desativação do trem do Subúrbio, com promessa inicial de <b>um ano</b> de interrupção.'],
+      ['740%','Aumento tarifário estimado no artigo. O impacto recai sobre quem não pode pagar nem transportar mercadoria.'],
+      ['direito ao entorno','A reivindicação que ultrapassa o transporte: <b>o direito de permanecer</b> no território que se ajudou a construir.']
+    ],
+    arg:[
+      ['01','A INFRAESTRUTURA COMO MECANISMO DE ANTINEGRITUDE','A tese central do artigo: a política de infraestrutura em Salvador historicamente foi, e ainda é, um mecanismo de antinegritude. Não é efeito colateral de obra mal feita — é o modo de operação.'],
+      ['02','DESATIVAR TAMBÉM É INTERVIR','A ausência de serviço não é neutra. Tirar o modal barato de um território e demorar para repor produz um custo que recai integralmente sobre quem já tinha menos.'],
+      ['03','A VALORIZAÇÃO VEM DEPOIS','A orla da Baía foi barata enquanto foi pobre. Conforme a cidade se expande e a paisagem passa a interessar ao mercado, a permanência de quem construiu o lugar deixa de ser dada.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), p. 75 e seção final. A frase de abertura do artigo — <b>“Infrastructure policy in Salvador has historically been, and still is, an anti-Blackness mechanism”</b> — é a tese que este trecho fecha.<br><br>Complemento: SANTOS, Milton, sobre <b>direito ao entorno</b>; pesquisa própria sobre o VLT, pp. 1–2.'
+    }
+  }
+];
+
+var FUGITIVIDADE = [
+  ['O QUE O ARTIGO PROPÕE',
+   'A cidade negra não é espaço de morte social nem de vitimização passiva. A vida negra se recria e se afirma por meio de fugitividades, recusas ontológicas e redes de re-existência que escapam à captura estatal e mercantil. É a segunda metade da tese — e é a que o discurso da denúncia costuma perder.'],
+  ['QUILOMBO COMO PRÁTICA, NÃO COMO RUÍNA',
+   'Beatriz Nascimento é a referência central: o quilombo não é lugar estático do passado, é prática transtemporal e transespacial de libertação, re-existência e recusa da supremacia branca. Os autores articulam isso com a Tradição Radical Negra internacional — Harney e Moten, Tina Campt, Katherine McKittrick.'],
+  ['A COZINHA QUE VIROU ATELIÊ',
+   'O Estado fechou a cozinha comunitária do Pelourinho. A AMACH a converteu em ateliê e oficina de políticas alternativas. É o exemplo mais direto do que os autores chamam de transbordamento das interdições: o equipamento interditado reaparece com outra função, decidida por quem ficou.'],
+  ['PERÍCIA POPULAR E ESCOLA DE VERÃO',
+   'Duas experiências de colaboração entre a UFBA e movimentos de base: a Perícia Popular do Pelourinho com a AMACH, em 2016, e a Escola de Verão Monotrilho em Disputa, no Subúrbio, em 2020. Os autores chamam essa metodologia de colaborações urbanas indisciplinadas, que produzem interconhecimento em vez de tratar o morador como objeto de estudo.'],
+  ['OS UNCOMMONS',
+   'O dissenso urbano gerado pelas formas negras de morar revela o não-comum: aquilo que não cabe no consenso pós-político da modernização. A conclusão do artigo aposta numa política do cuidado e na aliança radical entre universidade e movimento de base.'],
+  ['A VIRADA QUE O ARTIGO PEDE',
+   'Os autores criticam a tradição dos estudos urbanos do Sudeste — Kowarick, Maricato, Valladares — por subsumir raça na categoria de classe e tomar o trabalhador como corpo branco universal. Reivindicam Beatriz Nascimento, Abdias Nascimento, Lélia Gonzalez e Clóvis Moura, e situam esse movimento no escurecimento da própria UFBA a partir das cotas raciais.']
+];
+
+var EPILOGO = [
+  ['2023','A RESCISÃO',
+   'O Governo do Estado rompeu o contrato com a Skyrail. O documento oficial aponta dois motivos: inviabilidade econômica e o parecer da Procuradoria Geral do Estado de que a rescisão era a única saída jurídica viável diante da urgência, com a obra paralisada e atraso crônico da concessionária.'],
+  ['2024','A VOLTA AO CHÃO',
+   'Depois de romper com a BYD, o Estado tomou a decisão técnica de voltar a projetar um VLT real, sobre trilhos, em superfície — maior e proporcionalmente mais barato que o monotrilho elevado. Novos contratos assinados em 2024, com previsão de conclusão em 2026.'],
+  ['2021–2026','O VÃO',
+   'Na prática, a população do Subúrbio enfrenta mais de cinco anos de isolamento ferroviário. Nesse período, moradores dos quais cerca de 40% vivem abaixo da linha da pobreza foram obrigados a pagar tarifa de ônibus de R$ 4,90 — quase 1.000% acima dos cinquenta centavos do trem. A perda de renda de marisqueira e pescador impedidos de transportar mercadoria é prejuízo que a inauguração futura não apaga.'],
+  ['clima','A ETIQUETA VERDE',
+   'O projeto se apresenta como resposta à crise climática. Vale testar a etiqueta: mitigação é reduzir emissão, adaptação é preparar o território para o que já vem. Transporte elétrico é mitigação. Mas quando a obra despeja concreto e agrava a vulnerabilidade social, ela caminha na direção oposta à adaptação — e a valorização que ela produz vira gentrificação verde, expulsando o morador histórico.'],
+  ['contrapoder','A MATRIZ DE DANOS',
+   'Núcleo universitário e sociedade civil, junto com peritos, elaboraram uma proposta de Matriz de Danos para uso perante a Defensoria Pública e a Promotoria. O Estado não a aplica espontaneamente, mas ela virou o principal escudo na esfera judicial: serve para refutar tecnicamente os laudos padronizados da CONDER e da CTB e provar ao juiz que o cálculo de indenização é espoliativo e incompleto.'],
+  ['o que seria justo','REGULARIZAR ANTES DE DESAPROPRIAR',
+   'A maioria dos moradores tem posse informal, sem título em cartório, e a engenharia de avaliação do Estado calcula essa posse por valor muito menor. Aplicar os princípios da Corte Interamericana significaria promover regularização fundiária de interesse social antes de desapropriar, indenizar o valor total da terra e não só o tijolo, tratar dinheiro como última opção e garantir reassentamento digno no mesmo território — incluindo perda de renda e dano imaterial no cálculo.']
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   LADO A · CENTRO HISTÓRICO
+   O mesmo peso do lado B. Quatro pinos na planta das etapas,
+   e três camadas no corte do casarão — a estratigrafia de uso.
+═══════════════════════════════════════════════════════════════ */
+
+var ESTACOES_A = [
+  {
+    id:1, sigla:'MACIEL', ano:'1930–1991', cor:'#8a4a28', x:300, y:250,
+    titulo:'O CASARÃO DE USO MISTO',
+    sub:'Maciel · o que existia antes de virar produto',
+    cena:{
+      lugar:'MACIEL · PELOURINHO',
+      frase:'O que os técnicos chamaram de ruína era uma infraestrutura social.',
+      texto:[
+        'Até o início do século XX o Centro Histórico era da elite baiana: homens de negócio, grandes proprietários rurais e autoridades, em solares e casarões. Conforme a cidade se modernizou e se expandiu para a Barra, a Graça e depois o Iguatemi, as classes abastadas e o poder público abandonaram o centro antigo.',
+        'A partir dos anos 1930 os casarões coloniais foram fracionados em cortiços, pensões e habitações coletivas de aluguel barato. A região passou a abrigar população predominantemente negra e de baixa renda. Dos anos 1960 a 1991 o bairro viveu seu auge como comunidade popular de <b>uso misto</b>: moradia densa, comércio de subsistência, oficinas de alfaiate e artesão, restaurantes populares, casas de candomblé, trabalhadores informais, blocos afro e rodas de capoeira convivendo no mesmo espaço.',
+        'O artigo descreve exatamente esse tecido: restaurantes populares de preço modesto, pensões, redes de cuidado de crianças e de apoio a mulheres e a prostitutas, organizações culturais afro-brasileiras, atividade religiosa. Uma sociabilidade e uma ajuda mútua operando em paralelo, <b>dentro e fora das lógicas capitalistas</b> — e era isso que permitia a reprodução da vida diária no lugar.'
+      ]
+    },
+    dados:[
+      ['1930–60','Os solares da elite viram cortiço e pensão. A população que chega é negra e pobre.'],
+      ['1960–91','Auge do <b>uso misto</b>: morar, trabalhar, comerciar, cultuar e festejar no mesmo quarteirão.'],
+      ['uso misto','Não é desordem: é o arranjo que tornava a vida possível ali, sem transporte caro e sem aluguel de mercado.']
+    ],
+    arg:[
+      ['01','A LITERATURA COMO PROVA DOCUMENTAL','Jorge Amado escreve esse bairro enquanto ele existe. <i>Suor</i>, de 1936, se passa inteiro dentro de um casarão-cortiço do Pelourinho, com famílias operárias, alfaiates, lavadeiras e pequenos comerciantes dividindo o mesmo prédio. <i>Capitães da Areia</i> (1937), <i>Pastores da Noite</i> (1964) e <i>Tenda dos Milagres</i> (1969) retratam o Pelourinho, o Maciel, o Taboão e o Carmo com oficinas, terreiros, botequins, moradia popular e festa de rua.'],
+      ['02','O ESVAZIAMENTO VEIO ANTES DA “DEGRADAÇÃO”','O centro não decaiu sozinho. A elite saiu, o investimento público saiu com ela, e só então a área foi classificada como degradada. A ruína é resultado de uma decisão anterior de desinvestimento, não uma condição natural do lugar.'],
+      ['03','QUEM FICOU, FEZ CIDADE','Durante sessenta anos a população negra e pobre manteve de pé, por conta própria, um centro urbano vivo e de uso misto — exatamente o modelo que o urbanismo contemporâneo diz perseguir.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA + REPERTÓRIO',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 66–72, sobre o tecido social do Pelourinho antes do programa.<br><br>Repertório literário: AMADO, Jorge. <i>Suor</i> (1936), <i>Capitães da Areia</i> (1937), <i>Pastores da Noite</i> (1964), <i>Tenda dos Milagres</i> (1969).<br><br>Complemento: MOREIRA, Tomás (2009) sobre a caracterização residencial e de baixa renda da área antes da intervenção.'
+    }
+  },
+
+  {
+    id:2, sigla:'PELOURINHO', ano:'1992–1999', cor:'#b0402a', x:600, y:250,
+    titulo:'O SHOPPING A CÉU ABERTO',
+    sub:'1ª a 6ª etapas · a remoção e a monocultura do turismo',
+    cena:{
+      lugar:'LARGO DO PELOURINHO · 1992',
+      frase:'A área foi convertida em produto turístico para um público que não morava ali.',
+      texto:[
+        'Em 1991 o Governo do Estado iniciou o Programa de Recuperação do Centro Histórico. O objetivo declarado era transformar uma área caracterizada como residencial e de baixa renda em área turística para um público de alta renda. O eixo da operação era converter o Pelourinho num <b>“shopping a céu aberto”</b>.',
+        'Isso não era uma ideia solta. Desde os anos 1970 a política de desenvolvimento industrial havia destinado a Salvador um papel na economia de serviços. O programa transforma o patrimônio em insumo dessa economia: o valor histórico vira produto, e o morador vira obstáculo à produção do produto.',
+        'As seis primeiras etapas, de 1992 a 1999, foram um fracasso econômico enorme — a visitação subiu com as primeiras intervenções e foi caindo depois — e incluíram uma política violenta de remoção que atingiu principalmente a população afrodescendente. Mais de quatro mil moradores foram expulsos para bairros distantes.',
+        'O resultado é uma <b>monocultura</b>: um centro histórico que só sabe fazer uma coisa. Onde havia moradia, oficina, restaurante popular, terreiro e comércio de subsistência, passou a haver uma única atividade econômica, sazonal e dependente de fluxo externo. Quando o turista não vem, não sobra nada — porque o resto foi removido.'
+      ]
+    },
+    dados:[
+      ['4.000+','Moradores removidos para bairros distantes, majoritariamente afrodescendentes.'],
+      ['6','Etapas executadas entre 1992 e 1999, todas sem uso habitacional. <b>Fracasso econômico</b>, segundo o próprio balanço.'],
+      ['1970s','Década em que a política industrial destina a Salvador a economia de serviços. O programa é a aplicação disso ao patrimônio.']
+    ],
+    arg:[
+      ['01','O CARLISMO COMO CONTEXTO','O programa é conduzido pelo governo do estado sob Antônio Carlos Magalhães e o carlismo, força hegemônica na Bahia dos anos 1990, ligada ao PFL. A intervenção no Pelourinho é obra-vitrine desse projeto político: patrimônio restaurado como imagem de gestão.'],
+      ['02','RESTAURAÇÃO CENOGRÁFICA','O que se restaurou foi a fachada. O casarão é mantido por fora e esvaziado por dentro. O bairro passa a se parecer com o que era, sem conter mais o que era — a forma sem o uso.'],
+      ['03','MONOCULTURA É FRAGILIDADE','Substituir um tecido de usos múltiplos por uma única atividade econômica não é só injusto com quem foi removido: é economicamente frágil. A queda da visitação nos anos seguintes mostrou isso.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 66–72. A expressão <b>“shopping a céu aberto”</b> é de Sant’Anna (2017), citada pelos autores, que também situam o programa na economia de serviços destinada a Salvador desde os anos 1970.<br><br>Complemento: MOREIRA, Tomás (2009), sobre os objetivos do programa, o declínio da visitação e os conflitos de interesse.'
+    }
+  },
+
+  {
+    id:3, sigla:'CARMO', ano:'2000–', cor:'#4a6b3a', x:900, y:250,
+    titulo:'A ETAPA QUE ENTROU POR PROTESTO',
+    sub:'7ª etapa · a AMACH e o uso habitacional · inacabada',
+    cena:{
+      lugar:'CARMO · SÉTIMA ETAPA',
+      frase:'A moradia não estava no plano. Entrou porque foi obrigada a entrar.',
+      texto:[
+        'A violência das seis primeiras etapas deu origem a um movimento de protesto liderado por uma aliança de moradores que não aceitou passivamente a remoção. Esse protesto não caiu no vazio: as reivindicações do bairro forçaram os técnicos a aceitar a introdução de <b>uso habitacional na sétima etapa</b>.',
+        'A sétima etapa começou em 2000 e permanece inacabada. É dela que nasce a AMACH, a Associação dos Moradores e Amigos do Centro Histórico, que se torna o principal interlocutor coletivo na disputa e conquista o TAC de 2005.',
+        'O assédio continua por outros meios: concessão precária de dez anos, benefício insuficiente para pagar aluguel no mercado, processos de reintegração de posse. As estratégias de permanência são de solidariedade familiar e de vizinhança — a mesma infraestrutura social que o programa tentou desmontar.',
+        'O ponto importa para a leitura do texto: o programa <b>não era um destino técnico inevitável</b>. Foi disputa, e a disputa mudou o projeto. É aqui que o argumento da fugitividade encosta no do urbanismo: quem ficou não ficou por omissão do Estado, ficou por ação própria.'
+      ]
+    },
+    dados:[
+      ['7ª','A única etapa com uso habitacional. Começou em <b>2000</b> e segue inacabada.'],
+      ['2005','TAC conquistado pela AMACH, que passa a ser o instrumento jurídico da permanência.'],
+      ['10 anos','Prazo da concessão precária oferecida ao morador — permanência com data de validade.']
+    ],
+    arg:[
+      ['01','A RESISTÊNCIA É PARTE DO PROJETO FINAL','O desenho que existe hoje no Centro Histórico não é o desenho que os técnicos entregaram. É o desenho depois da disputa. Apresentar o programa sem a AMACH é apresentar metade.'],
+      ['02','PERMANÊNCIA COM PRAZO NÃO É PERMANÊNCIA','Concessão precária de dez anos e benefício insuficiente produzem uma remoção mais lenta, não a sua ausência. O assédio administrativo substitui o despejo direto.'],
+      ['03','A MESMA REDE QUE O PROGRAMA QUIS DESMONTAR','O que sustenta a permanência é solidariedade familiar e de vizinhança: exatamente a infraestrutura social que a intervenção classificou como degradação.']
+    ],
+    fonte:{
+      selo:'FONTE PRIMÁRIA',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020), pp. 66–72, sobre o protesto que forçou o uso habitacional na sétima etapa, a AMACH e o assédio continuado da CONDER.<br><br>Complemento: MOREIRA, Tomás (2009), sobre a atuação da AMACH e a necessidade de mudança na relação do estado com os demais setores.'
+    }
+  },
+
+  {
+    id:4, sigla:'PALÁCIO', ano:'anos 90', cor:'#3d6b8c', x:1150, y:250,
+    titulo:'DE ONDE SAIU A DECISÃO',
+    sub:'Governo do estado · carlismo · a obra como vitrine',
+    cena:{
+      lugar:'PALÁCIO RIO BRANCO · CIDADE ALTA',
+      frase:'Duas obras, dois projetos políticos opostos, o mesmo mecanismo.',
+      texto:[
+        'O Programa de Recuperação é conduzido pelo governo do estado sob o carlismo, nos anos 1990 — força hegemônica na Bahia, ligada ao PFL, que faz da restauração do patrimônio uma obra-vitrine de gestão. Trinta anos depois, é um governo do PT que conduz a intervenção no Subúrbio, sob a lógica do <b>neodesenvolvimentismo</b>.',
+        'Neodesenvolvimentismo, aqui, significa um modelo em que o Estado atua como indutor do crescimento e da modernização de infraestrutura, mas não sozinho: articula orçamento público com capital privado, expande crédito e insere grandes empresas e fundos financeiros em obra pública. Diferente do desenvolvimentismo estatal clássico do século XX, que fazia por conta própria.',
+        'É por isso que a Parceria Público-Privada é bem-vista <b>dos dois lados</b>. Ela permite anunciar obra grande sem desembolsar todo o orçamento no momento da construção, contorna limite de endividamento e projeta imagem de gestão moderna. O instrumento atravessa o espectro político.',
+        'O argumento do texto está exatamente aqui. Não se trata de acusar um partido. Trata-se de mostrar que <b>projetos políticos opostos produziram a mesma coisa</b> quando o assunto foi modernizar território negro: o morador tratado como obstáculo, a decisão tomada fora dele, e o resultado empurrando gente para longe.'
+      ]
+    },
+    dados:[
+      ['anos 90','Pelourinho sob o <b>carlismo</b>: patrimônio como vitrine de gestão, PFL hegemônico na Bahia.'],
+      ['anos 2010','Subúrbio sob o <b>PT</b>: neodesenvolvimentismo, Estado indutor articulado a capital privado.'],
+      ['PPP','O instrumento que os dois lados adotam. <b>Não é marca de um partido:</b> é o formato do período.']
+    ],
+    arg:[
+      ['01','A CRÍTICA NÃO É PARTIDÁRIA, É ESTRUTURAL','Se governos de projetos opostos chegam ao mesmo resultado, o problema não está na alternância. Está no modo como a modernização trata território negro, independentemente de quem assina.'],
+      ['02','A PPP ATRAVESSA O ESPECTRO','Ela resolve, para qualquer governo, o mesmo conjunto de problemas: obra grande, caixa curto, limite de endividamento e necessidade de imagem. Por isso é adotada dos dois lados.'],
+      ['03','DUAS VITRINES, UM MECANISMO','O Pelourinho restaurado e o monotrilho futurista cumprem a mesma função política: mostrar gestão. Em ambos, quem morava ali entrou na conta como custo, não como sujeito.']
+    ],
+    fonte:{
+      selo:'ARGUMENTO CENTRAL DO TEXTO',
+      txt:'FIGUEIREDO, ESTÉVEZ & ROSA (2020): <b>“Infrastructure policy in Salvador has historically been, and still is, an anti-Blackness mechanism”</b>. Os autores tratam os dois casos — Pelourinho e Subúrbio — como expressões do mesmo mecanismo, executadas por administrações distintas.<br><br>Complemento: caracterização do neodesenvolvimentismo e da lógica das PPPs a partir de pesquisa própria.'
+    }
+  }
+];
+
+/* ═══ O ENCONTRO · as duas linhas do tempo e o que elas partilham ═══ */
+var ENCONTRO = {
+  ladoA:{
+    rot:'LADO A · CENTRO HISTÓRICO',
+    gov:'Governo do estado · carlismo · PFL',
+    per:'1991 → hoje',
+    itens:[
+      ['1991–92','Início do Programa de Recuperação'],
+      ['1992–99','Seis etapas sem moradia · mais de 4.000 removidos'],
+      ['2000–','Sétima etapa, com moradia, conquistada por protesto · inacabada'],
+      ['lógica','Patrimônio vira produto turístico. A forma é conservada, o uso é substituído.']
+    ]
+  },
+  ladoB:{
+    rot:'LADO B · SUBÚRBIO FERROVIÁRIO',
+    gov:'Governo do estado · PT · neodesenvolvimentismo',
+    per:'2016 → 2026',
+    itens:[
+      ['2016','Projeto de VLT em nível, no traçado existente'],
+      ['2019','PPP com a BYD · monotrilho elevado · R$ 2,5 → 5,2 bi'],
+      ['2021','Desativação do trem · cinco anos de isolamento'],
+      ['lógica','Infraestrutura vira ativo financeiro. O modal muda, a economia que dependia dele não sobrevive.']
+    ]
+  },
+  comum:[
+    'Território majoritariamente negro tratado como área a ser modernizada, não como lugar habitado.',
+    'Decisão tomada fora do território, sem audiência com poder de veto sobre o desenho.',
+    'O morador entra na conta como custo de obra, não como sujeito de direito.',
+    'A Parceria Público-Privada como formato preferido, adotada por governos de projetos opostos.',
+    'A obra apresentada como vitrine de gestão, com apelo visual de modernidade.',
+    'A resistência organizada muda o projeto — e é sistematicamente omitida do balanço oficial.'
+  ]
+};
+
+var NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  var n = document.createElementNS(NS, tag);
+  for (var k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+}
+var MONO = "'Space Mono',monospace";
+var BLACK = "'Archivo Black',sans-serif";
+
+var ESTADO = {
+  lado:'a',
+  camada:{a:'solar', b:'trem'},
+  lidas:new Set(),          // chaves 'a3', 'b2'
+  encontroPronto:false
+};
+function chave(lado,id){ return lado + id; }
+function dados(lado){ return lado === 'a' ? ESTACOES_A : ESTACOES; }
+
+/* ═══════════════════════════════════════════════════════════════
+   LADO B · geometria do perfil
+   O terreno é uma sequência de béziers quadráticas; os pilares do
+   monotrilho precisam pousar nele, então a cota é amostrada.
+═══════════════════════════════════════════════════════════════ */
+var TERRENO = [
+  [[120,762],[250,738],[380,748]],
+  [[380,748],[520,704],[660,730]],
+  [[660,730],[800,694],[940,722]],
+  [[940,722],[1080,702],[1290,744]]
+];
+var TABELA = (function(){
+  var t = [];
+  TERRENO.forEach(function(seg){
+    for (var i=0;i<=40;i++){
+      var u=i/40, a=(1-u)*(1-u), b=2*(1-u)*u, c=u*u;
+      t.push([a*seg[0][0]+b*seg[1][0]+c*seg[2][0],
+              a*seg[0][1]+b*seg[1][1]+c*seg[2][1]]);
+    }
+  });
+  return t;
+})();
+function cotaTerreno(x){
+  var melhor = TABELA[0], dist = 1e9;
+  for (var i=0;i<TABELA.length;i++){
+    var d = Math.abs(TABELA[i][0]-x);
+    if (d < dist){ dist = d; melhor = TABELA[i]; }
+  }
+  return melhor[1];
+}
+
+function montarLadoB(){
+  var d1 = document.getElementById('dormentes');
+  var d2 = document.getElementById('dormentes-vlt');
+  for (var x=176; x<=1240; x+=13){
+    d1.appendChild(svgEl('line',{x1:x,y1:718,x2:x,y2:727}));
+    d2.appendChild(svgEl('line',{x1:x,y1:718,x2:x,y2:727}));
+  }
+  var pil = document.getElementById('pilares');
+  for (var px=196; px<=1230; px+=86){
+    pil.appendChild(svgEl('line',{x1:px,y1:618,x2:px,y2:cotaTerreno(px)}));
+  }
+  var ch = document.getElementById('chamadas');
+  ESTACOES.forEach(function(e){
+    ch.appendChild(svgEl('line',{x1:e.x,y1:262,x2:e.x,y2:700}));
+  });
+  var ge = document.getElementById('cam-estacoes');
+  ESTACOES.forEach(function(e){
+    var g = svgEl('g',{transform:'translate('+e.x+',722)'});
+    g.appendChild(svgEl('rect',{x:-13,y:-30,width:26,height:8,fill:'#17191a',opacity:'.75'}));
+    g.appendChild(svgEl('line',{x1:0,y1:-22,x2:0,y2:0,stroke:'#17191a','stroke-width':1.4}));
+    g.appendChild(svgEl('circle',{cx:0,cy:0,r:4,fill:'#d6dad2',stroke:'#17191a','stroke-width':1.6}));
+    var t = svgEl('text',{y:20,'text-anchor':'middle','font-family':MONO,
+      'font-size':7.5,fill:'#17191a',opacity:.7,'letter-spacing':.8});
+    t.textContent = e.sigla;
+    g.appendChild(t);
+    ge.appendChild(g);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LADO A · a planta das etapas
+═══════════════════════════════════════════════════════════════ */
+var ZONAS = [
+  {x0:190, x1:432, rot:'1ª A 3ª ETAPA', per:'1992–1995', cor:'#b0402a', tram:'url(#remov)',
+   nota:'sem uso habitacional'},
+  {x0:442, x1:762, rot:'4ª A 6ª ETAPA', per:'1996–1999', cor:'#b0402a', tram:'url(#remov)',
+   nota:'sem uso habitacional'},
+  {x0:772, x1:1012, rot:'7ª ETAPA', per:'2000– · inacabada', cor:'#4a6b3a', tram:'url(#mora)',
+   nota:'com moradia, por protesto'},
+  {x0:1022, x1:1272, rot:'ENTORNO INSTITUCIONAL', per:'sede do governo', cor:'#3d6b8c', tram:null,
+   nota:'de onde saiu a decisão'}
+];
+var LARGOS = [
+  [300,'MACIEL'], [430,'TABOÃO'], [600,'LARGO DO PELOURINHO'],
+  [760,'TERREIRO DE JESUS'], [900,'LARGO DO CARMO'], [1150,'PRAÇA MUNICIPAL']
+];
+
+function montarLadoA(){
+  var gz = document.getElementById('a-zonas');
+  ZONAS.forEach(function(z){
+    var w = z.x1 - z.x0;
+    gz.appendChild(svgEl('rect',{x:z.x0,y:200,width:w,height:132,fill:z.cor,opacity:.09}));
+    if (z.tram) gz.appendChild(svgEl('rect',{x:z.x0,y:200,width:w,height:132,fill:z.tram}));
+    gz.appendChild(svgEl('rect',{x:z.x0,y:200,width:w,height:132,fill:'none',
+      stroke:z.cor,'stroke-width':1,'stroke-dasharray':'4 3',opacity:.75}));
+    var t1 = svgEl('text',{x:z.x0+w/2,y:349,'text-anchor':'middle','font-family':BLACK,
+      'font-size':8,fill:z.cor,'letter-spacing':1.6});
+    t1.textContent = z.rot;
+    gz.appendChild(t1);
+    var t2 = svgEl('text',{x:z.x0+w/2,y:361,'text-anchor':'middle','font-family':MONO,
+      'font-size':6.8,fill:'#17191a',opacity:.6,'letter-spacing':.9});
+    t2.textContent = z.per + ' · ' + z.nota;
+    gz.appendChild(t2);
+  });
+
+  // quarteirões: o tecido construído, acima e abaixo do eixo
+  var gq = document.getElementById('a-quadras');
+  ZONAS.forEach(function(z){
+    for (var x = z.x0 + 8; x + 46 <= z.x1 - 4; x += 58){
+      gq.appendChild(svgEl('rect',{x:x,y:206,width:46,height:32,
+        fill:'#c3c8be',stroke:'#17191a','stroke-width':.8}));
+      gq.appendChild(svgEl('rect',{x:x,y:262,width:46,height:32,
+        fill:'#c3c8be',stroke:'#17191a','stroke-width':.8}));
+    }
+  });
+
+  var cal = document.getElementById('a-calcada');
+  for (var cx=182; cx<=1284; cx+=14){
+    cal.appendChild(svgEl('line',{x1:cx,y1:245,x2:cx,y2:255}));
+  }
+
+  LARGOS.forEach(function(l){
+    var t = svgEl('text',{x:l[0],y:392,'text-anchor':'middle','font-family':MONO,
+      'font-size':7,fill:'#17191a',opacity:.66,'letter-spacing':.9});
+    t.textContent = '· ' + l[1];
+    document.getElementById('a-zonas').appendChild(t);
+  });
+
+  // linha de chamada entre planta e corte
+  var gt = document.getElementById('a-terreno');
+  for (var tx=130; tx<=1296; tx+=11){
+    gt.appendChild(svgEl('line',{x1:tx,y1:790,x2:tx-6,y2:798,
+      stroke:'#17191a','stroke-width':.6,opacity:.4}));
+  }
+  var tn = svgEl('text',{x:1300,y:788,'font-family':MONO,'font-size':6.5,
+    fill:'#17191a',opacity:.5,'letter-spacing':1});
+  tn.textContent = 'NÍVEL DA RUA';
+  gt.appendChild(tn);
+
+  desenharCorte();
+  desenharMudanca();
+}
+
+/* ─── o corte: o mesmo casarão em três tempos ─── */
+var CHAO = 790, PISO = 50, LARG = 200, TELHA = 28;
+var PREDIOS = [250, 590, 930];
+var NIVEIS = ['SÓTÃO','2º PAV.','1º PAV.','TÉRREO'];   // de cima para baixo
+
+var CAMADAS_A = {
+  solar: {
+    cor:'#3d6b8c',
+    rot:'ATÉ 1930 · O SOLAR DA ELITE',
+    leg:'Um casarão inteiro por família. Térreo de serviço, pavimentos nobres, sótão para quem servia. Quando a cidade cresceu para a Barra e para a Graça, essa gente saiu — e levou o investimento público junto.',
+    n:[1, 2, 1, 2],
+    usos:['sótão · criadagem','alcovas da família','sala de visitas · recepção','serviço · cocheira · depósito']
+  },
+  cortico: {
+    cor:'#8a4a28',
+    rot:'1930–1991 · O CORTIÇO DE USO MISTO',
+    leg:'O mesmo prédio, fracionado em cortiço e pensão de aluguel barato. Morar, trabalhar, comerciar e cultuar no mesmo quarteirão. É esse arranjo que Jorge Amado escreve em <i>Suor</i> (1936) e em <i>Tenda dos Milagres</i> (1969).',
+    n:[2, 4, 4, 3],
+    usos:['duas famílias','quatro famílias','quatro famílias','alfaiate · restaurante popular · quitanda']
+  },
+  vazio: {
+    cor:'#b0402a',
+    rot:'DEPOIS DE 1992 · A MONOCULTURA DO TURISMO',
+    leg:'Fachada restaurada, uso substituído. Mais de quatro mil moradores removidos para bairros distantes. Onde havia moradia, oficina e restaurante popular, resta uma única atividade econômica — sazonal e dependente de fluxo externo.',
+    n:[0, 0, 0, 1],
+    usos:['vazio','vazio','vazio','loja de souvenir']
+  }
+};
+
+function figura(x, base, cor, op){
+  var g = svgEl('g',{opacity:op===undefined?.9:op});
+  g.appendChild(svgEl('circle',{cx:x,cy:base-16,r:3.1,fill:cor}));
+  g.appendChild(svgEl('line',{x1:x,y1:base-12.6,x2:x,y2:base-5.5,
+    stroke:cor,'stroke-width':2.1,'stroke-linecap':'round'}));
+  g.appendChild(svgEl('line',{x1:x-4,y1:base-10,x2:x+4,y2:base-10,
+    stroke:cor,'stroke-width':1.5,'stroke-linecap':'round'}));
+  g.appendChild(svgEl('path',{d:'M '+(x-3.6)+' '+base+' L '+x+' '+(base-5.5)+' L '+(x+3.6)+' '+base,
+    stroke:cor,'stroke-width':1.6,fill:'none','stroke-linecap':'round'}));
+  return g;
+}
+
+function desenharCorte(){
+  var c = CAMADAS_A[ESTADO.camada.a];
+  var g = document.getElementById('a-corte');
+  g.textContent = '';
+
+  // cotas de pavimento, na calha da esquerda
+  var gc = document.getElementById('a-cotas');
+  gc.textContent = '';
+  NIVEIS.forEach(function(nome, i){
+    var topo = CHAO - (4-i)*PISO;
+    gc.appendChild(svgEl('line',{x1:236,y1:topo,x2:1300,y2:topo,
+      stroke:'#17191a','stroke-width':.4,opacity:.22,'stroke-dasharray':'2 6'}));
+    var t = svgEl('text',{x:230,y:topo+PISO/2+3,'text-anchor':'end','font-family':MONO,
+      'font-size':6.8,fill:'#17191a',opacity:.55,'letter-spacing':.9});
+    t.textContent = nome;
+    gc.appendChild(t);
+    // anotação de uso, à direita
+    var u = svgEl('text',{x:1146,y:topo+PISO/2+3,'font-family':MONO,'font-size':7.2,
+      fill:c.usos[i]==='vazio'?'#b0402a':'#17191a',opacity:c.usos[i]==='vazio'?.75:.8,'letter-spacing':.8});
+    u.textContent = c.usos[i];
+    gc.appendChild(u);
+    gc.appendChild(svgEl('line',{x1:1134,y1:topo+PISO/2,x2:1142,y2:topo+PISO/2,
+      stroke:'#17191a','stroke-width':.8,opacity:.4}));
+  });
+
+  PREDIOS.forEach(function(x0){
+    var gp = svgEl('g',{});
+    // casco
+    gp.appendChild(svgEl('rect',{x:x0,y:CHAO-4*PISO,width:LARG,height:4*PISO,
+      fill:'#c3c8be',stroke:'#17191a','stroke-width':1.6}));
+    // telhado
+    gp.appendChild(svgEl('path',{d:'M '+(x0-10)+' '+(CHAO-4*PISO)+' L '+(x0+LARG/2)+' '+(CHAO-4*PISO-TELHA)
+      +' L '+(x0+LARG+10)+' '+(CHAO-4*PISO)+' Z',fill:'#8a4a28',opacity:.42,
+      stroke:'#17191a','stroke-width':1.2}));
+    // lajes
+    for (var i=1;i<4;i++){
+      gp.appendChild(svgEl('line',{x1:x0,y1:CHAO-i*PISO,x2:x0+LARG,y2:CHAO-i*PISO,
+        stroke:'#17191a','stroke-width':1.1}));
+    }
+    // por pavimento: janela, gente, e o vazio quando é vazio
+    NIVEIS.forEach(function(nome,i){
+      var topo = CHAO - (4-i)*PISO, base = topo + PISO;
+      var qtd = c.n[i];
+      if (qtd === 0){
+        gp.appendChild(svgEl('line',{x1:x0+6,y1:topo+6,x2:x0+LARG-6,y2:base-6,
+          stroke:'#b0402a','stroke-width':1,opacity:.5}));
+        gp.appendChild(svgEl('line',{x1:x0+LARG-6,y1:topo+6,x2:x0+6,y2:base-6,
+          stroke:'#b0402a','stroke-width':1,opacity:.5}));
+      } else {
+        // divisórias internas quando o pavimento é fracionado
+        if (qtd > 2){
+          for (var d=1; d<qtd; d++){
+            gp.appendChild(svgEl('line',{x1:x0+LARG*d/qtd,y1:topo+3,x2:x0+LARG*d/qtd,y2:base-1,
+              stroke:'#17191a','stroke-width':.7,opacity:.45,'stroke-dasharray':'3 3'}));
+          }
+        }
+        for (var k=0;k<qtd;k++){
+          figura(x0 + LARG*(k+0.5)/qtd, base-5, c.cor).childNodes;
+          gp.appendChild(figura(x0 + LARG*(k+0.5)/qtd, base-5, c.cor));
+        }
+      }
+      // vão de janela na fachada
+      gp.appendChild(svgEl('rect',{x:x0-4,y:topo+12,width:4,height:20,
+        fill:qtd?'#17191a':'none',stroke:'#17191a','stroke-width':.8,opacity:qtd?.55:.3}));
+    });
+    g.appendChild(gp);
+  });
+
+  // legenda da camada
+  // legenda em faixa larga, acima dos telhados — não ao lado deles
+  var rot = svgEl('text',{x:60,y:500,'font-family':BLACK,'font-size':10,
+    fill:c.cor,'letter-spacing':2});
+  rot.textContent = c.rot;
+  g.appendChild(rot);
+  g.appendChild(svgEl('line',{x1:60,y1:506,x2:1300,y2:506,
+    stroke:c.cor,'stroke-width':1,opacity:.35}));
+  quebrar(g, 60, 522, 1240, c.leg, {size:11.5, fam:MONO, lh:15, fill:'#17191a', op:.78});
+}
+
+function desenharMudanca(){
+  var g = document.getElementById('a-mudanca');
+  g.textContent = '';
+  var seta = svgEl('text',{x:250,y:826,'font-family':MONO,'font-size':7.5,
+    fill:'#b0402a','letter-spacing':1,'text-anchor':'end'});
+  seta.textContent = '4.000+ MORADORES →';
+  g.appendChild(seta);
+  var comp = svgEl('g',{});
+  var car = svgEl('g',{transform:'translate(-22 -15)'});
+  car.appendChild(svgEl('rect',{x:0,y:0,width:26,height:14,fill:'#b0402a',
+    stroke:'#17191a','stroke-width':1}));
+  car.appendChild(svgEl('rect',{x:26,y:4,width:13,height:10,fill:'#b0402a',opacity:.8,
+    stroke:'#17191a','stroke-width':1}));
+  car.appendChild(svgEl('rect',{x:29,y:6,width:5,height:4,fill:'#e3e6df'}));
+  // a mobília em cima
+  car.appendChild(svgEl('rect',{x:3,y:-8,width:9,height:8,fill:'none',stroke:'#17191a','stroke-width':1}));
+  car.appendChild(svgEl('rect',{x:14,y:-6,width:8,height:6,fill:'none',stroke:'#17191a','stroke-width':1}));
+  car.appendChild(svgEl('circle',{cx:7,cy:14,r:2.4,fill:'none',stroke:'#17191a','stroke-width':1}));
+  car.appendChild(svgEl('circle',{cx:33,cy:14,r:2.4,fill:'none',stroke:'#17191a','stroke-width':1}));
+  comp.appendChild(car);
+  var am = svgEl('animateMotion',{dur:'21s',repeatCount:'indefinite',rotate:'0'});
+  am.appendChild(svgEl('mpath',{href:'#via-mudanca'}));
+  comp.appendChild(am);
+  g.appendChild(comp);
+  var dest = svgEl('text',{x:1300,y:800,'font-family':MONO,'font-size':7,
+    fill:'#b0402a',opacity:.8,'letter-spacing':1,'text-anchor':'end'});
+  dest.textContent = 'PARA BAIRROS DISTANTES · SEM RETORNO';
+  g.appendChild(dest);
+}
+
+/* ═══ quebra de linha medida (não estimada) ═══ */
+var MED = null;
+function medir(str, size, fam, ls){
+  if (!MED){
+    // fora de qualquer folha: as folhas ocultas têm display:none e
+    // getComputedTextLength() devolve 0 dentro delas — foi assim que o
+    // texto do encontro saiu sem quebra na primeira versão.
+    var cx = svgEl('svg',{width:10,height:10});
+    cx.setAttribute('style','position:fixed;left:-9999px;top:0;overflow:visible;pointer-events:none');
+    document.body.appendChild(cx);
+    MED = svgEl('text',{x:0,y:0});
+    cx.appendChild(MED);
+  }
+  MED.setAttribute('font-size', size);
+  MED.setAttribute('font-family', fam);
+  MED.setAttribute('letter-spacing', ls || 0);
+  MED.textContent = str;
+  try { return MED.getComputedTextLength(); }
+  catch(e){ return str.length * size * 0.56; }
+}
+function quebrar(pai, x, y, largura, html, o){
+  var plano = html.replace(/<i>|<\/i>|<b>|<\/b>/g,'');
+  var palavras = plano.split(/\s+/);
+  var linhas = [], atual = '';
+  palavras.forEach(function(p){
+    var tent = atual ? atual + ' ' + p : p;
+    if (medir(tent, o.size, o.fam, o.ls) > largura && atual){ linhas.push(atual); atual = p; }
+    else atual = tent;
+  });
+  if (atual) linhas.push(atual);
+  linhas.forEach(function(l, i){
+    var t = svgEl('text',{x:x, y:y + i*o.lh,'font-family':o.fam,'font-size':o.size,
+      fill:o.fill, opacity:o.op===undefined?1:o.op});
+    if (o.ls) t.setAttribute('letter-spacing', o.ls);
+    if (o.peso) t.setAttribute('font-weight', o.peso);
+    t.textContent = l;
+    pai.appendChild(t);
+  });
+  return y + linhas.length * o.lh;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   O ENCONTRO
+═══════════════════════════════════════════════════════════════ */
+function montarEncontro(){
+  if (ESTADO.encontroPronto) return;
+  var g = document.getElementById('c-conteudo');
+  g.textContent = '';
+
+  var COLS = [
+    {x:60,  w:600, d:ENCONTRO.ladoA, cor:'#b0402a'},
+    {x:740, w:600, d:ENCONTRO.ladoB, cor:'#3d6b8c'}
+  ];
+
+  COLS.forEach(function(col){
+    var rot = svgEl('text',{x:col.x,y:106,'font-family':BLACK,'font-size':12,
+      fill:col.cor,'letter-spacing':2.4});
+    rot.textContent = col.d.rot;
+    g.appendChild(rot);
+
+    var gov = svgEl('text',{x:col.x,y:124,'font-family':MONO,'font-size':8.5,
+      fill:'#17191a',opacity:.7,'letter-spacing':1.2});
+    gov.textContent = col.d.gov;
+    g.appendChild(gov);
+
+    var per = svgEl('text',{x:col.x+col.w,y:106,'text-anchor':'end','font-family':BLACK,
+      'font-size':12,fill:'#17191a',opacity:.4,'letter-spacing':1.6});
+    per.textContent = col.d.per;
+    g.appendChild(per);
+
+    g.appendChild(svgEl('line',{x1:col.x,y1:138,x2:col.x+col.w,y2:138,
+      stroke:col.cor,'stroke-width':2}));
+
+    // a linha do tempo da coluna
+    g.appendChild(svgEl('line',{x1:col.x+54,y1:172,x2:col.x+54,y2:404,
+      stroke:col.cor,'stroke-width':1,opacity:.45,'stroke-dasharray':'3 4'}));
+
+    var y = 176;
+    col.d.itens.forEach(function(it){
+      g.appendChild(svgEl('circle',{cx:col.x+54,cy:y-4,r:5,fill:col.cor,
+        stroke:'#17191a','stroke-width':1.2}));
+      var m = svgEl('text',{x:col.x+42,y:y,'text-anchor':'end','font-family':BLACK,
+        'font-size':8.5,fill:col.cor,'letter-spacing':1.2});
+      m.textContent = it[0];
+      g.appendChild(m);
+      quebrar(g, col.x+72, y, col.w-72, it[1],
+        {size:12.5, fam:MONO, lh:16, fill:'#17191a', op:.85});
+      y += 62;
+    });
+  });
+
+  // convergência
+  g.appendChild(svgEl('path',{d:'M 360 420 Q 360 462 700 462',fill:'none',
+    stroke:'#b0402a','stroke-width':1.4,'stroke-dasharray':'4 4',opacity:.7}));
+  g.appendChild(svgEl('path',{d:'M 1040 420 Q 1040 462 700 462',fill:'none',
+    stroke:'#3d6b8c','stroke-width':1.4,'stroke-dasharray':'4 4',opacity:.7}));
+  g.appendChild(svgEl('circle',{cx:700,cy:462,r:6,fill:'#17191a'}));
+
+  var tit = svgEl('text',{x:700,y:500,'text-anchor':'middle','font-family':BLACK,
+    'font-size':13,fill:'#17191a','letter-spacing':3});
+  tit.textContent = 'O QUE OS DOIS PARTILHAM';
+  g.appendChild(tit);
+  g.appendChild(svgEl('line',{x1:60,y1:514,x2:1340,y2:514,stroke:'#17191a','stroke-width':1.4}));
+
+  var y0 = 546;
+  ENCONTRO.comum.forEach(function(txt, i){
+    var col = i % 2, lin = Math.floor(i/2);
+    var cx = col ? 740 : 60, cy = y0 + lin*74;
+    var n = svgEl('text',{x:cx,y:cy,'font-family':BLACK,'font-size':16,
+      fill:'#17191a',opacity:.28});
+    n.textContent = ('0'+(i+1)).slice(-2);
+    g.appendChild(n);
+    g.appendChild(svgEl('line',{x1:cx,y1:cy+8,x2:cx+26,y2:cy+8,
+      stroke:'#17191a','stroke-width':1,opacity:.3}));
+    quebrar(g, cx+42, cy, 558, txt, {size:12.5, fam:MONO, lh:16, fill:'#17191a', op:.88});
+  });
+
+  // a tese
+  var yt = 768;
+  g.appendChild(svgEl('rect',{x:60,y:yt,width:1280,height:64,fill:'#17191a'}));
+  var q = svgEl('text',{x:82,y:yt+27,'font-family':BLACK,'font-size':12.5,
+    fill:'#e3e6df','letter-spacing':1.2});
+  q.textContent = '“A política de infraestrutura em Salvador historicamente foi, e ainda é, um mecanismo de antinegritude.”';
+  g.appendChild(q);
+  var f = svgEl('text',{x:82,y:yt+48,'font-family':MONO,'font-size':8.5,
+    fill:'#e3e6df',opacity:.62,'letter-spacing':1.4});
+  f.textContent = 'FIGUEIREDO, ESTÉVEZ & ROSA · THE BLACK CITY · RADICAL HOUSING JOURNAL · 2020';
+  g.appendChild(f);
+
+  ESTADO.encontroPronto = true;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PINOS E ÍNDICE
+═══════════════════════════════════════════════════════════════ */
+function renderPinos(lado){
+  var g = document.getElementById(lado === 'a' ? 'a-pinos' : 'cam-pinos');
+  g.textContent = '';
+  dados(lado).forEach(function(e){
+    var lida = ESTADO.lidas.has(chave(lado, e.id));
+    var px = e.x, py = lado === 'a' ? e.y : 250;
+
+    var p = svgEl('g',{class:'pino'+(lida?' visto':''),transform:'translate('+px+','+py+')'});
+    p.setAttribute('data-id', e.id);
+    p.setAttribute('data-nome', e.sigla);
+
+    if (!lida){
+      var pulso = svgEl('circle',{r:13,fill:'none',stroke:e.cor,'stroke-width':1.4});
+      pulso.innerHTML = '<animate attributeName="r" values="13;21;13" dur="2.6s" repeatCount="indefinite"/>'
+                      + '<animate attributeName="opacity" values=".55;0;.55" dur="2.6s" repeatCount="indefinite"/>';
+      p.appendChild(pulso);
+    }
+    p.appendChild(svgEl('circle',{r:12.5,fill:lida?'#c3c8be':e.cor,stroke:'#17191a','stroke-width':1.8}));
+    p.appendChild(svgEl('circle',{r:8.5,fill:'none',stroke:'#e3e6df','stroke-width':.7,'stroke-dasharray':'2 2'}));
+    var n = svgEl('text',{'text-anchor':'middle',y:4.3,class:'pino-num'});
+    n.textContent = lado.toUpperCase() + e.id;
+    p.appendChild(n);
+
+    var rot = svgEl('text',{'text-anchor':'middle',y:-20,
+      'font-family':BLACK,'font-size':8,fill:'#17191a','letter-spacing':1.2});
+    rot.textContent = e.sigla + ' · ' + e.ano;
+    p.appendChild(rot);
+
+    p.addEventListener('click', function(){ abrir(lado, e.id); });
+    g.appendChild(p);
+  });
+  ligarDicas();
+}
+
+function renderRodape(){
+  var lado = ESTADO.lado;
+  var w = document.getElementById('pe-lista');
+  w.textContent = '';
+  document.getElementById('pe-rot').textContent =
+    lado === 'c' ? 'SÍNTESE' : ('PONTOS · LADO ' + lado.toUpperCase());
+
+  if (lado !== 'c'){
+    dados(lado).forEach(function(e){
+      var b = document.createElement('button');
+      b.className = 'pe-item' + (ESTADO.lidas.has(chave(lado,e.id)) ? ' visto' : '');
+      b.innerHTML = '<span class="pe-n">' + lado.toUpperCase() + e.id + '</span>'
+                  + '<span class="pe-nome">' + e.sigla + '</span>';
+      b.addEventListener('click', function(){ abrir(lado, e.id); });
+      w.appendChild(b);
+    });
+  }
+  var total = ESTACOES_A.length + ESTACOES.length;
+  document.getElementById('pe-conta').textContent = ESTADO.lidas.size + '/' + total;
+}
+
+function ligarDicas(){
+  var dica = document.getElementById('dica');
+  document.querySelectorAll('.pino').forEach(function(p){
+    p.addEventListener('mouseenter', function(){
+      dica.textContent = p.getAttribute('data-nome');
+      dica.classList.add('on');
+    });
+    p.addEventListener('mousemove', function(ev){
+      dica.style.left = (ev.clientX + 14) + 'px';
+      dica.style.top  = (ev.clientY + 14) + 'px';
+    });
+    p.addEventListener('mouseleave', function(){ dica.classList.remove('on'); });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TROCA DE LADO E DE CAMADA
+═══════════════════════════════════════════════════════════════ */
+var CABECA = {
+  a:['LADO A · CENTRO HISTÓRICO','planta das etapas + corte do casarão · governo do estado · carlismo · 1991–'],
+  b:['LADO B · SUBÚRBIO FERROVIÁRIO','planta de traçado + perfil longitudinal · governo do estado · PT · 2016–2026'],
+  c:['O ENCONTRO','duas linhas do tempo, um mecanismo · 1991–2026']
+};
+
+function trocarLado(l){
+  ESTADO.lado = l;
+  if (l === 'c') montarEncontro();
+
+  document.getElementById('prancha-a').classList.toggle('oculto', l !== 'a');
+  document.getElementById('prancha-svg').classList.toggle('oculto', l !== 'b');
+  document.getElementById('prancha-c').classList.toggle('oculto', l !== 'c');
+
+  document.getElementById('camadas-a').classList.toggle('oculto', l !== 'a');
+  document.getElementById('camadas-b').classList.toggle('oculto', l !== 'b');
+  document.getElementById('coord').style.display = l === 'c' ? 'none' : '';
+
+  document.getElementById('hd-tit').textContent = CABECA[l][0];
+  document.getElementById('hd-sub').textContent = CABECA[l][1];
+
+  document.querySelectorAll('.lado-btn').forEach(function(b){
+    b.classList.toggle('on', b.dataset.lado === l);
+  });
+  renderRodape();
+  window.scrollTo(0,0);
+}
+
+function aplicarCamada(lado, nome){
+  ESTADO.camada[lado] = nome;
+  if (lado === 'b'){
+    var mapa = {trem:'cam-trem', mono:'cam-mono', vlt:'cam-vlt'};
+    Object.keys(mapa).forEach(function(k){
+      var el = document.getElementById(mapa[k]);
+      el.style.transition = 'opacity .45s ease';
+      el.style.opacity = (k === nome) ? '1' : '0';
+      el.style.pointerEvents = (k === nome) ? 'auto' : 'none';
+    });
+  } else {
+    desenharCorte();
+    var m = document.getElementById('a-mudanca');
+    m.style.transition = 'opacity .45s ease';
+    m.style.opacity = (nome === 'vazio') ? '1' : '0';
+  }
+  document.querySelectorAll('#camadas-'+lado+' .camada-btn').forEach(function(b){
+    b.classList.toggle('on', b.dataset.camada === nome);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VINHETA
+═══════════════════════════════════════════════════════════════ */
+function abrir(lado, id){
+  var e = dados(lado).find(function(x){ return x.id === id; });
+  if (!e) return;
+  ESTADO.lidas.add(chave(lado, id));
+
+  var n = document.getElementById('vin-n');
+  n.textContent = lado.toUpperCase() + e.id;
+  n.style.background = e.cor;
+  document.getElementById('vin-tit').textContent = e.titulo;
+  document.getElementById('vin-sub').textContent = e.sub;
+
+  document.getElementById('pag-cena').innerHTML =
+    '<div class="cena-lugar">' + e.cena.lugar + '</div>'
+  + '<div class="cena-frase">' + e.cena.frase + '</div>'
+  + '<div class="cena-corpo">' + e.cena.texto.map(function(p){ return '<p>'+p+'</p>'; }).join('') + '</div>';
+
+  document.getElementById('pag-dados').innerHTML =
+    e.dados.map(function(d){
+      return '<div class="dado"><div class="dado-n">'+d[0]+'</div><div class="dado-txt">'+d[1]+'</div></div>';
+    }).join('');
+
+  document.getElementById('pag-arg').innerHTML =
+    e.arg.map(function(a){
+      return '<div class="arg-passo"><div class="arg-n">'+a[0]+'</div><div>'
+           + '<div class="arg-t">'+a[1]+'</div><div class="arg-d">'+a[2]+'</div></div></div>';
+    }).join('');
+
+  document.getElementById('pag-fonte').innerHTML =
+    '<div class="fonte-sel">' + e.fonte.selo + '</div>'
+  + '<div class="fonte-ref">' + e.fonte.txt + '</div>';
+
+  document.querySelectorAll('.aba').forEach(function(b){ b.classList.remove('on'); });
+  document.querySelectorAll('.pag').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelector('.aba[data-pag="cena"]').classList.add('on');
+  document.getElementById('pag-cena').classList.add('on');
+  document.querySelector('.vin-corpo').scrollTop = 0;
+
+  document.getElementById('vinheta').classList.add('on');
+  renderPinos(lado);
+  renderRodape();
+}
+function fechar(){ document.getElementById('vinheta').classList.remove('on'); }
+
+/* ═══ painéis ═════════════════════════════════════════════════ */
+function montarPaineis(){
+  document.getElementById('corpo-fuga').innerHTML =
+    FUGITIVIDADE.map(function(b){ return '<h4>'+b[0]+'</h4><p>'+b[1]+'</p>'; }).join('');
+  document.getElementById('corpo-epilogo').innerHTML =
+    EPILOGO.map(function(b){
+      return '<h4>'+b[1]+'</h4><div class="marca-tempo">'+b[0]+'</div><p>'+b[2]+'</p>';
+    }).join('');
+}
+function alternarPainel(id){
+  document.querySelectorAll('.painel').forEach(function(p){
+    if (p.id !== id) p.classList.remove('on');
+  });
+  document.getElementById(id).classList.toggle('on');
+}
+
+/* ═══ boot ════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function(){
+  montarLadoA();
+  montarLadoB();
+  montarPaineis();
+  renderPinos('a');
+  renderPinos('b');
+  aplicarCamada('a','solar');
+  aplicarCamada('b','trem');
+  renderRodape();
+
+  document.getElementById('btn-entrar').addEventListener('click', function(){
+    var r = document.getElementById('rosto');
+    r.style.transition = 'opacity .45s';
+    r.style.opacity = '0';
+    setTimeout(function(){
+      r.style.display = 'none';
+      document.getElementById('app').classList.remove('oculto');
+      window.scrollTo(0,0);
+    }, 450);
+  });
+
+  document.querySelectorAll('.lado-btn').forEach(function(b){
+    b.addEventListener('click', function(){ trocarLado(b.dataset.lado); });
+  });
+  document.querySelectorAll('#camadas-a .camada-btn').forEach(function(b){
+    b.addEventListener('click', function(){ aplicarCamada('a', b.dataset.camada); });
+  });
+  document.querySelectorAll('#camadas-b .camada-btn').forEach(function(b){
+    b.addEventListener('click', function(){ aplicarCamada('b', b.dataset.camada); });
+  });
+  document.getElementById('b-remete').addEventListener('click', function(){ trocarLado('a'); });
+
+  document.getElementById('vin-x').addEventListener('click', fechar);
+  document.getElementById('vinheta').addEventListener('click', function(ev){
+    if (ev.target === this) fechar();
+  });
+  document.querySelectorAll('.aba').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.aba').forEach(function(x){ x.classList.remove('on'); });
+      document.querySelectorAll('.pag').forEach(function(p){ p.classList.remove('on'); });
+      b.classList.add('on');
+      document.getElementById('pag-' + b.dataset.pag).classList.add('on');
+      document.querySelector('.vin-corpo').scrollTop = 0;
+    });
+  });
+
+  document.getElementById('btn-fuga').addEventListener('click', function(){ alternarPainel('painel-fuga'); });
+  document.getElementById('btn-epilogo').addEventListener('click', function(){ alternarPainel('painel-epilogo'); });
+  document.querySelectorAll('.painel-x').forEach(function(b){
+    b.addEventListener('click', function(){ document.getElementById(b.dataset.fecha).classList.remove('on'); });
+  });
+
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){
+      desenharCorte();
+      ESTADO.encontroPronto = false;
+      if (ESTADO.lado === 'c') montarEncontro();
+    });
+  }
+
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape'){
+      fechar();
+      document.querySelectorAll('.painel').forEach(function(p){ p.classList.remove('on'); });
+    }
+    if (ev.key === 'a' || ev.key === 'A') trocarLado('a');
+    if (ev.key === 'b' || ev.key === 'B') trocarLado('b');
+  });
+});
+
+</script>
+</body>
+</html>

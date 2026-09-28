@@ -551,7 +551,7 @@ animation:scan 8s linear infinite;
 
   <!-- Releitura Warja Lavater — sequência de formas, não diagrama -->
   <div id="warja-ensaios" style="margin-bottom:3rem;overflow:hidden;">
-    <svg viewBox="0 0 1200 350" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos onze ensaios ao estilo Warja Lavater, em duas fileiras">
+    <svg viewBox="0 0 1200 350" width="100%" xmlns="http://www.w3.org/2000/svg" aria-label="sequência visual dos doze ensaios ao estilo Warja Lavater, em duas fileiras">
       <defs>
         <filter id="glow-verde"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="glow-roxo"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -565,7 +565,7 @@ animation:scan 8s linear infinite;
 
             <!-- fio do tempo, agora em duas fileiras -->
       <line x1="60" y1="92" x2="1120" y2="92" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
-      <line x1="60" y1="262" x2="930" y2="262" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
+      <line x1="60" y1="262" x2="1120" y2="262" stroke="rgba(232,224,204,0.06)" stroke-width="1"/>
       <line x1="168" y1="92" x2="242" y2="92" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
       <line x1="358" y1="92" x2="432" y2="92" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
       <line x1="548" y1="92" x2="622" y2="92" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
@@ -575,6 +575,7 @@ animation:scan 8s linear infinite;
       <line x1="358" y1="262" x2="432" y2="262" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
       <line x1="548" y1="262" x2="622" y2="262" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
       <line x1="738" y1="262" x2="812" y2="262" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
+      <line x1="928" y1="262" x2="1002" y2="262" stroke="rgba(249,115,22,0.2)" stroke-width=".8" stroke-dasharray="3 4"/>
       <!-- o fio dobra e desce para a fileira de baixo, como um texto que vira a linha -->
       <path d="M1120,92 q26,0 26,26 v24 q0,26 -26,26 H86 q-26,0 -26,26 v24 q0,26 26,26"
             fill="none" stroke="rgba(249,115,22,0.16)" stroke-width=".9" stroke-dasharray="2 6"/>
@@ -747,6 +748,29 @@ animation:scan 8s linear infinite;
         <path d="M-49,-4 q5,4 10,0" fill="none" stroke="#a3ab72" stroke-width=".9" opacity=".85"/>
       </g>
       <text x="870" y="314" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(163,171,114,0.55)" text-anchor="middle" letter-spacing="1.5">11</text>
+
+      <!-- ── 12 dois lados — o casarão que se esvazia e o trilho que sobe (terracota) ── -->
+      <g transform="translate(1060,262)">
+        <!-- lado A: o casarão, e a laje que se esvazia -->
+        <polygon points="-56,-24 -35,-36 -14,-24" fill="none" stroke="#c87a5a" stroke-width=".7" opacity=".5"/>
+        <rect x="-52" y="-24" width="34" height="40" fill="none" stroke="#c87a5a" stroke-width="1.1"/>
+        <line x1="-52" y1="-11" x2="-18" y2="-11" stroke="#c87a5a" stroke-width=".5" opacity=".4"/>
+        <line x1="-52" y1="2" x2="-18" y2="2" stroke="#c87a5a" stroke-width=".5" opacity=".4"/>
+        <!-- quem sai, e não volta -->
+        <path d="M-18,10 H-4" fill="none" stroke="#c87a5a" stroke-width=".7" stroke-dasharray="3 3" opacity=".55"/>
+        <circle cx="3" cy="10" r="4.6" fill="none" stroke="#c87a5a" stroke-width=".9" opacity=".75"/>
+        <!-- lado B: a viga elevada sobre pilares, e o trilho desativado embaixo -->
+        <rect x="24" y="-20" width="26" height="9" rx="4" fill="#c87a5a" opacity=".32"/>
+        <line x1="14" y1="-9" x2="58" y2="-9" stroke="#c87a5a" stroke-width="1.1"/>
+        <line x1="22" y1="-9" x2="22" y2="14" stroke="#c87a5a" stroke-width=".7" opacity=".45"/>
+        <line x1="36" y1="-9" x2="36" y2="14" stroke="#c87a5a" stroke-width=".7" opacity=".45"/>
+        <line x1="50" y1="-9" x2="50" y2="14" stroke="#c87a5a" stroke-width=".7" opacity=".45"/>
+        <line x1="14" y1="16" x2="58" y2="16" stroke="#c87a5a" stroke-width=".5" stroke-dasharray="2 3" opacity=".4"/>
+        <!-- o encontro: um fio só, e o ponto onde os dois se cruzam -->
+        <line x1="-35" y1="28" x2="36" y2="28" stroke="#c87a5a" stroke-width=".5" opacity=".3"/>
+        <circle cx="0" cy="28" r="2.6" fill="#c87a5a" opacity=".65"/>
+      </g>
+      <text x="1060" y="314" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(200,122,90,0.55)" text-anchor="middle" letter-spacing="1.5">12</text>
     </svg>
   </div>
 </div>
@@ -961,6 +985,32 @@ animation:scan 8s linear infinite;
           <polyline points="20,33 14,38 20,43" fill="none" stroke="#a3ab72" stroke-width=".8" opacity=".75"/>
           <circle cx="8" cy="38" r="8" fill="none" stroke="#a3ab72" stroke-width="1" opacity=".7"/>
           <path d="M4,37 q4,4 8,0" fill="none" stroke="#a3ab72" stroke-width=".9" opacity=".8"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- card 12 -->
+    <article class="ecard" style="--c:#c87a5a;" data-cat="tecnologia" data-url="/doislados/">
+      <div class="ecard-num">12</div>
+      <div class="ecard-cat">cidade · patrimônio · mobilidade</div>
+      <h3 class="ecard-titulo">dois<br><em>lados</em></h3>
+      <p class="ecard-desc">
+        o pelourinho a partir de 1991 e o subúrbio ferroviário a partir de 2019: duas obras do governo do estado, dois projetos políticos opostos, o mesmo mecanismo. prancha de leitura em planta, corte e perfil longitudinal — lado a, lado b, e a folha em que os dois se encontram.
+      </p>
+      <p class="ecard-fonte">desenvolvido a partir do artigo <em>The Black City: Modernisation and fugitivities in Salvador, Bahia, Brazil</em>, de Glória Cecília dos Santos Figueiredo, Brais Estévez e Thaís Troncon Rosa, para a disciplina <strong>arqc19 — estudos socioeconômicos e ambientais</strong>, da professora Letícia Durlo.</p>
+      <span class="ecard-badge">leitura de texto · arqc19 · ufba</span>
+      <div class="ecard-geo">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <polygon points="2,26 17,17 32,26" fill="none" stroke="#c87a5a" stroke-width=".7" opacity=".5"/>
+          <rect x="5" y="26" width="24" height="30" fill="none" stroke="#c87a5a" stroke-width="1"/>
+          <line x1="5" y1="36" x2="29" y2="36" stroke="#c87a5a" stroke-width=".5" opacity=".4"/>
+          <line x1="5" y1="46" x2="29" y2="46" stroke="#c87a5a" stroke-width=".5" opacity=".4"/>
+          <path d="M29,52 H38" fill="none" stroke="#c87a5a" stroke-width=".7" stroke-dasharray="3 3" opacity=".55"/>
+          <rect x="46" y="20" width="20" height="7" rx="3" fill="#c87a5a" opacity=".32"/>
+          <line x1="40" y1="29" x2="74" y2="29" stroke="#c87a5a" stroke-width="1"/>
+          <line x1="47" y1="29" x2="47" y2="50" stroke="#c87a5a" stroke-width=".6" opacity=".45"/>
+          <line x1="60" y1="29" x2="60" y2="50" stroke="#c87a5a" stroke-width=".6" opacity=".45"/>
+          <line x1="40" y1="52" x2="74" y2="52" stroke="#c87a5a" stroke-width=".5" stroke-dasharray="2 3" opacity=".4"/>
         </svg>
       </div>
     </article>
