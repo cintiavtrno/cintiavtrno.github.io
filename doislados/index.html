@@ -1943,10 +1943,23 @@ document.addEventListener('DOMContentLoaded', function(){
     var t = ev.target;
     if (!t || !t.closest || !t.closest('.pino')) esconderDica();
   }, true);
+  /* A roda do mouse rola a pagina sem mover o ponteiro, entao nenhum
+     mouseover dispara. Dentro do iframe do site quem rola e a pagina
+     de fora, e o scroll dela nunca chega aqui: o wheel, sim. */
+  document.addEventListener('wheel', esconderDica, {passive:true, capture:true});
   window.addEventListener('scroll', esconderDica, {passive:true});
   window.addEventListener('blur', esconderDica);
+  document.addEventListener('visibilitychange', esconderDica);
   document.addEventListener('mouseleave', esconderDica);
   document.querySelector('.prancha').addEventListener('mouseleave', esconderDica);
+
+  /* e, quando o ensaio esta embutido em pagina de mesma origem, tambem
+     a rolagem por barra ou por teclado da pagina de fora. */
+  try {
+    if (window.parent && window.parent !== window){
+      window.parent.addEventListener('scroll', esconderDica, {passive:true});
+    }
+  } catch(e){ /* origem diferente: as guardas acima ja bastam */ }
 
   document.addEventListener('keydown', function(ev){
     if (ev.key === 'Escape'){
