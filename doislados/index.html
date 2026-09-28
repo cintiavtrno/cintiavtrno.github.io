@@ -1930,8 +1930,22 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
+  /* Guarda unica, em vez de tapar buraco por buraco: qualquer movimento
+     do ponteiro que nao esteja sobre um pino apaga a etiqueta. Cobre o
+     caso em que o pino some debaixo do cursor sem disparar mouseleave,
+     e o caso do ensaio dentro do iframe do site, onde quem rola e a
+     pagina de fora e o scroll nunca chega aqui dentro. */
+  document.addEventListener('mouseover', function(ev){
+    var t = ev.target;
+    if (!t || !t.closest || !t.closest('.pino')) esconderDica();
+  }, true);
+  document.addEventListener('pointerdown', function(ev){
+    var t = ev.target;
+    if (!t || !t.closest || !t.closest('.pino')) esconderDica();
+  }, true);
   window.addEventListener('scroll', esconderDica, {passive:true});
   window.addEventListener('blur', esconderDica);
+  document.addEventListener('mouseleave', esconderDica);
   document.querySelector('.prancha').addEventListener('mouseleave', esconderDica);
 
   document.addEventListener('keydown', function(ev){
