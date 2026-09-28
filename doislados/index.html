@@ -1706,10 +1706,7 @@ function renderPinos(lado){
     p.appendChild(rot);
 
     p.addEventListener('click', function(){ abrir(lado, e.id); });
-    p.addEventListener('mouseenter', function(){
-      DICA().textContent = e.sigla;
-      DICA().classList.add('on');
-    });
+    p.addEventListener('mouseenter', function(ev){ mostrarDica(e.sigla, ev); });
     p.addEventListener('mousemove', function(ev){
       var d = DICA();
       d.style.left = (ev.clientX + 14) + 'px';
@@ -1745,12 +1742,35 @@ function renderRodape(){
    cursor, ou se o pino e recriado por um render, o mouseleave nunca
    dispara e ela fica colada na viewport, rolando junto com a pagina.
    Entao todo caminho que troca o que esta na tela a apaga na mao. */
-var _dica = null;
+var _dica = null, _px = -1, _py = -1, _laco = 0;
 function DICA(){
   if (!_dica) _dica = document.getElementById('dica');
   return _dica;
 }
-function esconderDica(){ DICA().classList.remove('on'); }
+function esconderDica(){
+  if (_laco){ cancelAnimationFrame(_laco); _laco = 0; }
+  DICA().classList.remove('on');
+}
+/* Em vez de tentar prever todo evento que deveria apagar a etiqueta -
+   e sempre sobrar um - ela passa a ser derivada de um fato verificado
+   a cada quadro: ainda existe um pino debaixo do ponteiro? Isso cobre
+   de uma vez a troca de folha, a rolagem (que move o desenho sob um
+   cursor parado), a roda do mouse, o redesenho dos pinos e a rolagem
+   da pagina de fora quando o ensaio esta dentro de um iframe. */
+function vigiarPonteiro(){
+  _laco = 0;
+  if (!DICA().classList.contains('on')) return;
+  var el = (_px >= 0) ? document.elementFromPoint(_px, _py) : null;
+  if (!el || !el.closest || !el.closest('.pino')){ esconderDica(); return; }
+  _laco = requestAnimationFrame(vigiarPonteiro);
+}
+function mostrarDica(texto, ev){
+  if (ev){ _px = ev.clientX; _py = ev.clientY; }
+  var d = DICA();
+  d.textContent = texto;
+  d.classList.add('on');
+  if (!_laco) _laco = requestAnimationFrame(vigiarPonteiro);
+}
 
 /* ═══════════════════════════════════════════════════════════════
    TROCA DE LADO E DE CAMADA
@@ -1935,6 +1955,9 @@ document.addEventListener('DOMContentLoaded', function(){
      caso em que o pino some debaixo do cursor sem disparar mouseleave,
      e o caso do ensaio dentro do iframe do site, onde quem rola e a
      pagina de fora e o scroll nunca chega aqui dentro. */
+  document.addEventListener('mousemove', function(ev){
+    _px = ev.clientX; _py = ev.clientY;
+  }, {passive:true, capture:true});
   document.addEventListener('mouseover', function(ev){
     var t = ev.target;
     if (!t || !t.closest || !t.closest('.pino')) esconderDica();
